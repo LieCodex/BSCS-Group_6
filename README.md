@@ -2,7 +2,9 @@
 
 To make this project work, do this step
 
-1. clone the project using git clone command
+1. clone the project using git clone command in the htdocs folder in xampp program files if you are using xampp or in the www if you are using laragon
+    "git clone <url>"
+    then "cd RizGroup" => "cd app"
 2. run "composer install" in your terminal
 3. run this command "cp .env.example .env "
 4. the this "php artisan key:generate"
