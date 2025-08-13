@@ -11,3 +11,9 @@ To make this project work, do this step
 npm run dev"
 7. Crtl + C to stop the process
 8. then run "php artisan serve"
+
+When pulling new data run these commands to make sure nothing will go wrong with syncronazation
+
+1. "composer install" - if there is changes in composer.json
+2. "npm install" - if there is changes in package.json
+3. "php artisan migrate" - if there is data changes in database
