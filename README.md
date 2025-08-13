@@ -9,4 +9,5 @@ To make this project work, do this step
 5. then this "php artisan migrate"
 6. then this "npm install
 npm run dev"
-7. finally run "php artisan serve"
+7. Crtl + C to stop the process
+8. then run "php artisan serve"
