@@ -1,47 +1,130 @@
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>My App</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
-<body>
-    @auth
-    <p>Welcome</P>
-    <form action="/logout" method="GET">
-        @csrf
-        <button>Logout</button>
-    </form>
-    <div style = "border: 3px solid black;">
-        <h2>Create a new post</h2>
 
-        <form action="/create-post" method="GET">
-            @csrf
-            <input name="title" type="text" placeholder="post-title">
-            <textarea name="body" placeholder="body-content"></textarea>
-            <button>Save Post</button>
-        </form>
+<body class="bg-gradient-primary">
 
-    @else
-    <div style = "border: 3px solid black;">
-        <h2>Register</h2>
-        <form action="/register" method="GET">  <!-- error when using POST just change it to GET-->
-            @csrf
-            <input name="name" type="text" placeholder="name">
-            <input name="email" type="text" placeholder="email">
-            <input name="password" type="password" placeholder="password">
-            <button>Register</button>
-        </form>
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    @auth
+                                        <div class="text-center">
+                                            <h1 class="h4 text-gray-900 mb-4">Welcome {{ auth()->user()->name }}!</h1>
+                                        </div>
+
+                                        <!-- Logout -->
+                                        <form action="/logout" method="GET">
+                                            @csrf
+                                            <button class="btn btn-danger btn-user btn-block">Logout</button>
+                                        </form>
+                                        <hr>
+
+                                        <!-- Create Post -->
+                                        <h2 class="h5 text-gray-800">Create a new post</h2>
+                                        <form action="/create-post" method="GET" class="user">
+                                            @csrf
+                                            <div class="form-group">
+                                                <input name="title" type="text" class="form-control form-control-user"
+                                                    placeholder="Post Title">
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea name="body" class="form-control form-control-user" placeholder="Body Content"></textarea>
+                                            </div>
+                                            <button class="btn btn-primary btn-user btn-block">Save Post</button>
+                                        </form>
+                                    @else
+                                        <div class="text-center">
+                                            <h1 class="h4 text-gray-900 mb-4">Login</h1>
+                                        </div>
+
+                                        <!-- Login -->
+                                        <form action="/login" method="GET" class="user">
+                                            @csrf
+                                            <div class="form-group">
+                                                <input name="loginname" type="text" class="form-control form-control-user"
+                                                    placeholder="Name">
+                                            </div>
+                                            <div class="form-group">
+                                                <input name="loginpassword" type="password"
+                                                    class="form-control form-control-user"
+                                                    placeholder="Password">
+                                            </div>
+                                            <button class="btn btn-primary btn-user btn-block">Login</button>
+                                        </form>
+                                        <hr>
+
+                                        <!-- Register -->
+                                        <div class="text-center">
+                                            <h1 class="h4 text-gray-900 mb-4">Register</h1>
+                                        </div>
+                                        <form action="/register" method="GET" class="user">
+                                            @csrf
+                                            <div class="form-group">
+                                                <input name="name" type="text" class="form-control form-control-user"
+                                                    placeholder="Name">
+                                            </div>
+                                            <div class="form-group">
+                                                <input name="email" type="email" class="form-control form-control-user"
+                                                    placeholder="Email">
+                                            </div>
+                                            <div class="form-group">
+                                                <input name="password" type="password" class="form-control form-control-user"
+                                                    placeholder="Password">
+                                            </div>
+                                            <button class="btn btn-success btn-user btn-block">Register</button>
+                                        </form>
+                                    @endauth
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-    <div style = "border: 3px solid black;">
-        <h2>Login</h2>
-        <form action="/login" method="GET">  <!-- error when using POST just change it to GET-->
-            @csrf
-            <input name="loginname" type="text" placeholder="name">
-            <input name="loginpassword" type="password" placeholder="password">
-            <button>Login</button>
-        </form>
-    </div>
-    @endauth
-    
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="assets/js/sb-admin-2.min.js"></script>
+
 </body>
-</html> 
+
+</html>
