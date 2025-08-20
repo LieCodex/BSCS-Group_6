@@ -17,7 +17,7 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="assets/css/sb-admin-2.css" rel="stylesheet">
 </head>
 
 <body class="bg-gradient-primary">
@@ -33,7 +33,9 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                                <img src="assets\img\squirrel.png" alt="logo" class="img-logo img-fluid "  style="padding-top: 150px;" >
+                            </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     @auth
@@ -63,15 +65,15 @@
                                         </form>
                                     @else
                                         <div class="text-center">
-                                            <h1 class="h4 text-gray-900 mb-4">Login</h1>
+                                            <h1 class="h4  mb-4"  style="color: white;">Login</h1>
                                         </div>
 
                                         <!-- Login -->
                                         <form action="/login" method="GET" class="user">
                                             @csrf
                                             <div class="form-group">
-                                                <input name="loginname" type="text" class="form-control form-control-user"
-                                                    placeholder="Name">
+                                                <input name="loginemail" type="text" class="form-control form-control-user"
+                                                    placeholder="Email Address">
                                             </div>
                                             <div class="form-group">
                                                 <input name="loginpassword" type="password"
@@ -79,12 +81,17 @@
                                                     placeholder="Password">
                                             </div>
                                             <button class="btn btn-primary btn-user btn-block">Login</button>
+
+                                            <a href="index.html" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                            
+                                        </a>
                                         </form>
                                         <hr>
 
                                         <!-- Register -->
                                         <div class="text-center">
-                                            <h1 class="h4 text-gray-900 mb-4">Register</h1>
+                                            <h1 class="h4  mb-4" style="color: white;">Register</h1>
                                         </div>
                                         <form action="/register" method="GET" class="user">
                                             @csrf
@@ -101,6 +108,10 @@
                                                     placeholder="Password">
                                             </div>
                                             <button class="btn btn-success btn-user btn-block">Register</button>
+
+                                            <a href="index.html" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                        </a>
                                         </form>
                                     @endauth
                                 </div>
