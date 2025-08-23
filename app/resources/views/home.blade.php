@@ -23,10 +23,8 @@
 <body class="bg-gradient-primary">
 
     <div class="container">
-
         <!-- Outer Row -->
         <div class="row justify-content-center">
-
             <div class="col-xl-10 col-lg-12 col-md-9">
 
                 <div class="card o-hidden border-0 shadow-lg my-5">
@@ -34,17 +32,19 @@
                         <!-- Nested Row within Card Body -->
                         <div class="row">
                             <div class="col-lg-6 d-none d-lg-block bg-login-image">
-                                <img src="assets\img\squirrel.png" alt="logo" class="img-logo img-fluid "  style="padding-top: 150px;" >
+                                <img src="assets/img/squirrel.png" alt="logo" class="img-logo img-fluid"
+                                    style="padding-top: 150px;">
                             </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
+
                                     @auth
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4">Welcome {{ auth()->user()->name }}!</h1>
                                         </div>
 
                                         <!-- Logout -->
-                                        <form action="/logout" method="GET">
+                                        <form action="/logout" method="POST">
                                             @csrf
                                             <button class="btn btn-danger btn-user btn-block">Logout</button>
                                         </form>
@@ -52,7 +52,7 @@
 
                                         <!-- Create Post -->
                                         <h2 class="h5 text-gray-800">Create a new post</h2>
-                                        <form action="/create-post" method="GET" class="user">
+                                        <form action="/create-post" method="POST" class="user">
                                             @csrf
                                             <div class="form-group">
                                                 <input name="title" type="text" class="form-control form-control-user"
@@ -63,17 +63,36 @@
                                             </div>
                                             <button class="btn btn-primary btn-user btn-block">Save Post</button>
                                         </form>
+                                        <hr>
+
+                                        <!-- All Posts -->
+                                        <h2 class="h5 text-gray-800">All Posts</h2>
+                                        @foreach ($posts as $post)
+                                            <div class="card mb-3">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ $post['title'] }}</h5>
+                                                    <p class="card-text">{{ $post['body'] }}</p>
+                                                    <a href="/edit-post/{{$post->id}}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <form action="/delete-post/{{$post->id}}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endforeach
+
                                     @else
                                         <div class="text-center">
-                                            <h1 class="h4  mb-4"  style="color: white;">Login</h1>
+                                            <h1 class="h4 mb-4" style="color: white;">Login</h1>
                                         </div>
 
                                         <!-- Login -->
-                                        <form action="/login" method="GET" class="user">
+                                        <form action="/login" method="POST" class="user">
                                             @csrf
                                             <div class="form-group">
-                                                <input name="loginemail" type="text" class="form-control form-control-user"
-                                                    placeholder="Email Address">
+                                                <input name="loginname" type="text" class="form-control form-control-user"
+                                                    placeholder="Name">
                                             </div>
                                             <div class="form-group">
                                                 <input name="loginpassword" type="password"
@@ -81,26 +100,21 @@
                                                     placeholder="Password">
                                             </div>
                                             <button class="btn btn-primary btn-user btn-block">Login</button>
-
-                                            <a href="index.html" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                            
-                                        </a>
                                         </form>
                                         <hr>
 
                                         <!-- Register -->
                                         <div class="text-center">
-                                            <h1 class="h4  mb-4" style="color: white;">Register</h1>
+                                            <h1 class="h4 mb-4" style="color: white;">Register</h1>
                                         </div>
-                                        <form action="/register" method="GET" class="user">
+                                        <form action="/register" method="POST" class="user">
                                             @csrf
                                             <div class="form-group">
                                                 <input name="name" type="text" class="form-control form-control-user"
                                                     placeholder="Name">
                                             </div>
                                             <div class="form-group">
-                                                <input name="email" type="email" class="form-control form-control-user"
+                                                <input name="email" type="text" class="form-control form-control-user"
                                                     placeholder="Email">
                                             </div>
                                             <div class="form-group">
@@ -108,12 +122,9 @@
                                                     placeholder="Password">
                                             </div>
                                             <button class="btn btn-success btn-user btn-block">Register</button>
-
-                                            <a href="index.html" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
                                         </form>
                                     @endauth
+
                                 </div>
                             </div>
                         </div>
@@ -121,9 +132,7 @@
                 </div>
 
             </div>
-
         </div>
-
     </div>
 
     <!-- Bootstrap core JavaScript-->
