@@ -192,6 +192,10 @@
                                                     class="form-control form-control-user" placeholder="Password">
                                             </div>
                                             <button class="btn btn-primary btn-user btn-block">Login</button>
+                                            <hr>
+                                            <a href="{{ route('google.login') }}" class="btn btn-google btn-user btn-block">
+                                                <i class="fab fa-google fa-fw"></i> Login with Google
+                                            </a>
                                         </form>
                                         <hr>
 
@@ -214,6 +218,10 @@
                                                     placeholder="Password">
                                             </div>
                                             <button class="btn btn-success btn-user btn-block">Register</button>
+                                              <hr>
+                                            <a href="{{ route('google.login') }}" class="btn btn-google btn-user btn-block">
+                                                <i class="fab fa-google fa-fw"></i> Sign in with Google
+                                            </a>
                                         </form>
                                         @endauth
 
