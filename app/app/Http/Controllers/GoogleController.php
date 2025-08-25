@@ -23,14 +23,14 @@ class GoogleController extends Controller
 
         // Find or create user
         $user = User::updateOrCreate(
-            ['email' => $googleUser->getEmail()],
-            [
-                'name' => $googleUser->getName(),
-                'google_id' => $googleUser->getId(),
-                'avatar' => $googleUser->getAvatar(),
-            ]
-        );
-
+    ['email' => $googleUser->getEmail()],
+    [
+        'name' => $googleUser->getName(),
+        'google_id' => $googleUser->getId(),
+        'avatar' => $googleUser->getAvatar(),
+        'password' => bcrypt(str()->random(16)), // random password
+    ]
+);
         // Log in the user
         Auth::login($user);
 
