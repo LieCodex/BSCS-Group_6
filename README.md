@@ -32,3 +32,31 @@ To do this, follow these steps:
 5. move the new path to the top of the list to give it priority above other php installations.
 6. Click "OK" to save the changes.
 7. Restart your terminal or command prompt and vsCode to apply the changes.
+
+Possible Problem: cURL Error 60  SSL Certificate Issue
+
+Run:
+php --ini
+
+It should show:
+Loaded Configuration File: C:\xampp\php\php.ini
+
+If it doesn't, go to the path shown and open the php.ini file manually.
+Download this file: https://curl.se/ca/cacert.pem
+Save it to:
+C:\xampp\php\extras\SSL
+
+Copy the full path of the file:
+C:\xampp\php\extras\SSL\cacert.pem
+
+Open php.ini and search for curl.cainfo and openssl.cafile.
+Remove any semicolons (;) at the start of the lines.
+
+Paste the path so it looks like this:
+
+curl.cainfo="C:\xampp\php\extras\SSL\cacert.pem"
+openssl.cafile="C:\xampp\php\extras\SSL\cacert.pem"
+
+Save the php.ini file.
+
+Restart the Apache server in XAMPP.

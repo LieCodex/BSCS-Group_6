@@ -4,6 +4,7 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GoogleController;
 
 Route::get('/', function(){
     $posts = auth()->check() ? auth()->user()->userPosts()->get() : Post::all();
@@ -18,3 +19,6 @@ Route::post('/create-post', [PostController::class, 'createPost']);
 Route::get('/edit-post/{post}',[PostController::class, 'showEditScreen']);
 Route::put('/edit-post/{post}',[PostController::class, 'updatePost']);
 Route::delete('delete-post/{post}',[PostController::class,'deletePost']);
+
+Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.login');
+Route::get('auth/google/callback', [GoogleController::class, 'callback']);
