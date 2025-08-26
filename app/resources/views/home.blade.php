@@ -120,7 +120,7 @@
                                 <!-- Show big logo only for guest -->
                                 @guest
                                 <div class="col-lg-6 d-none d-lg-block bg-login-image">
-                                    <img src="assets/img/squirrel.png" alt="logo" class="img-logo img-fluid"
+                                    <img src="assets/img/squel logo orange.png" alt="logo" class="img-logo img-fluid"
                                         style="padding-top: 150px;">
                                 </div>
                                 @endguest
@@ -130,7 +130,7 @@
 
                                         @auth
                                         <!-- Small logo in top-left -->
-                                        <img src="assets/img/squirrel.png" alt="logo" class="small-logo">
+                                        <img src="assets/img/squel logo orange.png" alt="logo" class="small-logo">
 
                                         <!-- Logout button in top-right -->
                                         <form action="/logout" method="POST" class="logout-btn">
