@@ -61,7 +61,8 @@ Save the php.ini file.
 
 Restart the Apache server in XAMPP.
 
-React integration
+
+#React integration
 
 npm install react react-dom
 
