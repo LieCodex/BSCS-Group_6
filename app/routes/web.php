@@ -22,3 +22,8 @@ Route::delete('delete-post/{post}',[PostController::class,'deletePost']);
 
 Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'callback']);
+
+//React routes
+Route::get('/welcome_react', function () {
+    return view('welcome_react');
+});
