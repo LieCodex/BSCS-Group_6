@@ -64,15 +64,10 @@ Restart the Apache server in XAMPP.
 
 #React integration
 
-npm install react react-dom
-
-npm install @vitejs/plugin-react
-
-add this in vite.config.js:
- "import react from '@vitejs/plugin-react';"
-
-add this inside the plugins (inside brackets):
-react(),
+install the ff.
+1. npm install react react-dom
+2. npm install @vitejs/plugin-react
+then pull the branch 'integrate_react'
 
 run in 2 separate terminals (cmd)
   npm run dev 
