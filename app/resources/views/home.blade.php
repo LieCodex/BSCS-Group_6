@@ -12,32 +12,28 @@
 
     <!-- Custom fonts for this template-->
     <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.css" rel="stylesheet">
 
     <style>
-        /* Guest background (image) */
         body.guest-bg {
             margin: 0;
             padding: 0;
-            background: url("assets/img/wp9775729.webp") no-repeat center center fixed;
+            background: url("assets/img/gradient_wallpaper_4k.png") no-repeat center center fixed;
             background-size: cover;
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        /* Auth background (plain white) */
         body.auth-bg {
             margin: 0;
             padding: 0;
-            background: #ffffff;
-            font-family: 'Nunito', sans-serif;
+            background: url("assets/img/gradient_wallpaper_4k.png") no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        /* Welcome text styling */
         .welcome-text {
             position: absolute;
             top: 150px;
@@ -45,11 +41,11 @@
             transform: translateX(-50%);
             font-size: 2.4rem;
             font-weight: 700;
-            color: #000108ff;
+            color: #e98000ff;
             z-index: 2000;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        /* Dashboard Wrapper */
         .dashboard-wrapper {
             min-height: 100vh;
             display: flex;
@@ -57,33 +53,73 @@
             justify-content: center;
         }
 
-        /* Default card style */
         .card {
             border-radius: 15px;
         }
 
-        /* Guest card = semi-transparent */
+        /* Guest (login/register) card */
         .card.guest-card,
         .card.guest-card .card-body,
         .card.guest-card .p-5 {
-            background: rgba(255, 255, 255, 0.2) !important;
+            background: rgba(255, 255, 255, 0) !important;
             backdrop-filter: blur(6px);
             border-radius: 15px;
         }
 
-        /* Auth card = solid white */
-        .card.auth-card {
-            background: #ffffff;
+        /* Logged-in dashboard card fullscreen transparent */
+        .card.dashboard-card,
+        .card.dashboard-card .card-body {
+            background: rgba(255, 255, 255, 0) !important; /* fully transparent */
+            backdrop-filter: none !important;
+            border-radius: 0; /* remove rounded corners for fullscreen */
+            color: #ffffff;
+            width: 100% !important;
+            min-height: 100vh !important;
+            box-shadow: none !important;
         }
 
-        /* Logout button at top right */
+        .card.dashboard-card h1,
+        .card.dashboard-card h2,
+        .card.dashboard-card h5,
+        .card.dashboard-card p {
+            color: #ffffff;
+        }
+
+        .card.dashboard-card .form-control-user {
+            border: 2px solid #ff8000ff !important;
+            color: #ffffffff !important;
+            background: transparent !important;
+        }
+
+        .card.dashboard-card .form-control-user::placeholder {
+            color: rgba(233, 128, 0, 0.7) !important;
+        }
+
+        .card.dashboard-card .btn-orange {
+            background-color: transparent;
+            border: 2px solid #e98000;
+            color: #e98000;
+        }
+
+        .card.dashboard-card .btn-orange:hover {
+            background-color: #e98000;
+            color: white;
+        }
+
+        /* Posts inside dashboard */
+        .card.post-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            color: #ffffff;
+        }
+
         .logout-btn {
             position: absolute;
             top: 20px;
             right: 20px;
         }
 
-        /* Small logo for logged-in users */
         .small-logo {
             position: absolute;
             top: 15px;
@@ -92,32 +128,74 @@
             height: auto;
         }
 
-        /* Login/Register headings */
         .login-register-heading {
-            color: black;
+            color: orange;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        .btn-orange {
+            background-color: transparent;
+            border: 2px solid #e98000;
+            color: #e98000;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            transition: 0.3s ease;
+        }
+
+        .btn-orange:hover {
+            background-color: #e98000;
+            color: white;
+            border-color: #e98000;
+        }
+
+        .form-control-user {
+            background-color: transparent !important;
+            border: 2px solid #ff8000ff !important;
+            color: #f97f05ff !important;
+            border-radius: 10px;
+            font-weight: 500;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-control-user::placeholder {
+            color: rgba(255, 255, 255, 1) !important;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-control-user:focus {
+            background-color: transparent !important;
+            border-color: #ffb200ff !important;
+            box-shadow: 0 0 8px rgba(233, 128, 0, 0.6) !important;
+            color: #ffffffff !important;
+        }
+
+        .toggle-link {
+            background: none;
+            border: none;
+            color: #e98000;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            margin-top: 15px;
         }
     </style>
 </head>
 
 <body class="@guest guest-bg @else auth-bg @endguest">
     @guest
-    <!-- Welcome text only visible if not logged in -->
-    <div class="welcome-text">Welcome to Squeal!</div>
+    <div class="welcome-text">SQUEAL</div>
     @endguest
 
-    <!-- Dashboard Wrapper -->
     <div class="dashboard-wrapper">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-lg-12 col-md-9">
 
-                    <!-- Card changes depending on auth -->
-                    <div
-                        class="card o-hidden border-0 shadow-lg my-5 position-relative @guest guest-card @else auth-card @endguest">
+                    <div class="card o-hidden border-0 shadow-lg my-5 position-relative @guest guest-card @else dashboard-card @endguest">
                         <div class="card-body p-0">
                             <div class="row">
 
-                                <!-- Show big logo only for guest -->
                                 @guest
                                 <div class="col-lg-6 d-none d-lg-block bg-login-image">
                                     <img src="assets/img/squel logo orange.png" alt="logo" class="img-logo img-fluid"
@@ -129,21 +207,18 @@
                                     <div class="p-5 position-relative">
 
                                         @auth
-                                        <!-- Small logo in top-left -->
                                         <img src="assets/img/squel logo orange.png" alt="logo" class="small-logo">
 
-                                        <!-- Logout button in top-right -->
                                         <form action="/logout" method="POST" class="logout-btn">
                                             @csrf
                                             <button class="btn btn-danger btn-sm">Logout</button>
                                         </form>
 
                                         <div class="text-center mt-5">
-                                            <h1 class="h4 text-gray-900 mb-4">Welcome {{ auth()->user()->name }}!</h1>
+                                            <h1 class="h4 mb-4">Welcome {{ auth()->user()->name }}!</h1>
                                         </div>
 
-                                        <!-- Create Post -->
-                                        <h2 class="h5 text-gray-800">Create a new post</h2>
+                                        <h2 class="h5 mb-3">Create a new post</h2>
                                         <form action="/create-post" method="POST" class="user">
                                             @csrf
                                             <div class="form-group">
@@ -154,14 +229,13 @@
                                                 <textarea name="body" class="form-control form-control-user"
                                                     placeholder="Body Content"></textarea>
                                             </div>
-                                            <button class="btn btn-primary btn-user btn-block">Save Post</button>
+                                            <button class="btn btn-orange btn-user btn-block btn-sm">Save Post</button>
                                         </form>
                                         <hr>
 
-                                        <!-- All Posts -->
-                                        <h2 class="h5 text-gray-800">All Posts</h2>
+                                        <h2 class="h5 mb-3">All Posts</h2>
                                         @foreach ($posts as $post)
-                                        <div class="card mb-3">
+                                        <div class="card post-card mb-3">
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ $post['title'] }}</h5>
                                                 <p class="card-text">{{ $post['body'] }}</p>
@@ -177,53 +251,61 @@
                                         @endforeach
 
                                         @else
-                                        <!-- Login -->
-                                        <div class="text-center">
-                                            <h1 class="h4 mb-4 login-register-heading">Login</h1>
+                                        <!-- Login Section -->
+                                        <div id="login-section">
+                                            <div class="text-center">
+                                                <h1 class="h4 mb-4 login-register-heading">Sign In</h1>
+                                            </div>
+                                            <form action="/login" method="POST" class="user">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <input name="loginname" type="text" class="form-control form-control-user"
+                                                        placeholder="Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input name="loginpassword" type="password"
+                                                        class="form-control form-control-user" placeholder="Password">
+                                                </div>
+                                                <button class="btn btn-orange btn-user btn-block">Login</button>
+                                                <hr>
+                                                <a href="{{ route('google.login') }}" class="btn btn-orange btn-user btn-block">
+                                                    <i class="fab fa-google fa-fw"></i> Login with Google
+                                                </a>
+                                            </form>
+                                            <div class="text-center">
+                                                <button id="show-register" class="toggle-link">Don’t have an account? Register</button>
+                                            </div>
                                         </div>
-                                        <form action="/login" method="POST" class="user">
-                                            @csrf
-                                            <div class="form-group">
-                                                <input name="loginname" type="text" class="form-control form-control-user"
-                                                    placeholder="Name">
-                                                    
-                                            </div>
-                                            <div class="form-group">
-                                                <input name="loginpassword" type="password"
-                                                    class="form-control form-control-user" placeholder="Password">
-                                            </div>
-                                            <button class="btn btn-primary btn-user btn-block">Login</button>
-                                            <hr>
-                                            <a href="{{ route('google.login') }}" class="btn btn-google btn-user btn-block">
-                                                <i class="fab fa-google fa-fw"></i> Login with Google
-                                            </a>
-                                        </form>
-                                        <hr>
 
-                                        <!-- Register -->
-                                        <div class="text-center">
-                                            <h1 class="h4 mb-4 login-register-heading">Register</h1>
+                                        <!-- Register Section (hidden by default) -->
+                                        <div id="register-section" style="display:none;">
+                                            <div class="text-center">
+                                                <h1 class="h4 mb-4 login-register-heading">Sign Up</h1>
+                                            </div>
+                                            <form action="/register" method="POST" class="user">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <input name="name" type="text" class="form-control form-control-user"
+                                                        placeholder="Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input name="email" type="text" class="form-control form-control-user"
+                                                        placeholder="Email">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input name="password" type="password" class="form-control form-control-user"
+                                                        placeholder="Password">
+                                                </div>
+                                                <button class="btn btn-orange btn-user btn-block">Register</button>
+                                                <hr>
+                                                <a href="{{ route('google.login') }}" class="btn btn-orange btn-user btn-block">
+                                                    <i class="fab fa-google fa-fw"></i> Sign in with Google
+                                                </a>
+                                            </form>
+                                            <div class="text-center">
+                                                <button id="show-login" class="toggle-link">Already have an account? Login</button>
+                                            </div>
                                         </div>
-                                        <form action="/register" method="POST" class="user">
-                                            @csrf
-                                            <div class="form-group">
-                                                <input name="name" type="text" class="form-control form-control-user"
-                                                    placeholder="Name">
-                                            </div>
-                                            <div class="form-group">
-                                                <input name="email" type="text" class="form-control form-control-user"
-                                                    placeholder="Email">
-                                            </div>
-                                            <div class="form-group">
-                                                <input name="password" type="password" class="form-control form-control-user"
-                                                    placeholder="Password">
-                                            </div>
-                                            <button class="btn btn-success btn-user btn-block">Register</button>
-                                              <hr>
-                                            <a href="{{ route('google.login') }}" class="btn btn-google btn-user btn-block">
-                                                <i class="fab fa-google fa-fw"></i> Sign in with Google
-                                            </a>
-                                        </form>
                                         @endauth
 
                                     </div>
@@ -240,12 +322,21 @@
     <!-- Bootstrap core JavaScript-->
     <script src="assets/vendor/jquery/jquery.min.js"></script>
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
     <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
     <script src="assets/js/sb-admin-2.min.js"></script>
+
+    <script>
+        // Toggle login/register
+        document.getElementById("show-register").addEventListener("click", function () {
+            document.getElementById("login-section").style.display = "none";
+            document.getElementById("register-section").style.display = "block";
+        });
+
+        document.getElementById("show-login").addEventListener("click", function () {
+            document.getElementById("register-section").style.display = "none";
+            document.getElementById("login-section").style.display = "block";
+        });
+    </script>
 
 </body>
 </html>
