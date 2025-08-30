@@ -107,8 +107,8 @@
                                         <form action="/login" method="POST" class="user">
                                             @csrf
                                             <div class="form-group">
-                                                <input name="loginname" type="text" class="form-control form-control-user"
-                                                    placeholder="Name">
+                                                <input name="loginemail" type="email" class="form-control form-control-user"
+                                                    placeholder="Email">
                                                     
                                             </div>
                                             <div class="form-group">
