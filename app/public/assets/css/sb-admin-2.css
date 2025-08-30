@@ -47,7 +47,7 @@
   box-sizing: border-box;
 }
 
-        .guest-bg {
+           .guest-bg {
             margin: 0;
             padding: 0;
             background: url("/assets/img/gradient_wallpaper_4k.png") no-repeat center center fixed;
@@ -163,7 +163,7 @@
             font-weight: 700;
         }
 
-        .btn-orange {
+        .btn.btn-orange {
             background-color: transparent;
             border: 2px solid #e98000;
             color: #e98000;

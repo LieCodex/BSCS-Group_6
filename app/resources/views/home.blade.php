@@ -15,8 +15,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="assets/css/sb-admin-2.css" rel="stylesheet">
+   <link href="{{ asset('assets/css/sb-admin-2.css') }}" rel="stylesheet">
 
+   <style>
+
+   </style>
 
 </head>
 
@@ -97,7 +100,7 @@
                                             <form action="/login" method="POST" class="user">
                                                 @csrf
                                                 <div class="form-group">
-                                                    <input name="loginemail" type="text" class="form-control form-control-user"
+                                                    <input name="loginemail" type="email" class="form-control form-control-user"
                                                         placeholder="Email">
                                                 </div>
                                                 <div class="form-group">
