@@ -40,25 +40,22 @@
   --font-family-sans-serif: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
- /* Guest background (image) */
         .guest-bg {
             margin: 0;
             padding: 0;
-            background: url("/assets/img/wp9775729.webp") no-repeat center center fixed;
+            background: url("/assets/img/gradient_wallpaper_4k.png") no-repeat center center fixed;
             background-size: cover;
-            font-family: 'Nunito', sans-serif;
-
+            font-family: 'Montserrat', sans-serif;
         }
 
-        /* Auth background (plain white) */
-        body.auth-bg {
+        .auth-bg {
             margin: 0;
             padding: 0;
-            background: #ffffff;
-            font-family: 'Nunito', sans-serif;
+            background: url("/assets/img/gradient_wallpaper_4k.png") no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        /* Welcome text styling */
         .welcome-text {
             position: absolute;
             top: 150px;
@@ -66,11 +63,11 @@
             transform: translateX(-50%);
             font-size: 2.4rem;
             font-weight: 700;
-            color: #000108ff;
+            color: #e98000ff;
             z-index: 2000;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        /* Dashboard Wrapper */
         .dashboard-wrapper {
             min-height: 100vh;
             display: flex;
@@ -78,33 +75,73 @@
             justify-content: center;
         }
 
-        /* Default card style */
         .card {
             border-radius: 15px;
         }
 
-        /* Guest card = semi-transparent */
+        /* Guest (login/register) card */
         .card.guest-card,
         .card.guest-card .card-body,
         .card.guest-card .p-5 {
-            background: rgba(255, 255, 255, 0.2) !important;
+            background: rgba(255, 255, 255, 0) !important;
             backdrop-filter: blur(6px);
             border-radius: 15px;
         }
 
-        /* Auth card = solid white */
-        .card.auth-card {
-            background: #ffffff;
+        /* Logged-in dashboard card fullscreen transparent */
+        .card.dashboard-card,
+        .card.dashboard-card .card-body {
+            background: rgba(255, 255, 255, 0) !important; /* fully transparent */
+            backdrop-filter: none !important;
+            border-radius: 0; /* remove rounded corners for fullscreen */
+            color: #ffffff;
+            width: 100% !important;
+            min-height: 100vh !important;
+            box-shadow: none !important;
         }
 
-        /* Logout button at top right */
+        .card.dashboard-card h1,
+        .card.dashboard-card h2,
+        .card.dashboard-card h5,
+        .card.dashboard-card p {
+            color: #ffffff;
+        }
+
+        .card.dashboard-card .form-control-user {
+            border: 2px solid #ff8000ff !important;
+            color: #ffffffff !important;
+            background: transparent !important;
+        }
+
+        .card.dashboard-card .form-control-user::placeholder {
+            color: rgba(233, 128, 0, 0.7) !important;
+        }
+
+        .card.dashboard-card .btn-orange {
+            background-color: transparent;
+            border: 2px solid #e98000;
+            color: #e98000;
+        }
+
+        .card.dashboard-card .btn-orange:hover {
+            background-color: #e98000;
+            color: white;
+        }
+
+        /* Posts inside dashboard */
+        .card.post-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            color: #ffffff;
+        }
+
         .logout-btn {
             position: absolute;
             top: 20px;
             right: 20px;
         }
 
-        /* Small logo for logged-in users */
         .small-logo {
             position: absolute;
             top: 15px;
@@ -113,9 +150,56 @@
             height: auto;
         }
 
-        /* Login/Register headings */
         .login-register-heading {
-            color: black;
+            color: orange;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        .btn-orange {
+            background-color: transparent;
+            border: 2px solid #e98000;
+            color: #e98000;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            transition: 0.3s ease;
+        }
+
+        .btn-orange:hover {
+            background-color: #e98000;
+            color: white;
+            border-color: #e98000;
+        }
+
+        .form-control-user {
+            background-color: transparent !important;
+            border: 2px solid #ff8000ff !important;
+            color: #f97f05ff !important;
+            border-radius: 10px;
+            font-weight: 500;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-control-user::placeholder {
+            color: rgba(255, 255, 255, 1) !important;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-control-user:focus {
+            background-color: transparent !important;
+            border-color: #ffb200ff !important;
+            box-shadow: 0 0 8px rgba(233, 128, 0, 0.6) !important;
+            color: #ffffffff !important;
+        }
+
+        .toggle-link {
+            background: none;
+            border: none;
+            color: #e98000;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            margin-top: 15px;
         }
 *,
 *::before,
