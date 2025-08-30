@@ -12,35 +12,31 @@
 
     <!-- Custom fonts for this template-->
     <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="assets/css/sb-admin-2.css" rel="stylesheet">
+   <link href="{{ asset('assets/css/sb-admin-2.css') }}" rel="stylesheet">
 
+   <style>
+
+   </style>
 
 </head>
 
 <body class="@guest guest-bg @else auth-bg @endguest">
     @guest
-    <!-- Welcome text only visible if not logged in -->
-    <div class="welcome-text">Welcome to Squeal!</div>
+    <div class="welcome-text">SQUEAL</div>
     @endguest
 
-    <!-- Dashboard Wrapper -->
     <div class="dashboard-wrapper">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-lg-12 col-md-9">
 
-                    <!-- Card changes depending on auth -->
-                    <div
-                        class="card o-hidden border-0 shadow-lg my-5 position-relative @guest guest-card @else auth-card @endguest">
+                    <div class="card o-hidden border-0 shadow-lg my-5 position-relative @guest guest-card @else dashboard-card @endguest">
                         <div class="card-body p-0">
                             <div class="row">
 
-                                <!-- Show big logo only for guest -->
                                 @guest
                                 <div class="col-lg-6 d-none d-lg-block bg-login-image">
                                     <img src="assets/img/squel logo orange.png" alt="logo" class="img-logo img-fluid"
@@ -52,21 +48,18 @@
                                     <div class="p-5 position-relative">
 
                                         @auth
-                                        <!-- Small logo in top-left -->
                                         <img src="assets/img/squel logo orange.png" alt="logo" class="small-logo">
 
-                                        <!-- Logout button in top-right -->
                                         <form action="/logout" method="POST" class="logout-btn">
                                             @csrf
                                             <button class="btn btn-danger btn-sm">Logout</button>
                                         </form>
 
                                         <div class="text-center mt-5">
-                                            <h1 class="h4 text-gray-900 mb-4">Welcome {{ auth()->user()->name }}!</h1>
+                                            <h1 class="h4 mb-4">Welcome {{ auth()->user()->name }}!</h1>
                                         </div>
 
-                                        <!-- Create Post -->
-                                        <h2 class="h5 text-gray-800">Create a new post</h2>
+                                        <h2 class="h5 mb-3">Create a new post</h2>
                                         <form action="/create-post" method="POST" class="user">
                                             @csrf
                                             <div class="form-group">
@@ -77,14 +70,13 @@
                                                 <textarea name="body" class="form-control form-control-user"
                                                     placeholder="Body Content"></textarea>
                                             </div>
-                                            <button class="btn btn-primary btn-user btn-block">Save Post</button>
+                                            <button class="btn btn-orange btn-user btn-block btn-sm">Save Post</button>
                                         </form>
                                         <hr>
 
-                                        <!-- All Posts -->
-                                        <h2 class="h5 text-gray-800">All Posts</h2>
+                                        <h2 class="h5 mb-3">All Posts</h2>
                                         @foreach ($posts as $post)
-                                        <div class="card mb-3">
+                                        <div class="card post-card mb-3">
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ $post['title'] }}</h5>
                                                 <p class="card-text">{{ $post['body'] }}</p>
@@ -100,53 +92,61 @@
                                         @endforeach
 
                                         @else
-                                        <!-- Login -->
-                                        <div class="text-center">
-                                            <h1 class="h4 mb-4 login-register-heading">Login</h1>
+                                        <!-- Login Section -->
+                                        <div id="login-section">
+                                            <div class="text-center">
+                                                <h1 class="h4 mb-4 login-register-heading">Sign In</h1>
+                                            </div>
+                                            <form action="/login" method="POST" class="user">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <input name="loginemail" type="email" class="form-control form-control-user"
+                                                        placeholder="Email">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input name="loginpassword" type="password"
+                                                        class="form-control form-control-user" placeholder="Password">
+                                                </div>
+                                                <button class="btn btn-orange btn-user btn-block">Login</button>
+                                                <hr>
+                                                <a href="{{ route('google.login') }}" class="btn btn-orange btn-user btn-block">
+                                                    <i class="fab fa-google fa-fw"></i> Login with Google
+                                                </a>
+                                            </form>
+                                            <div class="text-center">
+                                                <button id="show-register" class="toggle-link">Don’t have an account? Register</button>
+                                            </div>
                                         </div>
-                                        <form action="/login" method="POST" class="user">
-                                            @csrf
-                                            <div class="form-group">
-                                                <input name="loginemail" type="email" class="form-control form-control-user"
-                                                    placeholder="Email">
-                                                    
-                                            </div>
-                                            <div class="form-group">
-                                                <input name="loginpassword" type="password"
-                                                    class="form-control form-control-user" placeholder="Password">
-                                            </div>
-                                            <button class="btn btn-primary btn-user btn-block">Login</button>
-                                            <hr>
-                                            <a href="{{ route('google.login') }}" class="btn btn-google btn-user btn-block">
-                                                <i class="fab fa-google fa-fw"></i> Login with Google
-                                            </a>
-                                        </form>
-                                        <hr>
 
-                                        <!-- Register -->
-                                        <div class="text-center">
-                                            <h1 class="h4 mb-4 login-register-heading">Register</h1>
+                                        <!-- Register Section (hidden by default) -->
+                                        <div id="register-section" style="display:none;">
+                                            <div class="text-center">
+                                                <h1 class="h4 mb-4 login-register-heading">Sign Up</h1>
+                                            </div>
+                                            <form action="/register" method="POST" class="user">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <input name="name" type="text" class="form-control form-control-user"
+                                                        placeholder="Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input name="email" type="text" class="form-control form-control-user"
+                                                        placeholder="Email">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input name="password" type="password" class="form-control form-control-user"
+                                                        placeholder="Password">
+                                                </div>
+                                                <button class="btn btn-orange btn-user btn-block">Register</button>
+                                                <hr>
+                                                <a href="{{ route('google.login') }}" class="btn btn-orange btn-user btn-block">
+                                                    <i class="fab fa-google fa-fw"></i> Sign in with Google
+                                                </a>
+                                            </form>
+                                            <div class="text-center">
+                                                <button id="show-login" class="toggle-link">Already have an account? Login</button>
+                                            </div>
                                         </div>
-                                        <form action="/register" method="POST" class="user">
-                                            @csrf
-                                            <div class="form-group">
-                                                <input name="name" type="text" class="form-control form-control-user"
-                                                    placeholder="Name">
-                                            </div>
-                                            <div class="form-group">
-                                                <input name="email" type="text" class="form-control form-control-user"
-                                                    placeholder="Email">
-                                            </div>
-                                            <div class="form-group">
-                                                <input name="password" type="password" class="form-control form-control-user"
-                                                    placeholder="Password">
-                                            </div>
-                                            <button class="btn btn-success btn-user btn-block">Register</button>
-                                              <hr>
-                                            <a href="{{ route('google.login') }}" class="btn btn-google btn-user btn-block">
-                                                <i class="fab fa-google fa-fw"></i> Sign in with Google
-                                            </a>
-                                        </form>
                                         @endauth
 
                                     </div>
@@ -163,12 +163,21 @@
     <!-- Bootstrap core JavaScript-->
     <script src="assets/vendor/jquery/jquery.min.js"></script>
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
     <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
     <script src="assets/js/sb-admin-2.min.js"></script>
+
+    <script>
+        // Toggle login/register
+        document.getElementById("show-register").addEventListener("click", function () {
+            document.getElementById("login-section").style.display = "none";
+            document.getElementById("register-section").style.display = "block";
+        });
+
+        document.getElementById("show-login").addEventListener("click", function () {
+            document.getElementById("register-section").style.display = "none";
+            document.getElementById("login-section").style.display = "block";
+        });
+    </script>
 
 </body>
 </html>
