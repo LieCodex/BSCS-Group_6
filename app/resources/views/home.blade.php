@@ -115,6 +115,7 @@
                                                     <i class="fab fa-google fa-fw"></i> Login with Google
                                                 </a>
                                             </form>
+                                            
                                             <div class="text-center">
                                                 <button id="show-register" class="toggle-link">Don’t have an account? Register</button>
                                             </div>
