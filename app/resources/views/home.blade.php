@@ -62,18 +62,7 @@
                                         </div>
 
                                         <h2 class="h5 mb-3">Create a new post</h2>
-                                        <form action="/create-post" method="POST" class="user">
-                                            @csrf
-                                            <div class="form-group">
-                                                <input name="title" type="text" class="form-control form-control-user"
-                                                    placeholder="Post Title">
-                                            </div>
-                                            <div class="form-group">
-                                                <textarea name="body" class="form-control form-control-user"
-                                                    placeholder="Body Content"></textarea>
-                                            </div>
-                                            <button class="btn btn-orange btn-user btn-block btn-sm">Save Post</button>
-                                        </form>
+                                        <a href="/create-post" class="btn btn-primary mb-3">Create New Post</a>
                                         <hr>
 
                                         <h2 class="h5 mb-3">All Posts</h2>
@@ -169,15 +158,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script>
         // Toggle login/register
-        document.getElementById("show-register").addEventListener("click", function () {
-            document.getElementById("login-section").style.display = "none";
-            document.getElementById("register-section").style.display = "block";
-        });
+        var showRegister = document.getElementById("show-register");
+        if (showRegister) {
+            showRegister.addEventListener("click", function () {
+                document.getElementById("login-section").style.display = "none";
+                document.getElementById("register-section").style.display = "block";
+            });
+        }
 
-        document.getElementById("show-login").addEventListener("click", function () {
-            document.getElementById("register-section").style.display = "none";
-            document.getElementById("login-section").style.display = "block";
-        });
+        var showLogin = document.getElementById("show-login");
+        if (showLogin) {
+            showLogin.addEventListener("click", function () {
+                document.getElementById("register-section").style.display = "none";
+                document.getElementById("login-section").style.display = "block";
+            });
+        }
     </script>
 
 </body>
