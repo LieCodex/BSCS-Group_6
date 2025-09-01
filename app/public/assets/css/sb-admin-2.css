@@ -66,7 +66,7 @@
         .welcome-text {
             position: absolute;
             top: 150px;
-            left: 35%;
+            left: 30%;
             transform: translateX(-50%);
             font-size: 2.4rem;
             font-weight: 700;
@@ -74,6 +74,18 @@
             z-index: 2000;
             font-family: 'Montserrat', sans-serif;
         }
+        /* Responsive: Move to top and center on mobile */
+@media (max-width: 1000px) {
+    .welcome-text {
+        top: 30px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        font-size: 1.5rem;
+        text-align: center;
+        width: 90vw;
+    }
+}
 
         .dashboard-wrapper {
             min-height: 100vh;
