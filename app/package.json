@@ -15,8 +15,6 @@
         "vite": "^7.0.4"
     },
     "dependencies": {
-        "@vitejs/plugin-react": "^5.0.1",
-        "react": "^19.1.1",
-        "react-dom": "^19.1.1"
+        "@vitejs/plugin-react": "^5.0.1"
     }
 }
