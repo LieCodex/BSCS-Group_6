@@ -12,6 +12,7 @@ To make this project work, do this step
 6. then this "npm install
 npm run dev"
 7. Crtl + C to stop the process
+9. Since we are using images, run "php artisan storage:link", if you aren't, then don't run this
 8. then run "php artisan serve"
 
 When pulling new data run these commands to make sure nothing will go wrong with syncronazation
