@@ -56,31 +56,49 @@
                                             @csrf
                                             <button class="btn btn-danger btn-sm">Logout</button>
                                         </form>
-
+                                        
                                         <div class="text-center mt-5">
+                                            @if(auth()->user()->avatar)
+                                                <img src="{{ auth()->user()->avatar }}" 
+                                                    alt="{{ auth()->user()->name }}" 
+                                                    class="rounded-circle mb-3" 
+                                                    style="width:80px; height:80px; object-fit:cover;">
+                                            @endif
                                             <h1 class="h4 mb-4">Welcome {{ auth()->user()->name }}!</h1>
                                         </div>
 
-                                        <h2 class="h5 mb-3">Create a new post</h2>
+
+                                        
                                         <a href="/create-post" class="btn btn-primary mb-3">Create New Post</a>
                                         <hr>
 
-                                        <h2 class="h5 mb-3">All Posts</h2>
-                                        @foreach ($posts as $post)
+                                    @foreach ($posts as $post)
                                         <div class="card post-card mb-3">
                                             <div class="card-body">
-                                                <h5 class="card-title">{{ $post['title'] }}</h5>
-                                                <p class="card-text">{{ $post['body'] }}</p>
+                                                <h5 class="card-title">{{ $post->title }}</h5>
+                                                <p class="card-text">{{ $post->body }}</p>
+
+                                                <!-- Display post images -->
+                                                @if($post->images->count() > 0)
+                                                    <div class="d-flex flex-wrap mb-2">
+                                                @foreach($post->images as $img)
+                                                    <img src="{{ asset('storage/' . $img->image_path) }}" 
+                                                        alt="Post Image" 
+                                                        style="width:100px; height:100px; object-fit:cover;">
+                                                @endforeach
+                                                    </div>
+                                                @endif
+
                                                 <a href="/edit-post/{{$post->id}}" class="btn btn-warning btn-sm">Edit</a>
-                                                <form action="/delete-post/{{$post->id}}" method="POST"
-                                                    style="display:inline;">
+                                                <form action="/delete-post/{{$post->id}}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button class="btn btn-danger btn-sm">Delete</button>
                                                 </form>
                                             </div>
                                         </div>
-                                        @endforeach
+                                    @endforeach
+
 
                                         @else
                                         <!-- Login Section -->

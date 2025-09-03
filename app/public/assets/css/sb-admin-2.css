@@ -11456,3 +11456,38 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+/* Match input styling */
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 2px solid orange;
+    border-radius: 20px;
+    background: transparent;
+    color: white;
+    font-weight: bold;
+    transition: background 0.2s, color 0.2s;
+}
+
+.custom-file-upload:hover {
+    background: orange;
+    color: black;
+}
+
+/* Hide default file input */
+#imageInput {
+    display: none;
+}
+
+/* Image preview */
+#previewContainer img {
+    border: 2px solid orange;
+    border-radius: 10px;
+    margin: 5px;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    transition: transform 0.2s;
+}
+
