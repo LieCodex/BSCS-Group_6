@@ -63,13 +63,3 @@ Save the php.ini file.
 Restart the Apache server in XAMPP.
 
 
-#React integration
-
-install the ff.
-1. npm install react react-dom
-2. npm install @vitejs/plugin-react
-then pull the branch 'integrate_react'
-
-run in 2 separate terminals (cmd)
-  npm run dev 
-  php artisan serve

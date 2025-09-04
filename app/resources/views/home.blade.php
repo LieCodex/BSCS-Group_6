@@ -65,10 +65,7 @@
                                                     style="width:80px; height:80px; object-fit:cover;">
                                             @endif
                                             <h1 class="h4 mb-4">Welcome {{ auth()->user()->name }}!</h1>
-                                        </div>
-
-
-                                        
+                                        </div> <!-- Creat Post -->
                                         <a href="/create-post" class="btn btn-primary mb-3">Create New Post</a>
                                         <hr>
 
@@ -82,17 +79,17 @@
                                                 @if($post->images->count() > 0)
                                                     <div class="d-flex flex-wrap mb-2">
                                                 @foreach($post->images as $img)
-<button 
-    type="button"
-    class="img-thumbnail-btn"
-    data-bs-toggle="modal" 
-    data-bs-target="#imageModal"
-    data-img="{{ asset('storage/' . $img->image_path) }}"
-    style="border:none; padding:0; margin:5px; background:none;">
-    <img src="{{ asset('storage/' . $img->image_path) }}" 
-        alt="Post Image" 
-        style="width:100px; height:100px; object-fit:cover;">
-</button>
+                                                <button 
+                                                    type="button"
+                                                    class="img-thumbnail-btn"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#imageModal"
+                                                    data-img="{{ asset('storage/' . $img->image_path) }}"
+                                                    style="border:none; padding:0; margin:5px; background:none;">
+                                                    <img src="{{ asset('storage/' . $img->image_path) }}" 
+                                                        alt="Post Image" 
+                                                        style="width:100px; height:100px; object-fit:cover;">
+                                                </button>
                                                 @endforeach
                                                     </div>
                                                 @endif
@@ -130,40 +127,10 @@
                                                     <i class="fab fa-google fa-fw"></i> Login with Google
                                                 </a>
                                             </form>
-                                            
-                                            <div class="text-center">
-                                                <button id="show-register" class="toggle-link">Don’t have an account? Register</button>
-                                            </div>
-                                        </div>
 
                                         <!-- Register Section (hidden by default) -->
-                                        <div id="register-section" style="display:none;">
-                                            <div class="text-center">
-                                                <h1 class="h4 mb-4 login-register-heading">Sign Up</h1>
-                                            </div>
-                                            <form action="/register" method="POST" class="user">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <input name="name" type="text" class="form-control form-control-user"
-                                                        placeholder="Name">
-                                                </div>
-                                                <div class="form-group">
-                                                    <input name="email" type="text" class="form-control form-control-user"
-                                                        placeholder="Email">
-                                                </div>
-                                                <div class="form-group">
-                                                    <input name="password" type="password" class="form-control form-control-user"
-                                                        placeholder="Password">
-                                                </div>
-                                                <button class="btn btn-orange btn-user btn-block">Register</button>
-                                                <hr>
-                                                <a href="{{ route('google.login') }}" class="btn btn-orange btn-user btn-block">
-                                                    <i class="fab fa-google fa-fw"></i> Sign in with Google
-                                                </a>
-                                            </form>
-                                            <div class="text-center">
-                                                <button id="show-login" class="toggle-link">Already have an account? Login</button>
-                                            </div>
+                                        <div class="text-center">
+                                            <a href ="{{url('/register-form')}}" class="toggle-link">Don't have an account? Register</a>
                                         </div>
                                         @endauth
 
@@ -180,24 +147,7 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script>
-        // Toggle login/register
-        var showRegister = document.getElementById("show-register");
-        if (showRegister) {
-            showRegister.addEventListener("click", function () {
-                document.getElementById("login-section").style.display = "none";
-                document.getElementById("register-section").style.display = "block";
-            });
-        }
 
-        var showLogin = document.getElementById("show-login");
-        if (showLogin) {
-            showLogin.addEventListener("click", function () {
-                document.getElementById("register-section").style.display = "none";
-                document.getElementById("login-section").style.display = "block";
-            });
-        }
-    </script>
     <script>
 document.querySelectorAll('.img-thumbnail-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
