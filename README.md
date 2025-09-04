@@ -63,3 +63,33 @@ Save the php.ini file.
 Restart the Apache server in XAMPP.
 
 
+
+Notes for accessing the droplet server:
+1. run cmd
+2. run "ssh root@squeal.site"
+3. password: 6_cMtKzvj.2!v2T
+4. run "cd /var/www/RizGroup/app"
+
+commmand for maintaining the server: //this does not need to be run every time, only when server is off or down
+# Reload Nginx after changing configs
+sudo systemctl reload nginx
+
+# Restart PHP-FPM after PHP config changes
+sudo systemctl restart php8.4-fpm
+
+# Check status
+sudo systemctl status nginx
+sudo systemctl status php8.4-fpm
+
+run this commmand to pull new changes
+    bash update.sh
+
+
+command for accessing the mysql database
+# Login as your Laravel database admin
+    mysql -u admin -p
+password: admin
+#search up the commands because I don't know them
+
+
+
