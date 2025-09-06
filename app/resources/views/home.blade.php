@@ -84,9 +84,9 @@
                                                     class="img-thumbnail-btn"
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#imageModal"
-                                                    data-img="{{ asset('storage/' . $img->image_path) }}"
+                                                    data-img="{{ $img->image_path }}"
                                                     style="border:none; padding:0; margin:5px; background:none;">
-                                                    <img src="{{ asset('storage/' . $img->image_path) }}" 
+                                                    <img src="{{ $img->image_path }}" 
                                                         alt="Post Image" 
                                                         style="width:100px; height:100px; object-fit:cover;">
                                                 </button>

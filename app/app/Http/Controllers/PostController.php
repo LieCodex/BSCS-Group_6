@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -12,29 +13,35 @@ class PostController extends Controller
     }
 
     public function createPost(Request $request){
-        $incomingFields = $request->validate([
-            'title' =>'required',
-            'body'=>'required',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
-        //secruity so can post codes
-        
-        $incomingFields['title'] = strip_tags($incomingFields['title']);
-        $incomingFields['body'] = strip_tags($incomingFields['body']);
-        $incomingFields['user_id']= auth()->id();
+    $incomingFields = $request->validate([
+        'title' =>'required',
+        'body'=>'required',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+    ]);
+    $incomingFields['title'] = strip_tags($incomingFields['title']);
+    $incomingFields['body'] = strip_tags($incomingFields['body']);
+    $incomingFields['user_id']= auth()->id();
 
-        $post = Post::create($incomingFields);
+    $post = Post::create($incomingFields);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $path = $file->store('post_images', 'public');
-                $post->images()->create(['image_path' => $path]); 
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $file) {
+            if ($file && $file->isValid()) {
+                $filename = Str::random(12) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $path = Storage::disk('spaces')->putFileAs('post_images', $file, $filename, ['visibility' => 'public']);
+                if ($path) {
+                    $url = Storage::disk('spaces')->url($path);
+                    $post->images()->create(['image_path' => $url]);
+                } else {
+                    \Log::error('Failed to upload file to Spaces: ' . $filename);
+                }
             }
         }
-        return redirect('/');
+    }
+    return redirect('/');
     }
 
-    public function showEditScreen(Post $post){//automatically database lookup
+     public function showEditScreen(Post $post){//automatically database lookup
         if (auth()->user()->id != $post['user_id']){// note temporary solution so that other users cant update whats not theres
             return redirect('/');                   // please do a proper auth when given time
         }
@@ -42,43 +49,57 @@ class PostController extends Controller
     }
 
     public function updatePost(Post $post, Request $request){
-        if (auth()->user()->id != $post['user_id']){
-            return redirect('/');
-        }
-        $incomingFields = $request->validate([
-            'title' => 'required',
-            'body' => 'required',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
-        $incomingFields['title'] = strip_tags($incomingFields['title']);
-        $incomingFields['body'] = strip_tags($incomingFields['body']);
-
-        $post->update($incomingFields);// no need for sql queries automatically does it pretty handy ayee
-
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $file) {
-                    $path = $file->store('post_images', 'public');
-                    $post->images()->create(['image_path' => $path]);
-                }
-            }
-
+    if (auth()->user()->id != $post['user_id']){
         return redirect('/');
+    }
+    $incomingFields = $request->validate([
+        'title' => 'required',
+        'body' => 'required',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+    ]);
+    $incomingFields['title'] = strip_tags($incomingFields['title']);
+    $incomingFields['body'] = strip_tags($incomingFields['body']);
 
+    $post->update($incomingFields);
+
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $file) {
+            $filename = Str::random(12) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                try {
+                    $path = Storage::disk('spaces')->putFileAs('post_images', $file, $filename, ['visibility' => 'public']);
+                    if ($path) {
+                        $url = Storage::disk('spaces')->url($path);
+                        $post->images()->create(['image_path' => $url]);
+                    } else {
+                        \Log::error('Failed to upload file to Spaces: ' . $filename);
+                    }
+                } catch (\Exception $e) {
+                    \Log::error('Spaces upload error: ' . $e->getMessage());
+                }
+            $post->images()->create(['image_path' => $url]);
+        }
+    }
+
+    return redirect('/');
     }
 
     public function deletePost(Post $post){
-        if (auth()->user()->id != $post['user_id']){
-            return redirect('/');
-        }
-
-        foreach ($post->images as $image) {
-            Storage::disk('public')->delete($image->image_path);
-            $image->delete();
-        }
-
-        $post->delete();
+    if (auth()->user()->id != $post['user_id']){
         return redirect('/');
     }
+
+    foreach ($post->images as $image) {
+    $parsedUrl = parse_url($image->image_path, PHP_URL_PATH);
+    $key = ltrim($parsedUrl, '/');
+    if (!empty($key)) {
+        Storage::disk('spaces')->delete($key);
+    }
+    $image->delete();
+}
+
+    $post->delete();
+    return redirect('/');
+}
 
     
 }

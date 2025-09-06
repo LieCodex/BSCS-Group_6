@@ -47,7 +47,7 @@
                             <div class="form-group d-flex flex-wrap">
                                 @foreach($post->images as $image)
                                     <div class="position-relative m-2">
-                                        <img src="{{ asset('storage/'.$image->image_path) }}" 
+                                        <img src="{{ $image->image_path }}" 
                                             class="rounded" 
                                             style="width:100px; height:100px; object-fit:cover;">
                                             
