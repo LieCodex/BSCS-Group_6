@@ -93,7 +93,13 @@ password: admin
 
 
 steps to use the server database in local to work on the same data
-1. run "ssh -L 3307:127.0.0.1:3306 root@squeal.site"
+
+#note! any changes in the migrations will affect the server database, so
+be careful and make sure to pull all the changes in the server
+before using the server database with the changes, as to not have discrepancies
+in the database structure.
+
+1. open a cmd terminal and run "ssh -L 3307:127.0.0.1:3306 root@squeal.site"
 2. password: 6_cMtKzvj.2!v2T
 note! keep the terminal open, if you close this, the port will also close
 3. change your .env file to:
