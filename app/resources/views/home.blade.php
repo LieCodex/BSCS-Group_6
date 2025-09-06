@@ -106,27 +106,8 @@
 
 
                                         @else
-                                        <!-- Login Section -->
-                                        <div id="login-section">
-                                            <div class="text-center">
-                                                <h1 class="h4 mb-4 login-register-heading">Sign In</h1>
-                                            </div>
-                                            <form action="/login" method="POST" class="user">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <input name="loginemail" type="email" class="form-control form-control-user"
-                                                        placeholder="Email">
-                                                </div>
-                                                <div class="form-group">
-                                                    <input name="loginpassword" type="password"
-                                                        class="form-control form-control-user" placeholder="Password">
-                                                </div>
-                                                <button class="btn btn-orange btn-user btn-block">Login</button>
-                                                <hr>
-                                                <a href="{{ route('google.login') }}" class="btn btn-orange btn-user btn-block">
-                                                    <i class="fab fa-google fa-fw"></i> Login with Google
-                                                </a>
-                                            </form>
+                                        <!-- Log in form -->
+                                        @include('login-form')
 
                                         <!-- Register Section (hidden by default) -->
                                         <div class="text-center">
