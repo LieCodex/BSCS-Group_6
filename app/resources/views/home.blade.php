@@ -16,6 +16,7 @@
 
     <!-- Custom styles for this template-->
    <link href="{{ asset('assets/css/sb-admin-2.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet">
 
    <style>
 
@@ -29,6 +30,18 @@
         SQUEAL
     </div>
     @endguest
+
+    @auth
+    <div id="logo-logout-container" class="dashboard-logo-container">
+        <button id="logo-btn" class="dashboard-logo-btn">
+            <img src="assets/img/squel logo orange.png" alt="logo" class="dashboard-logo-img">
+        </button>
+    <form id="logout-form" action="/logout" method="POST" class="dashboard-logout">
+            @csrf
+            <button class="btn btn-danger btn-sm">Logout</button>
+        </form>
+    </div>
+    @endauth
 
     <div class="dashboard-wrapper">
         <div class="container">
@@ -50,12 +63,6 @@
                                     <div class="p-5 position-relative">
 
                                         @auth
-                                        <img src="assets/img/squel logo orange.png" alt="logo" class="small-logo">
-
-                                        <form action="/logout" method="POST" class="logout-btn">
-                                            @csrf
-                                            <button class="btn btn-danger btn-sm">Logout</button>
-                                        </form>
                                         
                                         <div class="text-center mt-5">
                                             @if(auth()->user()->avatar)
@@ -128,6 +135,7 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 
     <script>
 document.querySelectorAll('.img-thumbnail-btn').forEach(function(btn) {
@@ -135,6 +143,22 @@ document.querySelectorAll('.img-thumbnail-btn').forEach(function(btn) {
         var imgSrc = btn.getAttribute('data-img');
         document.getElementById('modalFullImage').src = imgSrc;
     });
+});
+
+// Toggle logout button when logo is clicked
+document.addEventListener('DOMContentLoaded', function() {
+    var logoBtn = document.getElementById('logo-btn');
+    var logoutForm = document.getElementById('logout-form');
+    if (logoBtn && logoutForm) {
+        logoBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (logoutForm.style.display === 'none') {
+                logoutForm.style.display = 'block';
+            } else {
+                logoutForm.style.display = 'none';
+            }
+        });
+    }
 });
 </script>
 

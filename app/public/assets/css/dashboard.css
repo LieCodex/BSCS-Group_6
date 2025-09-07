@@ -1,0 +1,69 @@
+.dashboard-logo-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.dashboard-logo-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+}
+.dashboard-logo-img {
+    width: 40px;
+    height: auto;
+    transition: transform 0.2s;
+}
+.dashboard-logo-btn:active .dashboard-logo-img,
+.dashboard-logo-btn:focus .dashboard-logo-img {
+    transform: scale(1.05);
+}
+.dashboard-logout {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s, max-height 0.3s;
+    pointer-events: none;
+    position: relative;
+    left: 0;
+    margin-top: 10px;
+    display: block !important;
+}
+.dashboard-logout.show {
+    opacity: 1;
+    max-height: 100px;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+.dashboard-logo {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    width: 40px;
+    height: auto;
+}
+
+.dashboard-logout {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s, max-height 0.3s;
+    pointer-events: none;
+    position: relative;
+    left: 0;
+    display: block !important;
+}
+.dashboard-logout.show {
+    opacity: 1;
+    max-height: 100px;
+    transform: translateY(0);
+    pointer-events: auto;
+}
