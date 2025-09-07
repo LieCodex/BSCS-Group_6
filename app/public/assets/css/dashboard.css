@@ -1,3 +1,8 @@
+.modal-logo-img {
+    width: 100px;
+    height: auto;
+    margin-top: 10%;
+}
 
 .modal-dashboard-bg .modal-content {
     background: #02363b;

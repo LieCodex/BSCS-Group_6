@@ -36,7 +36,7 @@
         <button id="logo-btn" class="dashboard-logo-btn">
             <img src="assets/img/squel logo orange.png" alt="logo" class="dashboard-logo-img">
         </button>
-    <form id="logout-form" action="/logout" method="POST" class="dashboard-logout">
+        <form id="logout-form" action="/logout" method="POST" class="dashboard-logout">
             @csrf
             <button class="btn btn-danger btn-sm">Logout</button>
         </form>
@@ -167,9 +167,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="modal fade modal-dashboard-bg" id="logoutConfirmModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header border-0">
-                <h5 class="modal-title">Confirm Logout</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header border-0 justify-content-center flex-column align-items-center">
+                <img src="assets/img/crying-squirrel-with-bushy-tail-vector-58512631.png" alt="logo" class="modal-logo-img mb-2">
             </div>
             <div class="modal-body">
                 <p>Are you sure you want to log out?</p>
