@@ -1,3 +1,37 @@
+
+.modal-dashboard-bg .modal-content {
+    background: #02363b;
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+}
+.modal-dashboard-bg .modal-content::before {
+    display: none;
+}
+.modal-dashboard-bg .modal-header, .modal-dashboard-bg .modal-body, .modal-dashboard-bg .modal-footer {
+    position: relative;
+    z-index: 2;
+}
+.modal-dashboard-bg .modal-title {
+    color: #ff8800;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-align: center;
+}
+.modal-dashboard-bg .modal-body p {
+    color: #ff8800;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-align: center;
+}
+.modal-dashboard-bg .btn-danger {
+    background-color: #ff8800;
+    border: none;
+    color: #fff;
+}
+.modal-dashboard-bg .btn-danger:hover {
+    background-color: #e67600;
+}
 .dashboard-logo-container {
     position: fixed;
     top: 20px;

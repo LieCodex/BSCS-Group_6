@@ -12,5 +12,19 @@ document.addEventListener('DOMContentLoaded', function() {
 				logoutForm.classList.remove('show');
 			}
 		});
+		// Custom modal confirmation before logout
+		logoutForm.addEventListener('submit', function(e) {
+			e.preventDefault();
+			var modal = document.getElementById('logoutConfirmModal');
+			var confirmBtn = document.getElementById('confirmLogoutBtn');
+			if (modal && confirmBtn) {
+				var bsModal = new bootstrap.Modal(modal);
+				bsModal.show();
+				confirmBtn.onclick = function() {
+					bsModal.hide();
+					logoutForm.submit();
+				};
+			}
+		});
 	}
 });
