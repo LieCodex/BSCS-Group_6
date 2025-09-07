@@ -76,7 +76,6 @@ class PostController extends Controller
                 } catch (\Exception $e) {
                     \Log::error('Spaces upload error: ' . $e->getMessage());
                 }
-            $post->images()->create(['image_path' => $url]);
         }
     }
 
