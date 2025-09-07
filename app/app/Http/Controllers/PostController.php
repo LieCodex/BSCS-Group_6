@@ -22,13 +22,19 @@ class PostController extends Controller
     $incomingFields['body'] = strip_tags($incomingFields['body']);
     $incomingFields['user_id']= auth()->id();
 
+    // Create the post in database
     $post = Post::create($incomingFields);
 
+    // If images are uploaded, process them
     if ($request->hasFile('images')) {
         foreach ($request->file('images') as $file) {
             if ($file && $file->isValid()) {
+                // Generate a random filename
                 $filename = Str::random(12) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                // Upload image to DigitalOcean Spaces
                 $path = Storage::disk('spaces')->putFileAs('post_images', $file, $filename, ['visibility' => 'public']);
+                
+                // If upload succeeded, save URL in DB
                 if ($path) {
                     $url = Storage::disk('spaces')->url($path);
                     $post->images()->create(['image_path' => $url]);
@@ -41,6 +47,10 @@ class PostController extends Controller
     return redirect('/');
     }
 
+    /**
+     * Show edit screen for a given post.
+     * Uses Laravel route-model binding to fetch Post automatically.
+     */
      public function showEditScreen(Post $post){//automatically database lookup
         if (auth()->user()->id != $post['user_id']){// note temporary solution so that other users cant update whats not theres
             return redirect('/');                   // please do a proper auth when given time
@@ -48,10 +58,16 @@ class PostController extends Controller
         return view('edit-post',['post'=>$post]);
     }
 
+    /**
+     * Handle updating an existing post, including uploading new images.
+     */
     public function updatePost(Post $post, Request $request){
+        // Prevent editing if not the post owner
     if (auth()->user()->id != $post['user_id']){
         return redirect('/');
     }
+
+    // Validate and sanitize inputs
     $incomingFields = $request->validate([
         'title' => 'required',
         'body' => 'required',
@@ -60,13 +76,19 @@ class PostController extends Controller
     $incomingFields['title'] = strip_tags($incomingFields['title']);
     $incomingFields['body'] = strip_tags($incomingFields['body']);
 
+
+    // Update post fields in DB
     $post->update($incomingFields);
 
+
+    // Handle new image uploads
     if ($request->hasFile('images')) {
         foreach ($request->file('images') as $file) {
             $filename = Str::random(12) . '_' . time() . '.' . $file->getClientOriginalExtension();
                 try {
+                    // Upload to Spaces
                     $path = Storage::disk('spaces')->putFileAs('post_images', $file, $filename, ['visibility' => 'public']);
+                    // If successful, save URL in DB
                     if ($path) {
                         $url = Storage::disk('spaces')->url($path);
                         $post->images()->create(['image_path' => $url]);
