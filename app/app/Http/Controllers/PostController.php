@@ -33,7 +33,7 @@ class PostController extends Controller
                     $url = Storage::disk('spaces')->url($path);
                     $post->images()->create(['image_path' => $url]);
                 } else {
-                    \Log::error('Failed to upload file to Spaces: ' . $filename);
+                
                 }
             }
         }
@@ -71,10 +71,9 @@ class PostController extends Controller
                         $url = Storage::disk('spaces')->url($path);
                         $post->images()->create(['image_path' => $url]);
                     } else {
-                        \Log::error('Failed to upload file to Spaces: ' . $filename);
+                       
                     }
                 } catch (\Exception $e) {
-                    \Log::error('Spaces upload error: ' . $e->getMessage());
                 }
         }
     }
@@ -94,7 +93,7 @@ class PostController extends Controller
     // remove the bucket name from the path
     $key = str_replace('squeal-spaces-file-storage/', '', $parsedUrl);
 
-    \Log::info('Deleting from Spaces: ' . $key);
+
 
     if (!empty($key)) {
         Storage::disk('spaces')->delete($key);
