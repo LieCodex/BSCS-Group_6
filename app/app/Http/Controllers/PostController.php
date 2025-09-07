@@ -90,10 +90,17 @@ class PostController extends Controller
 
     foreach ($post->images as $image) {
     $parsedUrl = parse_url($image->image_path, PHP_URL_PATH);
-    $key = ltrim($parsedUrl, '/');
+    $parsedUrl = ltrim($parsedUrl, '/');
+
+    // remove the bucket name from the path
+    $key = str_replace('squeal-spaces-file-storage/', '', $parsedUrl);
+
+    \Log::info('Deleting from Spaces: ' . $key);
+
     if (!empty($key)) {
         Storage::disk('spaces')->delete($key);
     }
+
     $image->delete();
 }
 
