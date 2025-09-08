@@ -120,13 +120,15 @@
                                                 @endforeach
                                                     </div>
                                                 @endif
-
-                                                <a href="/edit-post/{{$post->id}}" class="btn btn-warning btn-sm">Edit</a>
-                                                <form action="/delete-post/{{$post->id}}" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-danger btn-sm">Delete</button>
-                                                </form>
+                                                
+                                                @if(auth()->check()&& $post->user_id ===auth()->id()) <!-- checks if the user if the one who made the post -->
+                                                    <a href="/edit-post/{{$post->id}}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <form action="/delete-post/{{$post->id}}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
