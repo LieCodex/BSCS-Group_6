@@ -16,6 +16,7 @@
 
     <!-- Custom styles for this template-->
    <link href="{{ asset('assets/css/sb-admin-2.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet">
 
    <style>
 
@@ -29,6 +30,18 @@
         SQUEAL
     </div>
     @endguest
+
+    @auth
+    <div id="logo-logout-container" class="dashboard-logo-container">
+        <button id="logo-btn" class="dashboard-logo-btn">
+            <img src="assets/img/squel logo orange.png" alt="logo" class="dashboard-logo-img">
+        </button>
+        <form id="logout-form" action="/logout" method="POST" class="dashboard-logout">
+            @csrf
+            <button class="btn btn-danger btn-sm">Logout</button>
+        </form>
+    </div>
+    @endauth
 
     <div class="dashboard-wrapper">
         <div class="container">
@@ -91,9 +104,9 @@
                                                     class="img-thumbnail-btn"
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#imageModal"
-                                                    data-img="{{ asset('storage/' . $img->image_path) }}"
+                                                    data-img="{{ $img->image_path }}"
                                                     style="border:none; padding:0; margin:5px; background:none;">
-                                                    <img src="{{ asset('storage/' . $img->image_path) }}" 
+                                                    <img src="{{ $img->image_path }}" 
                                                         alt="Post Image" 
                                                         style="width:100px; height:100px; object-fit:cover;">
                                                 </button>
@@ -135,6 +148,7 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 
     <script>
 document.querySelectorAll('.img-thumbnail-btn').forEach(function(btn) {
@@ -143,9 +157,42 @@ document.querySelectorAll('.img-thumbnail-btn').forEach(function(btn) {
         document.getElementById('modalFullImage').src = imgSrc;
     });
 });
+
+// Toggle logout button when logo is clicked
+document.addEventListener('DOMContentLoaded', function() {
+    var logoBtn = document.getElementById('logo-btn');
+    var logoutForm = document.getElementById('logout-form');
+    if (logoBtn && logoutForm) {
+        logoBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (logoutForm.style.display === 'none') {
+                logoutForm.style.display = 'block';
+            } else {
+                logoutForm.style.display = 'none';
+            }
+        });
+    }
+});
 </script>
 
 <!-- image modal -->
+<!-- Logout confirmation modal -->
+<div class="modal fade modal-dashboard-bg" id="logoutConfirmModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 justify-content-center flex-column align-items-center">
+                <img src="assets/img/crying-squirrel-with-bushy-tail-vector-58512631.png" alt="logo" class="modal-logo-img mb-2">
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to log out?</p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmLogoutBtn">Log Out</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
