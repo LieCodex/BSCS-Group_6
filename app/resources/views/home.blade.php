@@ -63,11 +63,6 @@
                                     <div class="p-5 position-relative">
 
                                         @auth
-                                        <form action="/logout" method="POST" class="logout-btn">
-                                            @csrf
-                                            <button class="btn btn-danger btn-sm">Logout</button>
-                                        </form>
-
                                         <!-- Add these navigation buttons -->
                                         <div class="mb-3">
                                             <a href="{{ url('/') }}" class="btn btn-outline-primary @if(request()->is('/')) active @endif">All Posts</a>
