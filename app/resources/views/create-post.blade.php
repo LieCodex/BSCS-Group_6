@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Edit Post</title>
+    <title>Create Post</title>
 
     <!-- Bootstrap CSS -->
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -24,38 +24,22 @@
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
-                            <h1 class="h3 text-white-900">Edit Post</h1>
+                            <h1 class="h3 text-white-900">Create Post</h1>
+                            
                         </div>
 
-                        <form action="/edit-post/{{$post->id}}" method="POST" class="user" enctype="multipart/form-data">
+                        <form action="/create-post" method="POST" class="user" enctype="multipart/form-data">
                             @csrf
-                            @method('PUT')
-
-                            <!-- Title -->
                             <div class="form-group">
-                                <input type="text" name="title" value="{{$post->title}}"
-                                    class="form-control form-control-user" placeholder="Post Title" required>
+                                <input name="title" type="text" class="form-control form-control-user"
+                                    placeholder="Post Title" required>
                             </div>
 
-                            <!-- Body -->
                             <div class="form-group">
-                                <textarea name="body" class="form-control form-control-user" rows="4"
-                                    placeholder="Body Content" required>{{$post->body}}</textarea>
+                                <textarea name="body" class="form-control form-control-user"
+                                    placeholder="Body Content" rows="4" required></textarea>
                             </div>
 
-                            <!-- Show existing images -->
-                            <div class="form-group d-flex flex-wrap">
-                                @foreach($post->images as $image)
-                                    <div class="position-relative m-2">
-                                        <img src="{{ $image->image_path }}" 
-                                            class="rounded" 
-                                            style="width:100px; height:100px; object-fit:cover;">
-                                            
-                                    </div>
-                                @endforeach 
-                            </div>
-
-                            <!-- Upload new images -->
                             <div class="form-group">
                                 <label for="imageInput" class="custom-file-upload">
                                     <i class="fas fa-cloud-upload-alt"></i> Upload Images
@@ -70,12 +54,11 @@
                             </div>
 
                             <!-- Preview Container -->
-                            <div id="editPreviewContainer" class="d-flex flex-wrap"></div>
+                            <div id="previewContainer" class="d-flex flex-wrap"></div>
 
-                            <!-- Save Button -->
-                            <button type="submit" class="btn btn-orange btn-user btn-block btn-sm">Save Changes</button>
 
-                            <!-- Back Button -->
+                            <button type="submit" class="btn btn-orange btn-user btn-block btn-sm">Save Post</button>
+
                             <a href="/" class="btn btn-orange btn-user btn-block btn-sm">Cancel</a>
                         </form>
 
@@ -92,6 +75,7 @@
 
     <!-- Multiple Image Preview JS -->
     <script src="{{ asset('assets/js/image_preview.js') }}"></script>
+
 
 </body>
 </html>

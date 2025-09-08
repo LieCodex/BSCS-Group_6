@@ -1,28 +1,34 @@
 <?php
 
-use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\CommentController;
 
-Route::get('/', function(){
-    $posts = auth()->check() ? auth()->user()->userPosts()->get() : Post::all();
-    return view('home', ['posts'=>$posts]);
+// Home and post listings
+Route::get('/', [PostController::class, 'showAllPosts'])->name('posts.all');
+Route::get('/my-posts', [PostController::class, 'showUserPosts'])
+    ->middleware('auth')
+    ->name('posts.mine');
+
+// Post routes (protected by auth)
+Route::middleware('auth')->group(function () {
+    Route::get('/create-post', [PostController::class, 'showCreatePost'])->name('posts.create.form');
+    Route::post('/create-post', [PostController::class, 'createPost'])->name('posts.create');
+
+    Route::get('/edit-post/{post}', [PostController::class, 'showEditScreen'])->name('posts.edit.form');
+    Route::put('/edit-post/{post}', [PostController::class, 'updatePost'])->name('posts.update');
+
+    Route::delete('/delete-post/{post}', [PostController::class, 'deletePost'])->name('posts.delete');
+
+    // Comment routes
+    Route::post('/posts/{post}/comments', [CommentController::class, 'createComment'])->name('comments.create');
+    Route::delete('/comments/{comment}', [CommentController::class, 'deleteComment'])->name('comments.delete');
 });
-Route::post('/register', [UserController::class, 'register']);
-Route::post('/logout', [UserController::class, 'logout']);
-Route::post('/login', [UserController::class, 'login']);
 
-    // blog post routes
-Route::post('/create-post', [PostController::class, 'createPost']);
-Route::get('/edit-post/{post}', [PostController::class, 'showEditScreen']);
-Route::put('/edit-post/{post}', [PostController::class, 'updatePost']);
-Route::delete('/delete-post/{post}', [PostController::class,'deletePost']);
-
-
-// Dashboard routes (no login required)
-Route::prefix('dashboard')->group(function () {
+// Dashboard routes
+Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('/', function () {
         $posts = \App\Models\Post::latest()->get();
         return view('dashboard.home', compact('posts'));
@@ -34,12 +40,15 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/bookmarks', fn() => view('dashboard.bookmarks'))->name('dashboard.bookmarks');
 });
 
+// Registration & Auth
+Route::get('/register-form', function () {
+    return view('register-form');
+})->name('register.form');
 
+Route::post('/register', [UserController::class, 'register'])->name('register');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+Route::post('/login', [UserController::class, 'login'])->name('login');
 
+// Google OAuth
 Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.login');
-Route::get('auth/google/callback', [GoogleController::class, 'callback']);
-
-//React routes
-Route::get('/welcome_react', function () {
-    return view('welcome_react');
-});
+Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');

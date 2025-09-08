@@ -12,6 +12,7 @@ To make this project work, do this step
 6. then this "npm install
 npm run dev"
 7. Crtl + C to stop the process
+9. Since we are using images, run "php artisan storage:link", if you aren't, then don't run this
 8. then run "php artisan serve"
 
 When pulling new data run these commands to make sure nothing will go wrong with syncronazation
@@ -62,13 +63,53 @@ Save the php.ini file.
 Restart the Apache server in XAMPP.
 
 
-#React integration
 
-install the ff.
-1. npm install react react-dom
-2. npm install @vitejs/plugin-react
-then pull the branch 'integrate_react'
+Notes for accessing the droplet server:
+1. run cmd
+2. run "ssh root@squeal.site"
+3. password: 6_cMtKzvj.2!v2T
+4. run "cd /var/www/RizGroup/app"
 
-run in 2 separate terminals (cmd)
-  npm run dev 
-  php artisan serve
+commmand for maintaining the server: //this does not need to be run every time, only when server is off or down
+# Reload Nginx after changing configs
+sudo systemctl reload nginx
+
+# Restart PHP-FPM after PHP config changes
+sudo systemctl restart php8.4-fpm
+
+# Check status
+sudo systemctl status nginx
+sudo systemctl status php8.4-fpm
+
+run this commmand to pull new changes
+    bash update.sh
+
+
+command for accessing the mysql database
+# Login as your Laravel database admin
+    mysql -u admin -p
+password: admin
+#search up the commands because I don't know them
+
+
+steps to use the server database in local to work on the same data
+
+#note! any changes in the migrations will affect the server database, so
+be careful and make sure to pull all the changes in the server
+before using the server database with the changes, as to not have discrepancies
+in the database structure.
+
+1. open a cmd terminal and run "ssh -L 3307:127.0.0.1:3306 root@squeal.site"
+2. password: 6_cMtKzvj.2!v2T
+note! keep the terminal open, if you close this, the port will also close
+3. change your .env file to:
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3307
+    DB_DATABASE=app
+    DB_USERNAME=admin
+    DB_PASSWORD=admin
+done! you are now using the server database in your local project
+
+
+

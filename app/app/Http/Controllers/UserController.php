@@ -27,7 +27,7 @@ class UserController extends Controller
             }],
             'password' =>['required', 'min:8', 'max:30']
         ]);
-                                        //bycrpt no longer advisable use Hash as alternative
+                                        
         $incomingFields['password'] = Hash::make($incomingFields['password']);
         $user = User::create($incomingFields);
         auth()->login($user);
