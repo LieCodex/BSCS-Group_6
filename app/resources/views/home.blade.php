@@ -90,6 +90,15 @@
                                     @foreach ($posts as $post)
                                         <div class="card post-card mb-3">
                                             <div class="card-body">
+                                                 <!-- User info -->
+                                                <div class="d-flex align-items-center mb-2">
+                                                    @if($post->user && $post->user->avatar)
+                                                        <img src="{{ $post->user->avatar }}" alt="{{ $post->user->name }}" class="rounded-circle me-2" style="width:32px; height:32px; object-fit:cover;">
+                                                    @else
+                                                        <span class="me-2"><i class="fas fa-user-circle fa-2x text-secondary"></i></span>
+                                                    @endif
+                                                    <strong>{{ $post->user ? $post->user->name : 'Unknown User' }}</strong>
+                                                </div>
                                                 <h5 class="card-title">{{ $post->title }}</h5>
                                                 <p class="card-text">{{ $post->body }}</p>
 
