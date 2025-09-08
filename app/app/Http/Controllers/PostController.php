@@ -7,18 +7,20 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function createPost(Request $request){
-        $incomingFields = $request->validate([
-            'title' =>'required',
-            'body'=>'required'
-        ]);
-        //secruity so can post codes
-        $incomingFields['title'] = strip_tags($incomingFields['title']);
-        $incomingFields['body'] = strip_tags($incomingFields['body']);
-        $incomingFields['user_id']= auth()->id();
-        Post::create($incomingFields);
-        return redirect('/');
-    }
+public function createPost(Request $request)
+{
+    $incomingFields = $request->validate([
+        'body' => 'required|max:500'
+    ]);
+
+    $incomingFields['body'] = strip_tags($incomingFields['body']);
+    $incomingFields['user_id'] = auth()->id();
+
+    Post::create($incomingFields);
+
+    return redirect('/dashboard')->with('success', 'Posted successfully!');
+}
+
 
     public function showEditScreen(Post $post){//automatically database lookup
         if (auth()->user()->id != $post['user_id']){// note temporary solution so that other users cant update whats not theres
