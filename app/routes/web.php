@@ -6,11 +6,11 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GoogleController;
 
-// routes to home or something 
-Route::get('/', function(){
-    $posts = auth()->check() ? auth()->user()->userPosts()->get() : Post::all();
-    return view('home', ['posts'=>$posts]);
-});
+
+//shows all posts
+Route::get('/', [PostController::class, 'showAllPosts']);
+// only shows users post, you can implement this in the profile page
+Route::get('/my-posts', [PostController::class, 'showUserPosts'])->middleware('auth');
 
 //routes to the separate registration form
 Route::get('/register-form', function(){

@@ -56,6 +56,13 @@
                                             @csrf
                                             <button class="btn btn-danger btn-sm">Logout</button>
                                         </form>
+
+                                        <!-- Add these navigation buttons -->
+                                        <div class="mb-3">
+                                            <a href="{{ url('/') }}" class="btn btn-outline-primary @if(request()->is('/')) active @endif">All Posts</a>
+                                            <a href="{{ url('/my-posts') }}" class="btn btn-outline-secondary @if(request()->is('my-posts')) active @endif">My Posts</a>
+                                        </div>
+                                        <hr>
                                         
                                         <div class="text-center mt-5">
                                             @if(auth()->user()->avatar)

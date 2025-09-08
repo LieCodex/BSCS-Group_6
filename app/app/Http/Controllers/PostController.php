@@ -79,7 +79,16 @@ class PostController extends Controller
         $post->delete();
         return redirect('/');
     }
-
+    //shows all posts
+    public function showAllPosts(){
+        $posts = Post::with('images')->latest()->get();
+        return view('home',['posts' => $posts]);
+    }
+    //shows only the auth users posts
+    public function showUserPosts(){
+        $posts = Post::with('images')->where('user_id', auth()->id())->latest()->get();
+        return view('home', ['posts'=> $posts]);
+    }
     
 }
 
