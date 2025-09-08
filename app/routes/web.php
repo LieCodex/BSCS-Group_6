@@ -1,33 +1,39 @@
 <?php
 
-use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\CommentController;
 
+// Home and post listings
+Route::get('/', [PostController::class, 'showAllPosts'])->name('posts.all');
+Route::get('/my-posts', [PostController::class, 'showUserPosts'])
+    ->middleware('auth')
+    ->name('posts.mine');
 
-//shows all posts
-Route::get('/', [PostController::class, 'showAllPosts']);
-// only shows users post, you can implement this in the profile page
-Route::get('/my-posts', [PostController::class, 'showUserPosts'])->middleware('auth');
-
-//routes to the separate registration form
-Route::get('/register-form', function(){
+// Registration & Auth
+Route::get('/register-form', function () {
     return view('register-form');
-});
-Route::post('/register', [UserController::class, 'register']);
-Route::post('/logout', [UserController::class, 'logout']);
-Route::post('/login', [UserController::class, 'login']);
+})->name('register.form');
 
-//blog post routes
-Route::get('/create-post', [PostController::class,'showCreatePost']);
-Route::post('/create-post', [PostController::class, 'createPost']);
-Route::get('/edit-post/{post}',[PostController::class, 'showEditScreen']);
-Route::put('/edit-post/{post}',[PostController::class, 'updatePost']);
-Route::delete('delete-post/{post}',[PostController::class,'deletePost']);
+Route::post('/register', [UserController::class, 'register'])->name('register');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+Route::post('/login', [UserController::class, 'login'])->name('login');
 
-//google route
+// Post routes
+Route::get('/create-post', [PostController::class, 'showCreatePost'])->name('posts.create.form');
+Route::post('/create-post', [PostController::class, 'createPost'])->name('posts.create');
+
+Route::get('/edit-post/{post}', [PostController::class, 'showEditPost'])->name('posts.edit.form');
+Route::put('/edit-post/{post}', [PostController::class, 'editPost'])->name('posts.edit');
+
+Route::delete('/delete-post/{post}', [PostController::class, 'deletePost'])->name('posts.delete');
+
+// Comment routes
+Route::post('/posts/{post}/comments', [CommentController::class, 'createComment'])->name('comments.create');
+Route::delete('/comments/{comment}', [CommentController::class, 'deleteComment'])->name('comments.delete');
+
+// Google OAuth
 Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.login');
-Route::get('auth/google/callback', [GoogleController::class, 'callback']);
-
+Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');

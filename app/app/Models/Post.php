@@ -18,8 +18,14 @@ public function images()
     return $this->hasMany(PostImage::class);
 }
 
-public function user(){// relationship to user
+public function user()
+{
     return $this->belongsTo(User::class);
+}
+
+public function comments()
+{
+    return $this->hasMany(Comment::class)->with('user', 'replies');
 }
 
 }
