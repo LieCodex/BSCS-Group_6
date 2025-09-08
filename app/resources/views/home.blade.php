@@ -63,8 +63,6 @@
                                     <div class="p-5 position-relative">
 
                                         @auth
-                                        <img src="assets/img/squel logo orange.png" alt="logo" class="small-logo">
-
                                         <form action="/logout" method="POST" class="logout-btn">
                                             @csrf
                                             <button class="btn btn-danger btn-sm">Logout</button>
