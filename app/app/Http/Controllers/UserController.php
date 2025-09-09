@@ -31,7 +31,10 @@ class UserController extends Controller
         $incomingFields['password'] = Hash::make($incomingFields['password']);
         $user = User::create($incomingFields);
         auth()->login($user);
-        return redirect('/');
+        $request->session()->regenerate();
+
+        return redirect()->route('dashboard.home');
+        
     }
 
     public function logout(){
@@ -48,6 +51,6 @@ class UserController extends Controller
         if(auth()->attempt(['email'=> $incomingFields['loginemail'], 'password'=> $incomingFields['loginpassword']])){
             $request->session()->regenerate();
         }
-        return redirect('/');
+          return redirect()->route('posts.all');
     }
 }

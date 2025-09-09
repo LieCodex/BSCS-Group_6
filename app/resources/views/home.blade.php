@@ -82,11 +82,6 @@
                                         <a href="/create-post" class="btn btn-primary mb-3">Create New Post</a>
                                         <hr>
 
-                                        @foreach ($posts as $post)
-                                            <x-post-card :post="$post" />
-                                        @endforeach
-
-
                                         @else
                                         <!-- Log in form -->
                                         @include('login-form')

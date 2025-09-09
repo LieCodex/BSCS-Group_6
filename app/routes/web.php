@@ -6,11 +6,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\CommentController;
 
-// Home and post listings
-Route::get('/', [PostController::class, 'showAllPosts'])->name('posts.all');
-Route::get('/my-posts', [PostController::class, 'showUserPosts'])
-    ->middleware('auth')
-    ->name('posts.mine');
+Route::get('/', function () {
+    // If user is authenticated, redirect to Tailwind dashboard
+    if (auth()->check()) {
+        return redirect()->route('dashboard.home');
+    }
+    return view('home');
+});
 
 // Post routes (protected by auth)
 Route::middleware('auth')->group(function () {

@@ -19,13 +19,20 @@
                 <a href="{{ route('dashboard.profile') }}" class="flex items-center gap-3 text-lg hover:text-orange-400"><span>👤</span> Profile</a>
             </nav>
         </div>
-        <div class="flex items-center gap-3">
-            <img src="https://i.pravatar.cc/40" class="rounded-full" />
-            <div>
-                <p class="font-bold">Davide Biscuso</p>
-                <p class="text-sm text-gray-400">@biscuttu</p>
-            </div>
+       <div class="flex items-center justify-between mb-3">
+    <div class="flex items-center gap-3"> <!-- Avatar -->
+        @if(auth()->user()->avatar)
+            <img src="{{ auth()->user()->avatar }}"
+                 alt="{{ auth()->user()->name }}"
+                 class="w-8 h-8 rounded-full object-cover">
+        @endif
+        <div>
+            <p class="font-bold">{{ auth()->user()->name }}</p>
         </div>
+    </div>
+</div>
+
+
     </aside>
 
 <!-- Feed -->
@@ -39,14 +46,7 @@
         
         <div class="mt-6 bg-gray-800 p-4 rounded-xl">
             <h3 class="font-bold text-lg mb-3">Who to follow</h3>
-            <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center gap-3">
-                    <img src="https://i.pravatar.cc/42" class="rounded-full" />
-                    <div>
-                        <p class="font-bold">Bessie Cooper</p>
-                        <p class="text-gray-400 text-sm">@alessandroveronezi</p>
-                    </div>
-                </div>
+
                 <button class="bg-orange-500 px-3 py-1 rounded-full text-sm">Follow</button>
             </div>
             <div class="flex items-center justify-between">
