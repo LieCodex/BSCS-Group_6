@@ -9,8 +9,9 @@ To make this project work, do this step
 3. run this command "cp .env.example .env "
 4. the this "php artisan key:generate"
 5. then this "php artisan migrate"
-6. then this "npm install
-npm run dev"
+6. then this "npm install"
+"npm run build"
+"npm run dev"
 7. Crtl + C to stop the process
 9. Since we are using images, run "php artisan storage:link", if you aren't, then don't run this
 8. then run "php artisan serve"
