@@ -17,12 +17,10 @@ class PostController extends Controller
     // Create a post
     public function createPost(Request $request) {
         $incomingFields = $request->validate([
-            'title' => 'required|max:255',
             'body'  => 'required|max:500',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $incomingFields['title']   = strip_tags($incomingFields['title']);
         $incomingFields['body']    = strip_tags($incomingFields['body']);
         $incomingFields['user_id'] = auth()->id();
 
@@ -44,7 +42,7 @@ class PostController extends Controller
             }
         }
 
-        return redirect('/dashboard')->with('success', 'Post created successfully!');
+        return redirect()->route('dashboard.home')->with("success, Post created succesfully");
     }
 
     // Show edit form
@@ -52,7 +50,7 @@ class PostController extends Controller
         if (auth()->id() !== $post->user_id) {
             return redirect('/');
         }
-        return view('edit-post', ['post' => $post]);
+        return view('dashboard.edit-post', ['post' => $post]);
     }
 
     // Update post
@@ -62,12 +60,10 @@ class PostController extends Controller
         }
 
         $incomingFields = $request->validate([
-            'title' => 'required|max:255',
             'body'  => 'required|max:500',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $incomingFields['title'] = strip_tags($incomingFields['title']);
         $incomingFields['body']  = strip_tags($incomingFields['body']);
 
         $post->update($incomingFields);

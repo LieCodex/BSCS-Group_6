@@ -14,26 +14,87 @@
         <div class="p-4 border border-gray-700 rounded-lg bg-gray-800">
             <form method="POST" action="/create-post">
                 @csrf
-                <textarea name="body"
-                          placeholder="What's happening?"
-                          class="w-full bg-transparent border-none focus:ring-0 resize-none"></textarea> <!-- functional button -->
-               <a href="/create-post" class="mt-2 bg-orange-500 text-white px-4 py-1 rounded-full inline-block">Squeal</a>
+                <textarea 
+                    name="body"
+                    placeholder="What's happening?"
+                    class="w-full bg-transparent border-none focus:ring-0 resize-none"
+                ></textarea>
+
+                <button 
+                    type="submit"
+                    class="mt-2 bg-orange-500 text-white px-4 py-1 rounded-full"
+                >
+                    Squeal
+                </button>
             </form>
         </div>
 
-        <!-- Posts Feed -->
-        @foreach ($posts as $post)
-            <div class="p-4 border border-gray-700 rounded-lg bg-gray-800">
-                <h2 class="font-bold text-orange-400">{{ $post->user->name }}</h2>
-                <p class="text-gray-300 mt-2">{{ $post->body }}</p>
-                <p class="text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
+            <!-- Posts Feed -->
+            @foreach ($posts as $post)
+            <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 relative">
 
-                <!--Comment button -->
-                <button onclick="toggleComments({{ $post->id }})"
-                    class="mt-2 text-sm text blue-400 hover:underline">
-                    View Comments
-                </button>
-            </div>
+                <!-- Header -->
+                <div class="flex justify-between items-start">
+                    <h2 class="font-bold text-orange-400">{{ $post->user->name }}</h2>
+
+                    <!-- Hamburger -->
+                    <div class="relative">
+                        <button onclick="toggleMenu({{ $post->id }})" class="text-gray-400 hover:text-white">
+                            ⋮
+                        </button>
+                        <!-- Dropdown -->
+                        <div id="menu-{{ $post->id }}" class="hidden absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10">
+                            <!-- Edit -->
+                            <a href="{{ route('posts.edit.form', $post->id) }}"
+                            class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">
+                            Edit
+                            </a>
+                            <!-- Delete -->
+                            <form action="{{ route('posts.delete', $post->id) }}" method="POST" onsubmit="return confirm('Delete this post?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <p class="text-gray-300 mt-2">{{ $post->body }}</p>
+
+                <!-- Images -->
+@if($post->images->count())
+    <div class="flex flex-wrap gap-2 mt-2">
+        @foreach($post->images as $image)
+            <img src="{{ $image->image_path }}" 
+                 class="w-24 h-24 object-cover rounded-lg border border-gray-700">
         @endforeach
     </div>
+@endif
+
+    <!-- Timestamp -->
+    <p class="text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
+
+    <!-- Comment button -->
+    <button onclick="toggleComments({{ $post->id }})"
+            class="mt-2 text-sm text-blue-400 hover:underline">
+        View Comments
+    </button>
+
+</div>
+@endforeach
+
+    </div>
 @endsection
+
+<script>
+function toggleMenu(postId) {
+    const menu = document.getElementById(`menu-${postId}`);
+    document.querySelectorAll('[id^="menu-"]').forEach(m => {
+        if (m !== menu) m.classList.add('hidden');
+    });
+    menu.classList.toggle('hidden');
+}
+</script>
