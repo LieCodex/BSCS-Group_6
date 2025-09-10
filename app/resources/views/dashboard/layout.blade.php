@@ -10,13 +10,23 @@
     <!-- Sidebar -->
     <aside class="w-60 h-screen bg-gray-800 p-6 flex flex-col justify-between">
         <div>
-            <div class="text-orange-500 text-3xl font-bold mb-8">🦊</div>
+            <img src="assets/img/squel logo orange.png" alt="logo" class="h-16 w-16 mb-6">
             <nav class="space-y-6">
-                <a href="{{ route('dashboard.home') }}" class="flex items-center gap-3 text-lg hover:text-orange-400"><span>🏠</span> Home</a>
-                <a href="{{ route('dashboard.notifications') }}" class="flex items-center gap-3 text-lg hover:text-orange-400"><span>🔔</span> Notifications</a>
-                <a href="{{ route('dashboard.messages') }}" class="flex items-center gap-3 text-lg hover:text-orange-400"><span>✉️</span> Messages</a>
-                <a href="{{ route('dashboard.bookmarks') }}" class="flex items-center gap-3 text-lg hover:text-orange-400"><span>🔖</span> Bookmarks</a>
-                <a href="{{ route('dashboard.profile') }}" class="flex items-center gap-3 text-lg hover:text-orange-400"><span>👤</span> Profile</a>
+                <a href="{{ route('dashboard.home') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
+                <img src="assets/img/home.png" alt="Home" class="h-6 w-6"> Home
+                </a>
+
+                <a href="{{ route('dashboard.notifications') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
+                <img src="assets/img/notifications.png" alt="Notifications" class="h-6 w-6"> Notifications
+                </a>
+
+                <a href="{{ route('dashboard.messages') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
+                <img src="assets/img/messages.png" alt="Messages" class="h-6 w-6"> Messages
+                </a>
+
+                <a href="{{ route('dashboard.profile') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
+                <img src="assets/img/profile.png" alt="Profile" class="h-6 w-6"> Profile
+                </a>
             </nav>
         </div>
        <div class="flex items-center justify-between mb-3">
