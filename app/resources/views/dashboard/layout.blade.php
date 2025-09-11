@@ -30,16 +30,47 @@
             </nav>
         </div>
        <div class="flex items-center justify-between mb-3">
-    <div class="flex items-center gap-3"> <!-- Avatar -->
-        @if(auth()->user()->avatar)
+    <div x-data="{ open: false }" class="relative flex items-center gap-3">
+    <!-- Avatar Button -->
+    @if(auth()->user()->avatar)
+        <button @click="open = !open" class="focus:outline-none">
             <img src="{{ auth()->user()->avatar }}"
                  alt="{{ auth()->user()->name }}"
                  class="w-8 h-8 rounded-full object-cover">
-        @endif
-        <div>
-            <p class="font-bold">{{ auth()->user()->name }}</p>
-        </div>
+        </button>
+    @endif
+
+    <!-- User Info -->
+    <div>
+        <p class="font-bold">{{ auth()->user()->name }}</p>
     </div>
+
+    <!-- Dropdown Menu -->
+    <div x-cloak
+         x-show="open"
+        x-transition
+         @click.outside="open = false"
+         class="absolute right-0 top-full mb-2 w-30 bg-white border rounded-lg shadow-lg z-50 py-2"
+>
+        <ul class="py-2 text-gray-700">
+
+            <li>
+                <a href="" class="block px-4 py-2 hover:bg-gray-100">
+                    Settings
+                </a>
+            </li>
+            <li>
+                <form method="POST" action="">
+                    @csrf
+                    <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
+
 </div>
 
 
@@ -71,6 +102,6 @@
             </div>
         </div>
     </aside>
-
+<script src="//unpkg.com/alpinejs" defer></script>
 </body>
 </html>
