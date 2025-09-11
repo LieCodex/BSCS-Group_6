@@ -11,24 +11,24 @@
     <aside class="w-60 h-screen bg-gray-800 p-6 flex flex-col justify-between">
         <div>
             <a href="{{ route('dashboard.home') }}">
-                    <img src="assets/img/squel logo orange.png" alt="logo" class="h-16 w-16 mb-6">
+                    <img src="{{ asset('assets/img/squel logo orange.png') }}"alt="logo" class="h-16 w-16 mb-6">
              </a>
             
             <nav class="space-y-6">
                 <a href="{{ route('dashboard.home') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
-                <img src="assets/img/home.svg" alt="Home" class="h-6 w-6"> Home
+                <img src="{{ asset('assets/img/home.svg') }}" alt="Home" class="h-6 w-6"> Home
                 </a>
 
                 <a href="{{ route('dashboard.notifications') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
-                <img src="assets/img/notification.svg" alt="Notifications" class="h-6 w-6"> Notifications
+                <img src="{{ asset('assets/img/notification.svg') }}" alt="Notifications" class="h-6 w-6"> Notifications
                 </a>
 
                 <a href="{{ route('dashboard.messages') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
-                <img src="assets/img/messages.png" alt="Messages" class="h-6 w-6"> Messages
+                <img src="{{ asset('assets/img/messages.png') }}" alt="Messages" class="h-6 w-6"> Messages
                 </a>
 
                 <a href="{{ route('dashboard.profile') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
-                <img src="assets/img/profile.png" alt="Profile" class="h-6 w-6"> Profile
+                <img src="{{ asset('assets/img/profile.png') }}"alt="Profile" class="h-6 w-6"> Profile
                 </a>
             </nav>
         </div>
