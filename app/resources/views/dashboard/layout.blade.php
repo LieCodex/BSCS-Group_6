@@ -11,10 +11,7 @@
     <aside class="w-60 h-screen bg-gray-800 p-6 flex flex-col justify-between">
         <div>
             <a href="{{ route('dashboard.home') }}">
-                <button>
-           
                     <img src="assets/img/squel logo orange.png" alt="logo" class="h-16 w-16 mb-6">
-                </button>
              </a>
             
             <nav class="space-y-6">
