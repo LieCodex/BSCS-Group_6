@@ -10,7 +10,13 @@
     <!-- Sidebar -->
     <aside class="w-60 h-screen bg-gray-800 p-6 flex flex-col justify-between">
         <div>
-            <img src="assets/img/squel logo orange.png" alt="logo" class="h-16 w-16 mb-6">
+            <a href="{{ route('dashboard.home') }}">
+                <button>
+           
+                    <img src="assets/img/squel logo orange.png" alt="logo" class="h-16 w-16 mb-6">
+                </button>
+             </a>
+            
             <nav class="space-y-6">
                 <a href="{{ route('dashboard.home') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
                 <img src="assets/img/home.png" alt="Home" class="h-6 w-6"> Home
