@@ -14,7 +14,7 @@
     <div class="p-4 border border-gray-700 rounded-lg bg-gray-800">
         <form method="POST" action="/create-post" enctype="multipart/form-data">
             @csrf
-            <textarea 
+            <textarea
                 name="body"
                 placeholder="What's happening?"
                 class="w-full bg-transparent border-none focus:ring-0 resize-none"

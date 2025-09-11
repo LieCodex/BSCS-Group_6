@@ -19,11 +19,11 @@
             
             <nav class="space-y-6">
                 <a href="{{ route('dashboard.home') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
-                <img src="assets/img/home.png" alt="Home" class="h-6 w-6"> Home
+                <img src="assets/img/home.svg" alt="Home" class="h-6 w-6"> Home
                 </a>
 
                 <a href="{{ route('dashboard.notifications') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
-                <img src="assets/img/notifications.png" alt="Notifications" class="h-6 w-6"> Notifications
+                <img src="assets/img/notification.svg" alt="Notifications" class="h-6 w-6"> Notifications
                 </a>
 
                 <a href="{{ route('dashboard.messages') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
@@ -66,7 +66,7 @@
                 </a>
             </li>
             <li>
-                <form method="POST" action="">
+                <form method="POST" action="/logout">
                     @csrf
                     <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">
                         Logout
