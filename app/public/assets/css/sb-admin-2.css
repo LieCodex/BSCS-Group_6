@@ -47,20 +47,17 @@
   box-sizing: border-box;
 }
 
-           .guest-bg {
-            margin: 0;
-            padding: 0;
-            background: url("/assets/img/gradient_wallpaper_4k.png") no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Montserrat', sans-serif;
+        .text-orange {
+            color: #ff7a00;
         }
-
+        
+        .guest-bg,
         .auth-bg {
             margin: 0;
             padding: 0;
-            background: url("/assets/img/gradient_wallpaper_4k.png") no-repeat center center fixed;
-            background-size: cover;
+            background: linear-gradient(180deg, #0a0a1a 0%, #012732 100%);
             font-family: 'Montserrat', sans-serif;
+            min-height: 100vh; /* make sure background covers screen */
         }
 
         .welcome-text {

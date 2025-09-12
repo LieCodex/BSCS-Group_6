@@ -1,16 +1,25 @@
-@extends('dashboard.layout')
+@extends('layouts.master')
 
 @section('content')
-    <div class="p-6 space-y-6">
+<div class="p-6 space-y-6">
 
-        <!-- Success message -->
-        @if(session('success'))
-            <div class="bg-green-500 text-white p-2 rounded">
-                {{ session('success') }}
-            </div>
-        @endif
-
-    <!-- Post Form -->
+    <!-- Success message -->
+    @if(session('success'))
+        <div id="successmsg" class="bg-orange-500 text-white p-2 rounded">
+            {{ session('success') }}
+        </div>
+    @endif
+    <script>
+    // Hide the success message after 2 seconds
+    setTimeout(function() {
+        var msg = document.getElementById('successmsg');
+        if (msg) {
+            msg.style.display = 'none';
+        }
+        }, 2000); 
+    </script>
+    <!-- Show post form only for logged-in users -->
+    @auth
     <div class="p-4 border border-gray-700 rounded-lg bg-gray-800">
         <form method="POST" action="/create-post" enctype="multipart/form-data">
             @csrf
@@ -20,115 +29,97 @@
                 class="w-full bg-transparent border-none focus:ring-0 resize-none"
             ></textarea>
 
-            <!-- Preview area (hidden until images selected) -->
+            <!-- Preview area -->
             <div id="imagePreview" class="flex flex-wrap gap-2 mt-2 hidden"></div>
 
             <div class="flex items-center gap-2 mt-2">
-                <!-- Squeal button -->
-                <button 
-                    type="submit"
-                    class="bg-orange-500 text-white px-4 py-1 rounded-full">
-
+                <button type="submit" class="bg-orange-500 text-white px-4 py-1 rounded-full">
                     Squeal
                 </button>
 
-                <!-- Image upload button -->
-<label for="imageInput" class="bg-gray-600 text-white px-4 py-1 rounded-full cursor-pointer">
-    Images
-</label>
-<input type="file" id="imageInput" name="images[]" multiple accept="image/*" class="hidden">
-
+                <label for="imageInput" class="bg-gray-600 text-white px-4 py-1 rounded-full cursor-pointer">
+                    Images
+                </label>
+                <input type="file" id="imageInput" name="images[]" multiple accept="image/*" class="hidden">
             </div>
         </form>
     </div>
+    @endauth
+
+    <!-- Guest message -->
+    @guest
+        <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 text-center text-gray-400">
+            <p>Welcome to <span class="text-orange-400 font-bold">Squeal</span> !</p>
+            <p>Please <a href="{{ route('login') }}" class="text-blue-400 underline">login</a> or 
+               <a href="{{ route('register.form') }}" class="text-blue-400 underline">register</a> 
+               to squeal with others.</p>
+        </div>
+    @endguest
+
     <!-- Posts Feed -->
-    @foreach ($posts as $post)
-    <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 relative">
+    @if(isset($posts) && $posts->count())
+        @foreach ($posts as $post)
+            <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 relative">
 
-        <!-- Header -->
-        <div class="flex justify-between items-start">
-            <h2 class="font-bold text-orange-400">{{ $post->user->name }}</h2>
+                <!-- User info -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                <img 
+                    src="{{ optional(auth()->user())->avatar ?: asset('assets/img/default-avatar.png') }}"
+                    alt="{{ optional(auth()->user())->name ?? 'Guest' }}"
+                    class="w-8 h-8 rounded-full object-cover">
+                        <h2 class="font-bold text-orange-400">
+                            {{ optional($post->user)->name ?? 'Unknown User' }}
+                        </h2>
+                    </div>
 
-            <!-- Hamburger -->
-            <div class="relative">
-                <button onclick="toggleMenu({{ $post->id }})" class="text-gray-400 hover:text-white">
-                    ⋮
-                </button>
-                <!-- Dropdown -->
-                <div id="menu-{{ $post->id }}" class="hidden absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10">
-                    <!-- Edit -->
-                    <a href="{{ route('posts.edit.form', $post->id) }}"
-                    class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">
-                    Edit
-                    </a>
-                    <!-- Delete -->
-                    <form action="{{ route('posts.delete', $post->id) }}" method="POST" onsubmit="return confirm('Delete this post?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
-                            Delete
-                        </button>
-                    </form>
+                    <div class="relative">
+                        @auth
+                        <button onclick="toggleMenu({{ $post->id }})" class="text-gray-400 hover:text-white">⋮</button>
+                        <div id="menu-{{ $post->id }}" class="hidden absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10">
+                            <a href="{{ route('posts.edit.form', $post->id) }}" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Edit</a>
+                            <form action="{{ route('posts.delete', $post->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                        @endauth
+                    </div>
                 </div>
+
+                <!-- Post body -->
+                <p class="text-gray-300 mt-2">{{ $post->body }}</p>
+
+                <!-- Post images -->
+                @if($post->images->count())
+                    <div class="flex flex-wrap gap-2 mt-2">
+                        @foreach($post->images as $image)
+                            <img src="{{ $image->image_path }}" class="w-24 h-24 object-cover rounded-lg border border-gray-700">
+                        @endforeach
+                    </div>
+                @endif
+
+                <!-- Timestamp -->
+                <p class="text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
+
+                <!-- Comments button -->
+                @auth
+                <button onclick="toggleComments({{ $post->id }})" class="mt-2 text-sm text-blue-400 hover:underline">
+                    Comments
+                </button>
+                @endauth
             </div>
-        </div>
-
-        <!-- Body -->
-        <p class="text-gray-300 mt-2">{{ $post->body }}</p>
-
-        <!-- Images -->
-    @if($post->images->count())
-        <div class="flex flex-wrap gap-2 mt-2">
-            @foreach($post->images as $image)
-                <img src="{{ $image->image_path }}" 
-                    class="w-24 h-24 object-cover rounded-lg border border-gray-700">
-            @endforeach
-        </div>
+        @endforeach
+    @else
+        @auth
+            <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 text-center text-gray-400">
+                No posts yet. Be the first to squeal! 
+            </div>
+        @endauth
     @endif
-
-    <!-- Timestamp -->
-    <p class="text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
-
-    <!-- Comment button -->
-    <button onclick="toggleComments({{ $post->id }})"
-            class="mt-2 text-sm text-blue-400 hover:underline">
-        View Comments
-    </button>
-
 </div>
-@endforeach
-
-    </div>
+<script src="{{ asset('assets/js/post_menu.js') }}"></script>
 @endsection
-
-<script>
-function toggleMenu(postId) {
-    const menu = document.getElementById(`menu-${postId}`);
-    document.querySelectorAll('[id^="menu-"]').forEach(m => {
-        if (m !== menu) m.classList.add('hidden');
-    });
-    menu.classList.toggle('hidden');
-}
-
-document.getElementById('imageInput')?.addEventListener('change', function(e) {
-    let preview = document.getElementById('imagePreview');
-    preview.innerHTML = ''; // clear previous previews
-
-    if (e.target.files.length > 0) {
-        preview.classList.remove('hidden'); // show preview container
-    } else {
-        preview.classList.add('hidden'); // hide if no images selected
-    }
-
-    Array.from(e.target.files).forEach(file => {
-        let reader = new FileReader();
-        reader.onload = ev => {
-            let img = document.createElement('img');
-            img.src = ev.target.result;
-            img.className = "w-24 h-24 object-cover rounded-lg border border-gray-700";
-            preview.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-    });
-});
-</script>

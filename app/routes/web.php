@@ -11,7 +11,7 @@ Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->route('dashboard.home');
     }
-    return view('home');
+    return view('dashboard.home');
 });
 
 // Post routes (protected by auth)
@@ -29,27 +29,32 @@ Route::middleware('auth')->group(function () {
     Route::delete('/comments/{comment}', [CommentController::class, 'deleteComment'])->name('comments.delete');
 });
 
-// Dashboard routes
-Route::prefix('dashboard')->middleware('auth')->group(function () {
-    Route::get('/', function () {
-        $posts = \App\Models\Post::latest()->get();
-        return view('dashboard.home', compact('posts'));
-    })->name('dashboard.home');
+// Home route (no dashboard prefix)
+Route::middleware('auth')->get('/home', function () {
+    $posts = \App\Models\Post::latest()->get();
+    return view('dashboard.home', compact('posts'));
+})->name('dashboard.home');
 
+// Other dashboard routes
+Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('/profile', fn() => view('dashboard.profile'))->name('dashboard.profile');
     Route::get('/messages', fn() => view('dashboard.messages'))->name('dashboard.messages');
     Route::get('/notifications', fn() => view('dashboard.notifications'))->name('dashboard.notifications');
-    Route::get('/bookmarks', fn() => view('dashboard.bookmarks'))->name('dashboard.bookmarks');
 });
 
 // Registration & Auth
 Route::get('/register-form', function () {
-    return view('register-form');
+    return view('auth.register-form');
 })->name('register.form');
 
+Route::get('/login', function () {
+    return view('auth.login-form');
+})->name('login.form');
+
 Route::post('/register', [UserController::class, 'register'])->name('register');
-Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/login', [UserController::class, 'login'])->name('login');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+
 
 // Google OAuth
 Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.login');

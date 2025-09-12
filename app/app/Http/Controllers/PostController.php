@@ -11,7 +11,7 @@ class PostController extends Controller
 {
     // Show create post form
     public function showCreatePost() {
-        return view('create-post');
+        return view('dashboard.create-post');
     }
 
     // Create a post
@@ -82,7 +82,7 @@ class PostController extends Controller
             }
         }
 
-        return redirect('/dashboard')->with('success', 'Post updated successfully!');
+        return redirect()->route('dashboard.home')->with('success', 'Post created successfully!');
     }
 
     // Delete post
@@ -105,18 +105,18 @@ class PostController extends Controller
 
         $post->delete();
 
-        return redirect('/dashboard')->with('success', 'Post deleted successfully!');
+        return redirect('/home')->with('success', 'Post deleted successfully!');
     }
 
     // Show all posts
     public function showAllPosts() {
         $posts = Post::with('images')->latest()->get();
-        return view('home', ['posts' => $posts]);
+        return view('dashboard.home', ['posts' => $posts]);
     }
 
     // Show logged-in user's posts
     public function showUserPosts() {
         $posts = Post::with('images')->where('user_id', auth()->id())->latest()->get();
-        return view('home', ['posts' => $posts]);
+        return view('dashboard.home', ['posts' => $posts]);
     }
 }
