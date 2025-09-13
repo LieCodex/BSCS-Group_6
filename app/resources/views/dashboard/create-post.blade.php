@@ -2,33 +2,48 @@
 
 @section('content')
 <div class="p-6 space-y-6">
-    <!-- Success Message -->
-    @if(session('success'))
-        <div class="bg-green-500 text-white p-2 rounded">
-            {{ session('success') }}
-        </div>
-    @endif
 
-    <!-- Create Post -->
-    <div class="p-4 border border-gray-700 rounded-lg bg-gray-800">
-        <form method="POST" action="{{ route('posts.create') }}" enctype="multipart/form-data" class="space-y-4">
+    <!-- Trigger (Textbox) -->
+    <textarea 
+        id="openModal"
+        placeholder="What's happening?"
+        class="w-full bg-transparent border border-gray-600 rounded-lg p-2 text-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none cursor-pointer"
+        rows="3"
+        readonly
+        tabindex="0"
+        aria-haspopup="dialog"
+        aria-controls="postModal"
+    ></textarea>
+
+</div>
+
+<!-- Modal -->
+<div id="postModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50" role="dialog" aria-modal="true" aria-labelledby="postModalLabel">
+    <div class="bg-gray-800 rounded-lg p-6 w-full max-w-lg shadow-lg relative">
+
+        <!-- Close Button -->
+        <button id="closeModal" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl" aria-label="Close">&times;</button>
+
+        <!-- Create Post -->
+        <form method="POST" action="{{ route('posts.create') }}" enctype="multipart/form-data" class="space-y-4" id="postForm">
             @csrf
+
+            <h2 id="postModalLabel" class="text-lg font-semibold text-gray-100">Create post</h2>
 
             <!-- Post Body -->
             <textarea 
                 name="body"
                 placeholder="What's happening?"
                 class="w-full bg-transparent border border-gray-600 rounded-lg p-2 text-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none"
-                rows="3"
+                rows="4"
                 required
             ></textarea>
 
             <!-- Image Upload -->
             <div>
                 <label for="imageInput" class="cursor-pointer bg-gray-700 text-gray-200 px-4 py-2 rounded-lg inline-flex items-center hover:bg-gray-600">
-                📷 Upload Images
-            </label>
-
+                    📷 Upload Images
+                </label>
                 <input 
                     type="file" 
                     name="images[]" 
@@ -47,28 +62,86 @@
                 <button type="submit" class="bg-orange-500 text-white px-4 py-1 rounded-full hover:bg-orange-600">
                     Squeal
                 </button>
-                <a href="{{ route('dashboard.home') }}" class="bg-gray-600 text-white px-4 py-1 rounded-full hover:bg-gray-500">
+                <button type="button" id="cancelModal" class="bg-gray-600 text-white px-4 py-1 rounded-full hover:bg-gray-500">
                     Cancel
-                </a>
+                </button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- JS for preview -->
+<!-- JS -->
 <script>
-document.getElementById('imageInput')?.addEventListener('change', function(e) {
-    let previewContainer = document.getElementById('previewContainer');
-    previewContainer.innerHTML = ''; // reset
-    Array.from(e.target.files).forEach(file => {
-        let reader = new FileReader();
-        reader.onload = e => {
-            let img = document.createElement('img');
-            img.src = e.target.result;
-            img.className = "w-24 h-24 object-cover rounded-lg";
-            previewContainer.appendChild(img);
-        };
-        reader.readAsDataURL(file);
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('postModal');
+    const openTrigger = document.getElementById('openModal');
+    const closeBtn = document.getElementById('closeModal');
+    const cancelBtn = document.getElementById('cancelModal');
+    const imageInput = document.getElementById('imageInput');
+    const previewContainer = document.getElementById('previewContainer');
+
+    if (!openTrigger) {
+        console.warn('Modal open trigger (#openModal) not found.');
+        return;
+    }
+
+    const openModal = () => {
+        modal?.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden'); // stop background scroll
+        // focus textarea inside modal
+        modal?.querySelector('textarea[name="body"]')?.focus();
+    };
+
+    const closeModal = () => {
+        modal?.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+        openTrigger?.focus(); // return focus to trigger
+    };
+
+    // click to open
+    openTrigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal();
+    });
+
+    // keyboard activation (Enter / Space)
+    openTrigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openModal();
+        }
+    });
+
+    // close handlers (safely with optional chaining)
+    closeBtn?.addEventListener('click', closeModal);
+    cancelBtn?.addEventListener('click', closeModal);
+
+    // click outside content to close
+    modal?.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    // close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+
+    // Image preview (safe)
+    imageInput?.addEventListener('change', function(e) {
+        if (!previewContainer) return;
+        previewContainer.innerHTML = '';
+        Array.from(e.target.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = ev => {
+                const img = document.createElement('img');
+                img.src = ev.target.result;
+                img.className = "w-24 h-24 object-cover rounded-lg";
+                previewContainer.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
     });
 });
 </script>

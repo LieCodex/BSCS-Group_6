@@ -18,6 +18,7 @@
         }
         }, 2000); 
     </script>
+    
     <!-- Show post form only for logged-in users -->
     @auth
     <div class="p-4 border border-gray-700 rounded-lg bg-gray-800">
@@ -107,16 +108,20 @@
 
                 <!-- Comments button -->
                 @auth
-                <button onclick="toggleComments({{ $post->id }})" class="mt-2 text-sm text-blue-400 hover:underline">
-                    Comments
-                </button>
+                    <a href="{{ route('posts.show', $post->id) }}"
+                    class="inline-flex items-center border border-white text-white px-3 py-1 rounded-full mt-3 hover:bg-white hover:text-black transition w-fit">
+                        <img src="{{ asset('assets/img/comment.svg') }}" 
+                            alt="Comment Icon" 
+                            class="w-5 h-5 mr-1">
+                        <span class="ml-1">{{ $post->comments->count() }}</span>
+                    </a>
                 @endauth
             </div>
         @endforeach
     @else
         @auth
             <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 text-center text-gray-400">
-                No posts yet. Be the first to squeal! 
+                No posts yet.
             </div>
         @endauth
     @endif

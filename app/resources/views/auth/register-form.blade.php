@@ -68,7 +68,7 @@
                                             class="btn btn-orange btn-user btn-block flex items-center justify-center">
                                                 <img src="{{ asset('assets/img/GLogo.png') }}" 
                                                     alt="Google Logo" class="w-5 h-5 mr-2 inline-block">
-                                                Sign in with Google
+                                                Sign up with Google
                                             </a>
                                         </form>
 
