@@ -66,7 +66,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                 <img 
-                    src="{{ optional(auth()->user())->avatar ?: asset('assets/img/default-avatar.png') }}"
+                    src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.png') }}"
                     alt="{{ optional(auth()->user())->name ?? 'Guest' }}"
                     class="w-8 h-8 rounded-full object-cover">
                         <h2 class="font-bold text-orange-400">
