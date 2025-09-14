@@ -8,7 +8,7 @@
 <body class="bg-gray-900 text-white flex h-screen">
 
     <!-- Sidebar (Left) -->
-    <aside class="w-60 h-screen bg-gray-800 p-6 flex flex-col justify-between sticky">
+    <aside class="w-60 h-screen bg-gray-800 p-6 flex flex-col justify-between sticky top-0">
         <div>
             <a href="{{ route('dashboard.home') }}">
                 <img src="{{ asset('assets/img/squel logo orange.png') }}" alt="logo" class="h-16 w-16 mb-6">
@@ -30,47 +30,50 @@
             </nav>
         </div>
 
-<!-- User Dropdown -->
-<div class="flex items-center justify-between mb-3" x-data="{ open: false }">
-    @auth
-        <button @click="open = !open" class="focus:outline-none">
-            <img 
-                src="{{ auth()->user()->avatar ?: asset('assets/img/default-avatar.png') }}"
-                alt="{{ auth()->user()->name }}"
-                class="w-8 h-8 rounded-full object-cover">
-        </button>
-        <div>
-            <p class="font-bold ml-2">{{ auth()->user()->name }}</p>
+        <!-- User Dropdown -->
+        <div class="relative flex items-center mb-3" x-data="{ open: false }">
+            @auth
+                <!-- Avatar button -->
+                <button @click="open = !open" class="focus:outline-none">
+                    <img 
+                        src="{{ auth()->user()->avatar ?: asset('assets/img/default-avatar.png') }}"
+                        alt="{{ auth()->user()->name }}"
+                        class="w-8 h-8 rounded-full object-cover">
+                </button>
+
+                <!-- Username -->
+                <p class="font-bold ml-2">{{ auth()->user()->name }}</p>
+
+                <!-- Dropdown Menu -->
+                <div x-cloak
+                     x-show="open"
+                     x-transition
+                     @click.outside="open = false"
+                     class="absolute left-10 bottom-full mb-2 w-40 bg-white border rounded-lg shadow-lg z-50 py-2 text-gray-700">
+                    <ul>
+                        <li>
+                            <a href="" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
+                        </li>
+                        <li>
+                            <form method="POST" action="/logout">
+                                @csrf
+                                <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            @else
+                <div class="flex items-center gap-2">
+                    <img 
+                        src="{{ asset('assets/img/default-avatar.svg') }}"
+                        alt="Guest"
+                        class="w-8 h-8 rounded-full object-cover">
+                    <p class="font-bold ml-2">Guest</p>
+                </div>
+            @endauth
         </div>
-        <div x-cloak
-             x-show="open"
-             x-transition
-             @click.outside="open = false"
-             class="absolute right-0 top-full mb-2 w-30 bg-white border rounded-lg shadow-lg z-50 py-2">
-            <ul class="py-2 text-gray-700">
-                <li>
-                    <a href="" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
-                </li>
-                <li>
-                    <form method="POST" action="/logout">
-                        @csrf
-                        <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">
-                            Logout
-                        </button>
-                    </form>
-                </li>
-            </ul>
-        </div>
-    @else
-        <div class="flex items-center gap-2">
-            <img 
-                src="{{ asset('assets/img/default-avatar.svg') }}"
-                alt="Guest"
-                class="w-8 h-8 rounded-full object-cover">
-            <p class="font-bold ml-2">Guest</p>
-        </div>
-    @endauth
-</div>
     </aside>
 
     <!-- Main Feed (middle) -->
