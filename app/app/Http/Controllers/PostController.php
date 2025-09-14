@@ -108,18 +108,24 @@ class PostController extends Controller
         return redirect('/home')->with('success', 'Post deleted successfully!');
     }
 
-    // Show all posts
+    // Show all posts (global feed)
     public function showAllPosts() {
-        $posts = Post::with('images')->latest()->get();
+        $posts = Post::with(['user', 'images', 'comments'])
+                    ->latest()
+                    ->get();
+
         return view('dashboard.home', ['posts' => $posts]);
     }
 
-    // Show logged-in user's posts
+    // Show logged-in user's posts (profile page)
     public function showUserPosts() {
-        $posts = Post::with('images')->where('user_id', auth()->id())->latest()->get();
-        return view('dashboard.home', ['posts' => $posts]);
-    }
+        $posts = Post::with(['user', 'images', 'comments'])
+                    ->where('user_id', auth()->id())
+                    ->latest()
+                    ->get();
 
+        return view('dashboard.profile', ['posts' => $posts]);
+    }
   // Show single post with comments
     public function show(Post $post){
     $post->load(['user', 'images', 'comments.user']); // eager load relationships

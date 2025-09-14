@@ -15,7 +15,7 @@
 
     <!-- Avatar -->
     <div class="relative">
-        <img src="{{ auth()->user()->avatar ?? 'https://via.placeholder.com/150' }}" 
+        <img src="{{ auth()->user()->avatar ?? asset('assets/img/default-avatar.svg') }}" 
              alt="{{ auth()->user()->name }}" 
              class="w-32 h-32 rounded-full border-4 border-gray-900 absolute -top-16 left-6 object-cover">
     </div>
@@ -23,7 +23,6 @@
     <!-- User Info -->
     <div class="mt-24 ml-6">
         <h1 class="text-2xl font-bold text-white">{{ auth()->user()->name }}</h1>
-        <p class="text-gray-400">@{{ Str::slug(auth()->user()->name) }}</p>
         <p class="mt-3 text-gray-300">
             {{ auth()->user()->bio ?? 'This user hasn’t added a bio yet.' }}
         </p>
@@ -31,36 +30,82 @@
 
     <!-- Profile Details -->
     <div class="mt-5 ml-6 text-gray-400 text-sm space-y-2">
-        <p><span class="font-semibold text-white">Email:</span> johndoe@example.com</p>
-        <p><span class="font-semibold text-white">Joined:</span> January 2024</p>
-        <p><span class="font-semibold text-white">Posts:</span> 42</p>
-    </div>
-
-    <!-- Navigation Buttons -->
-    <div class="mt-6 ml-6 flex gap-3">
-        <a href="{{ url('/my-posts') }}" 
-           class="px-4 py-2 border border-gray-600 text-gray-300 rounded-full hover:bg-gray-700 hover:text-white">
-            My Posts
-        </a>
+        <p><span class="font-semibold text-white">Email:</span> {{ auth()->user()->email }}</p>
+        <p><span class="font-semibold text-white">Joined:</span> {{ auth()->user()->created_at->format('F Y') }}</p>
+        <p><span class="font-semibold text-white">Posts:</span> {{ $posts->count() }}</p>
     </div>
 
     <!-- Divider -->
     <hr class="my-6 border-gray-700">
 
-    <!-- Posts Feed Preview -->
-    <div class="space-y-4">
-        <h2 class="text-xl font-bold text-white">Posts</h2>
+    <!-- Posts Feed -->
+    @if($posts->count())
+        @foreach ($posts as $post)
+            <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 relative">
 
-        <div class="p-4 border border-gray-700 rounded-lg bg-gray-800">
-            <p class="text-gray-300">This is my first post on the platform!</p>
-            <p class="text-xs text-gray-500 mt-2">Posted 2 days ago</p>
-        </div>
+                <!-- User info -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <img 
+                            src="{{ $post->user->avatar ?? asset('assets/img/default-avatar.svg') }}"
+                            alt="{{ $post->user->name }}"
+                            class="w-8 h-8 rounded-full object-cover">
+                        <h2 class="font-bold text-orange-400">
+                            {{ $post->user->name }}
+                        </h2>
+                    </div>
 
-        <div class="p-4 border border-gray-700 rounded-lg bg-gray-800">
-            <p class="text-gray-300">Loving the new features 🚀</p>
-            <p class="text-xs text-gray-500 mt-2">Posted 5 days ago</p>
+                    <div class="relative">
+                        @auth
+                            <button onclick="toggleMenu({{ $post->id }})" class="text-gray-400 hover:text-white">⋮</button>
+                            <div id="menu-{{ $post->id }}" class="hidden absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10">
+                                <a href="{{ route('posts.edit.form', $post->id) }}" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Edit</a>
+                                <form action="{{ route('posts.delete', $post->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        @endauth
+                    </div>
+                </div>
+
+                <!-- Post body -->
+                <p class="text-gray-300 mt-2">{{ $post->body }}</p>
+
+                <!-- Post images -->
+                @if($post->images->count())
+                    <div class="flex flex-wrap gap-2 mt-2">
+                        @foreach($post->images as $image)
+                            <img src="{{ $image->image_path }}" class="w-24 h-24 object-cover rounded-lg border border-gray-700">
+                        @endforeach
+                    </div>
+                @endif
+
+                <!-- Timestamp -->
+                <p class="text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
+
+                <!-- Comments button -->
+                @auth
+                    <a href="{{ route('posts.show', $post->id) }}"
+                       class="inline-flex items-center border border-white text-white px-3 py-1 rounded-full mt-3 hover:bg-white hover:text-black transition w-fit">
+                        <img src="{{ asset('assets/img/comment.svg') }}" 
+                            alt="Comment Icon" 
+                            class="w-5 h-5 mr-1">
+                        <span class="ml-1">{{ $post->comments->count() }}</span>
+                    </a>
+                @endauth
+            </div>
+        @endforeach
+    @else
+        <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 text-center text-gray-400">
+            No posts yet.
         </div>
-    </div>
+    @endif
+
+    <script src="{{ asset('assets/js/post_menu.js') }}"></script>
 
 </div>
 @endsection

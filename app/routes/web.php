@@ -42,6 +42,11 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('/notifications', fn() => view('dashboard.notifications'))->name('dashboard.notifications');
 });
 
+// Profile route (only show logged-in user's posts)
+Route::get('/profile', [PostController::class, 'showUserPosts'])
+    ->middleware('auth')
+    ->name('dashboard.profile');
+
 // Registration & Auth
 Route::get('/register-form', function () {
     return view('auth.register-form');
