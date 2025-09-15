@@ -59,7 +59,7 @@ Route::get('/login', function () {
 Route::post('/register', [UserController::class, 'register'])->name('register');
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
-
+Route::put('/profile/update', [UserController::class,'updateProfile'])->name('profile.update');
 
 // Google OAuth
 Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.login');

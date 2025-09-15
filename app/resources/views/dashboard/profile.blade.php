@@ -4,16 +4,55 @@
 <div class="max-w-4xl mx-auto p-6">
 
     <!-- Header / Banner -->
-    <div class="relative h-40 bg-gray-700 rounded-lg">
+    <div x-data="{ open: false }" class="relative h-40 bg-gray-700 rounded-lg">
         <!-- Edit Profile Button -->
         <div class="absolute top-2 right-2">
-            <a href="#" class="px-4 py-2 bg-gray-800 text-white rounded-full text-sm hover:bg-gray-700">
+            <button 
+                @click="open = true" 
+                class="px-4 py-2 bg-gray-800 text-white rounded-full text-sm hover:bg-gray-700">
                 Edit Profile
-            </a>
+            </button>
+        </div>
+
+    <!-- Modal -->
+        <div 
+            x-show="open" 
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            x-cloak
+        >
+            <div class="bg-gray-800 text-white rounded-lg shadow-lg w-full max-w-md p-6">
+                <h2 class="text-xl font-semibold mb-4">Edit Bio</h2>
+
+                <!-- Bio Form -->
+                <form action="{{ route('profile.update') }}" method="POST" class="space-y-4">
+                    @csrf
+                    @method('PUT')
+
+                    <!-- Bio -->
+                    <div>
+                        <label for="bio" class="block text-sm text-gray-300">Bio</label>
+                        <textarea name="bio" id="bio" rows="3" 
+                            class="w-full rounded-lg p-2 bg-gray-700 text-white">{{ old('bio', auth()->user()->bio) }}</textarea>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" 
+                                @click="open = false"
+                                class="px-4 py-2 bg-gray-600 rounded-lg hover:bg-gray-500">
+                            Cancel
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
-    <!-- Avatar -->
+     <!-- Avatar -->
     <div class="relative">
         <img src="{{ auth()->user()->avatar ?? asset('assets/img/default-avatar.svg') }}" 
              alt="{{ auth()->user()->name }}" 
