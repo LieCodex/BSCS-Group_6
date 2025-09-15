@@ -53,4 +53,28 @@ class UserController extends Controller
         }
           return redirect()->route('posts.all');
     }
+
+   public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'bio' => 'nullable|string|max:1000',
+            // 'avatar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
+
+        $user = auth()->user();
+
+        // Update bio
+        $user->bio = $request->input('bio');
+
+        // Update avatar if uploaded
+        // if ($request->hasFile('avatar')) {
+        //     $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        //     $user->avatar = $avatarPath;
+        // }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
 }
