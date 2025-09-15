@@ -12,22 +12,57 @@
         <div>
             <a href="{{ route('dashboard.home') }}">
                 <img src="{{ asset('assets/img/squel logo orange.png') }}" alt="logo" class="h-16 w-16 mb-6">
-            </a>
-            
-            <nav class="space-y-6">
-                <a href="{{ route('dashboard.home') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
-                    <img src="{{ asset('assets/img/home.svg') }}" alt="Home" class="h-6 w-6"> Home
-                </a>
-                <a href="{{ route('dashboard.notifications') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
-                    <img src="{{ asset('assets/img/notification.svg') }}" alt="Notifications" class="h-6 w-6"> Notifications
-                </a>
-                <a href="{{ route('dashboard.messages') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
-                    <img src="{{ asset('assets/img/messages.png') }}" alt="Messages" class="h-6 w-6"> Messages
-                </a>
-                <a href="{{ route('dashboard.profile') }}" class="flex items-center gap-3 text-lg hover:text-orange-400">
-                    <img src="{{ asset('assets/img/profile.png') }}" alt="Profile" class="h-6 w-6"> Profile
-                </a>
-            </nav>
+            </a> 
+                <nav class="space-y-6">
+                    <!-- Home -->
+                    <a href="{{ route('dashboard.home') }}" 
+                    class="flex items-center gap-3 text-lg text-white transition group hover:text-orange-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                            class="h-6 w-6 transition text-white group-hover:text-orange-500" 
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                                d="M3 9.75L12 3l9 6.75V21a.75.75 0 0 1-.75.75H3.75A.75.75 0 0 1 3 21V9.75z"/>
+                        </svg>
+                        Home
+                    </a>
+
+                    <!-- Notifications -->
+                    <a href="{{ route('dashboard.notifications') }}" 
+                    class="flex items-center gap-3 text-lg text-white transition group hover:text-orange-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                            class="h-6 w-6 transition text-white group-hover:text-orange-500" 
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 0 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L3 17h5m7 4a3 3 0 0 1-6 0"/>
+                        </svg>
+                        Notifications
+                    </a>
+
+                    <!-- Messages (oblong chat bubble with tail) -->
+                    <a href="{{ route('dashboard.messages') }}" 
+                    class="flex items-center gap-3 text-lg text-white transition group hover:text-orange-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                            class="h-6 w-6 transition text-white group-hover:text-orange-500"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <!-- Oblong chat bubble with tail -->
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                                d="M21 11.5c0 4.142-3.806 7.5-8.5 7.5-1.143 0-2.228-.19-3.2-.53L5 20l1.2-3.2C5.45 15.5 4.5 13.6 4.5 11.5 4.5 7.358 8.306 4 13 4s8 3.358 8 7.5z"/>
+                        </svg>
+                        Messages
+                    </a>
+
+                    <!-- Profile -->
+                    <a href="{{ route('dashboard.profile') }}" 
+                    class="flex items-center gap-3 text-lg text-white transition group hover:text-orange-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                            class="h-6 w-6 transition text-white group-hover:text-orange-500" 
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        Profile
+                    </a>
+                </nav>
         </div>
 
         <!-- User Dropdown -->

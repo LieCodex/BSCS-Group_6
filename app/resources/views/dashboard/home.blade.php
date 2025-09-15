@@ -108,14 +108,21 @@
 
                 <!-- Comments button -->
                 @auth
-                    <a href="{{ route('posts.show', $post->id) }}"
-                    class="inline-flex items-center border border-white text-white px-3 py-1 rounded-full mt-3 hover:bg-white hover:text-black transition w-fit">
-                        <img src="{{ asset('assets/img/comment.svg') }}" 
-                            alt="Comment Icon" 
-                            class="w-5 h-5 mr-1">
-                        <span class="ml-1">{{ $post->comments->count() }}</span>
-                    </a>
+                    <form action="{{ route('posts.show', $post->id) }}" method="GET">
+                        <button type="submit" class="group inline-flex items-center border border-white text-white px-3 py-1 rounded-full mt-3 bg-gray-800 hover:border-orange-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                class="w-5 h-5 mr-1 transition text-white group-hover:text-orange-500" 
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" 
+                                    d="M7 8h10M7 12h6m-6 4h4m10-2.586V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9l4 4v-5.586a2 2 0 0 0 .586-1.414z"/>
+                            </svg>
+                            <span class="transition text-white group-hover:text-orange-500">
+                                {{ $post->comments->count() }}
+                            </span>
+                        </button>
+                    </form>
                 @endauth
+
             </div>
         @endforeach
     @else
