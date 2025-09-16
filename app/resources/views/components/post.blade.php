@@ -52,7 +52,7 @@
         </form>
     @else
         <p class="text-gray-400">Please 
-            <a href="{{ route('login.form') }}" class="text-blue-400 underline">login</a> 
+            <a href="{{ route('login.form') }}" class="text-orange-400 underline">login</a> 
             to comment.
         </p>
     @endauth
