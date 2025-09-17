@@ -32,43 +32,60 @@
         <p class="text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
     </div>
 
-<!-- Comments Section -->
-<div class="p-4 border border-gray-700 rounded-lg bg-gray-800 mt-6">
-    <h3 class="font-bold mb-3 text-orange-400">
-        Comments ({{ $post->comments->count() }})
-    </h3>
+    <!-- Comments Section -->
+    <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 mt-6">
+        <h3 class="font-bold mb-3 text-orange-400">
+            Comments ({{ $post->comments->count() }})
+        </h3>
 
-    <!-- Add Comment Form -->
-    @auth
-        <form method="POST" action="{{ route('comments.create', $post->id) }}" class="mb-4">
-            @csrf
-            <textarea name="content" rows="2" 
-                class="w-full p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:ring-0" 
-                placeholder="Write a comment..."></textarea>
-            <button type="submit" 
-                class="mt-2 bg-orange-500 text-white px-4 py-1 rounded-full">
-                Comment
-            </button>
-        </form>
-    @else
-        <p class="text-gray-400">Please 
-            <a href="{{ route('login.form') }}" class="text-orange-400 underline">login</a> 
-            to comment.
-        </p>
-    @endauth
+        <!-- Add Comment Form -->
+        @auth
+            <div class="mt-4">
+                <form action="{{ route('comments.create', $post->id) }}" method="POST">
+                    @csrf
+                    <div class="relative">
+                        <textarea 
+                            name="content" 
+                            class="w-full h-16 max-h-40 p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:ring-0 pr-32 resize-none overflow-auto"
+                            placeholder="Write a comment..." 
+                            rows="2" 
+                            required
+                            onfocus="this.nextElementSibling.classList.remove('hidden');"
+                            onblur="if(!this.value) this.nextElementSibling.classList.add('hidden');"
+                            oninput="autoGrow(this)"
+                            style="box-sizing: border-box; padding-bottom: 2.5rem;" 
+                        ></textarea>
+                        <div class="absolute right-2 bottom-2 flex gap-2 hidden z-10">
+                            <button type="submit" class="bg-orange-400 text-white px-4 py-1 rounded-full">Comment</button>
+                            <button type="button" class="bg-gray-500 text-white px-4 py-1 rounded-full" onclick="this.form.reset(); this.parentElement.classList.add('hidden');">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        @else
+            <p class="text-gray-400">Please 
+                <a href="{{ route('login.form') }}" class="text-orange-400 underline">login</a> 
+                to comment.
+            </p>
+        @endauth
 
-    <!-- Comments List -->
-    @if($post->comments->count())
-        @foreach($post->comments->whereNull('parent_comment_id') as $comment)
-            <x-comment-card :comment="$comment" />
-        @endforeach
-    @else
-        <p class="text-gray-400">No comments yet.</p>
-    @endif
-</div>
-
-
+        <!-- Comments List -->
+        @if($post->comments->count())
+            @foreach($post->comments->whereNull('parent_comment_id') as $comment)
+                <x-comment :comment="$comment" />
+            @endforeach
+        @else
+            <p class="text-gray-400">No comments yet.</p>
+        @endif
     </div>
-
 </div>
+
+<script>
+function autoGrow(element) {
+    element.style.height = "4rem"; 
+    if (element.scrollHeight > element.clientHeight) {
+        element.style.height = (element.scrollHeight) + "px";
+    }
+}
+</script>
 @endsection

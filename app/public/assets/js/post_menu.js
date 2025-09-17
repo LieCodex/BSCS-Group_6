@@ -17,3 +17,10 @@ document.addEventListener('click', function(event) {
         }
     });
 });
+// Hide the success message after 2 seconds
+setTimeout(function() {
+    var msg = document.getElementById('successmsg');
+    if (msg) {
+        msg.style.display = 'none';
+    }
+    }, 2000); 

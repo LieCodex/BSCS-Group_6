@@ -9,15 +9,6 @@
             {{ session('success') }}
         </div>
     @endif
-    <script>
-    // Hide the success message after 2 seconds
-    setTimeout(function() {
-        var msg = document.getElementById('successmsg');
-        if (msg) {
-            msg.style.display = 'none';
-        }
-        }, 2000); 
-    </script>
     
     <!-- Show post form only for logged-in users -->
     @auth
@@ -51,8 +42,8 @@
     @guest
         <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 text-center text-gray-400">
             <p>Welcome to <span class="text-orange-400 font-bold">Squeal</span> !</p>
-            <p>Please <a href="{{ route('login') }}" class="text-orange-400 underline">login</a> or 
-               <a href="{{ route('register.form') }}" class="text-orange-400 underline">register</a> 
+            <p>Please <a href="{{ route('login') }}" class="text-orange-400">login</a> or 
+               <a href="{{ route('register.form') }}" class="text-orange-400">register</a> 
                to squeal with others.</p>
         </div>
     @endguest
@@ -76,17 +67,19 @@
 
                     <div class="relative">
                         @auth
-                        <button onclick="toggleMenu({{ $post->id }})" class="text-gray-400 hover:text-white">⋮</button>
-                        <div id="menu-{{ $post->id }}" class="hidden absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10">
-                            <a href="{{ route('posts.edit.form', $post->id) }}" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Edit</a>
-                            <form action="{{ route('posts.delete', $post->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
-                                    Delete
-                                </button>
-                            </form>
-                        </div>
+                            @if(auth()->id() === $post->user_id)
+                                <button onclick="toggleMenu({{ $post->id }})" class="text-gray-400 hover:text-white">⋮</button>
+                                <div id="menu-{{ $post->id }}" class="hidden absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10">
+                                    <a href="{{ route('posts.edit.form', $post->id) }}" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Edit</a>
+                                    <form action="{{ route('posts.delete', $post->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
                         @endauth
                     </div>
                 </div>

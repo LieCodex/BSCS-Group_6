@@ -45,4 +45,30 @@ class CommentController extends Controller
 
         return redirect()->back()->with('success', 'Comment deleted successfully.');
     }
+    // Edit comment
+    public function edit(Comment $comment)
+    {
+        if (auth()->id() !== $comment->user_id) {
+            return redirect()->back()->withErrors('Unauthorized action.');
+        }
+        return view('components.edit-comment', compact('comment'));
+    }
+
+    // Update comment
+    public function update(Request $request, Comment $comment)
+    {
+        if (auth()->id() !== $comment->user_id) {
+            return redirect()->back()->withErrors('Unauthorized action.');
+        }
+
+        $validated = $request->validate([
+            'content' => 'required|string|max:1000'
+        ]);
+
+        $comment->update([
+            'content' => $validated['content']
+        ]);
+
+        return redirect()->route('posts.show', $comment->post_id);
+}
 }

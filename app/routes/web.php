@@ -66,3 +66,5 @@ Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.l
 Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
