@@ -70,7 +70,7 @@
                 <!-- Avatar button -->
                 <button @click="open = !open" class="focus:outline-none">
                     <img 
-                        src="{{ auth()->user()->avatar ?: asset('assets/img/default-avatar.png') }}"
+                        src="{{ auth()->user()->avatar ?? asset('assets/img/default-avatar.svg') }}"
                         alt="{{ auth()->user()->name }}"
                         class="w-8 h-8 rounded-full object-cover">
                 </button>
@@ -80,10 +80,10 @@
 
                 <!-- Dropdown Menu -->
                 <div x-cloak
-                     x-show="open"
-                     x-transition
-                     @click.outside="open = false"
-                     class="absolute left-10 bottom-full mb-2 w-40 bg-white border rounded-lg shadow-lg z-50 py-2 text-gray-700">
+                    x-show="open"
+                    x-transition
+                    @click.outside="open = false"
+                    class="absolute left-10 bottom-full mb-2 w-40 bg-white border rounded-lg shadow-lg z-50 py-2 text-gray-700">
                     <ul>
                         <li>
                             <a href="" class="block px-4 py-2 hover:bg-gray-100">Settings</a>

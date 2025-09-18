@@ -23,10 +23,14 @@ Route::middleware('auth')->group(function () {
     Route::put('/edit-post/{post}', [PostController::class, 'updatePost'])->name('posts.update');
 
     Route::delete('/delete-post/{post}', [PostController::class, 'deletePost'])->name('posts.delete');
+    Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
     // Comment routes
     Route::post('/posts/{post}/comments', [CommentController::class, 'createComment'])->name('comments.create');
     Route::delete('/comments/{comment}', [CommentController::class, 'deleteComment'])->name('comments.delete');
+    
+    Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
 });
 
 // Home route (no dashboard prefix)
@@ -65,6 +69,3 @@ Route::put('/profile/update', [UserController::class,'updateProfile'])->name('pr
 Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
-Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');

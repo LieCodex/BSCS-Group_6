@@ -11,7 +11,7 @@ class PostController extends Controller
 {
     // Show create post form
     public function showCreatePost() {
-        return view('dashboard.create-post');
+        return view('components.create-post');
     }
 
     // Create a post
@@ -50,7 +50,7 @@ class PostController extends Controller
         if (auth()->id() !== $post->user_id) {
             return redirect('/');
         }
-        return view('dashboard.edit-post', ['post' => $post]);
+        return view('components.edit-post', ['post' => $post]);
     }
 
     // Update post
