@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FollowController;
 
 Route::get('/', function () {
     // If user is authenticated, redirect to Tailwind dashboard
@@ -69,3 +70,5 @@ Route::put('/profile/update', [UserController::class,'updateProfile'])->name('pr
 Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 
+Route::post('/follow/{user}', [FollowController::class, 'follow'])->name('follow');
+Route::delete('/unfollow/{user}', [FollowController::class, 'unfollow'])->name('unfollow');

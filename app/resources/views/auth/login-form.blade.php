@@ -42,8 +42,7 @@
                                                     placeholder="Email" required>
                                             </div>
                                             <div class="form-group mt-3">
-                                                <input name="loginpassword" type="password"
-                                                    class="form-control form-control-user" placeholder="Password" required>
+                                                <input name="loginpassword" type="password" class="form-control form-control-user" placeholder="Password" required>
                                             </div>
                                             <button class="btn btn-orange btn-user btn-block mt-4">Login</button>
                                             <hr>

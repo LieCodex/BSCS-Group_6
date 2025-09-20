@@ -72,7 +72,10 @@
         <p><span class="font-semibold text-white">Email:</span> {{ auth()->user()->email }}</p>
         <p><span class="font-semibold text-white">Joined:</span> {{ auth()->user()->created_at->format('F Y') }}</p>
         <p><span class="font-semibold text-white">Posts:</span> {{ $posts->count() }}</p>
+        <p><span class="font-semibold text-white">Followers:</span> {{ auth()->user()->followers()->count() }}</p>
+        <p><span class="font-semibold text-white">Following:</span> {{ auth()->user()->following()->count() }}</p>
     </div>
+
 
     <!-- Divider -->
     <hr class="my-6 border-gray-700">
