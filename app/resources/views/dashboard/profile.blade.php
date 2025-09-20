@@ -82,35 +82,18 @@
 
     <!-- Posts Feed -->
     @if($posts->count())
-        @foreach ($posts as $post)
-            <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 relative">
-
+@forelse($posts as $post)
+            <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 relative mb-4">
                 <!-- User info -->
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <img 
-                            src="{{ $post->user->avatar ?? asset('assets/img/default-avatar.svg') }}"
-                            alt="{{ $post->user->name }}"
+                            src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
+                            alt="{{ optional($post->user)->name ?? 'Guest' }}"
                             class="w-8 h-8 rounded-full object-cover">
                         <h2 class="font-bold text-orange-400">
-                            {{ $post->user->name }}
+                            {{ optional($post->user)->name ?? 'Unknown User' }}
                         </h2>
-                    </div>
-
-                    <div class="relative">
-                        @auth
-                            <button onclick="toggleMenu({{ $post->id }})" class="text-gray-400 hover:text-white">⋮</button>
-                            <div id="menu-{{ $post->id }}" class="hidden absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10">
-                                <a href="{{ route('posts.edit.form', $post->id) }}" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Edit</a>
-                                <form action="{{ route('posts.delete', $post->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
-                                        Delete
-                                    </button>
-                                </form>
-                            </div>
-                        @endauth
                     </div>
                 </div>
 
@@ -129,25 +112,78 @@
                 <!-- Timestamp -->
                 <p class="text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
 
-                <!-- Comments button -->
-                @auth
-                    <form action="{{ route('posts.show', $post->id) }}" method="GET">
-                        <button type="submit" class="group inline-flex items-center border border-white text-white px-3 py-1 rounded-full mt-3 bg-gray-800 hover:border-orange-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" 
-                                class="w-5 h-5 mr-1 transition text-white group-hover:text-orange-400" 
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" 
-                                    d="M7 8h10M7 12h6m-6 4h4m10-2.586V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9l4 4v-5.586a2 2 0 0 0 .586-1.414z"/>
-                            </svg>
-                            <span class="transition text-white group-hover:text-orange-400">
-                                {{ $post->comments->count() }}
-                            </span>
-                        </button>
-                    </form>
-                @endauth
-                
+                <!-- Buttons wrapper -->
+                <div class="flex items-center gap-3 mt-3">
+                    <!-- Likes button -->
+                    @auth
+                        @if($post->isLikedBy(auth()->user()))
+                            <!-- Unlike -->
+                            <form action="{{ route('posts.unlike', $post->id) }}" method="POST" class="like-form" data-post-id="{{ $post->id }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" id="like-btn-{{ $post->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" 
+                                        id="like-icon-{{ $post->id }}"
+                                        class="w-6 h-6 mr-1 text-orange-400" 
+                                        fill="{{ $post->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
+                                        stroke="{{ $post->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" 
+                                            d="M4.318 6.318a4.5 4.5 0 016.364 0L12 
+                                            7.636l1.318-1.318a4.5 4.5 0 116.364 
+                                            6.364L12 20.364l-7.682-7.682a4.5 
+                                            4.5 0 010-6.364z"/>
+                                    </svg>
+                                       <span id="like-count-{{ $post->id }}" class="{{ $post->isLikedBy(auth()->user()) ? 'text-orange-400' : 'text-white' }}">
+                                        {{ $post->likes->count() }}
+                                        </span>
+                                </button>
+                            </form>
+                        @else
+                            <!-- Like -->
+                            <form action="{{ route('posts.like', $post->id) }}" method="POST" class="like-form" data-post-id="{{ $post->id }}">
+                                @csrf
+                                <button type="submit" id="like-btn-{{ $post->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" 
+                                    id="like-icon-{{ $post->id }}"
+                                        class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
+                                        fill="{{ $post->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
+                                        stroke="{{ $post->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" 
+                                            d="M4.318 6.318a4.5 4.5 0 016.364 0L12 
+                                            7.636l1.318-1.318a4.5 4.5 0 116.364 
+                                            6.364L12 20.364l-7.682-7.682a4.5 
+                                            4.5 0 010-6.364z"/>
+                                    </svg>
+                                        <span id="like-count-{{ $post->id }}" class="{{ $post->isLikedBy(auth()->user()) ? 'text-orange-400' : 'text-white' }}">
+                                        {{ $post->likes->count() }}
+                                        </span>
+                                </button>
+                            </form>
+                        @endif
+                    @endauth
+
+                    <!-- Comments button -->
+                    @auth
+                        <form action="{{ route('posts.show', $post->id) }}" method="GET">
+                            <button type="submit" class="group inline-flex items-center border border-white text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                    class="w-5 h-5 mr-1 transition text-white group-hover:text-orange-400" 
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" 
+                                        d="M7 8h10M7 12h6m-6 4h4m10-2.586V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9l4 4v-5.586a2 2 0 0 0 .586-1.414z"/>
+                                </svg>
+                                <span class="transition text-white group-hover:text-orange-400">
+                                    {{ $post->comments->count() }}
+                                </span>
+                            </button>
+                        </form>
+                    @endauth
+                </div>
             </div>
-        @endforeach
+        @empty
+        @endforelse
     @else
         <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 text-center text-gray-400">
             No posts yet.
