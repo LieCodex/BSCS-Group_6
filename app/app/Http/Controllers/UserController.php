@@ -43,15 +43,17 @@ class UserController extends Controller
     }
 
     public function login(Request $request){
-        $incomingFields = $request->validate([
-            'loginemail'=> 'required',
-            'loginpassword'=> 'required'
-        ]);
+    $incomingFields = $request->validate([
+        'loginemail'=> 'required',
+        'loginpassword'=> 'required'
+    ]);
 
-        if(auth()->attempt(['email'=> $incomingFields['loginemail'], 'password'=> $incomingFields['loginpassword']])){
-            $request->session()->regenerate();
-        }
-          return redirect()->route('posts.all');
+    $remember = $request->has('remember');
+
+    if(auth()->attempt(['email'=> $incomingFields['loginemail'], 'password'=> $incomingFields['loginpassword']], $remember)){
+        $request->session()->regenerate();
+    }
+          return redirect()->route('dashboard.home');
     }
 
    public function updateProfile(Request $request)

@@ -32,7 +32,7 @@ class GoogleController extends Controller
     ]
 );
         // Log in the user
-        Auth::login($user);
+        Auth::login($user, true);
 
         return redirect('/'); // Change to your desired route
     }

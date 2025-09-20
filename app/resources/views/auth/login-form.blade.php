@@ -45,6 +45,10 @@
                                                 <input name="loginpassword" type="password"
                                                     class="form-control form-control-user" placeholder="Password" required>
                                             </div>
+                                            <div class="form-group mt-3">
+                                                <input type="checkbox" name="remember" id="remember">
+                                                <label for="remember">Remember Me</label>
+                                            </div>
                                             <button class="btn btn-orange btn-user btn-block mt-4">Login</button>
                                             <hr>
                                             <a href="{{ route('google.login') }}" class="btn btn-orange btn-user btn-block">
