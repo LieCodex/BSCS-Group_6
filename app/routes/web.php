@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
 
     Route::post('/posts/{post}/like', [PostLikesController::class, 'like'])->name('posts.like');
-    Route::delete('/posts/{post}/unlike', [PostLikesController::class, 'unlike'])->name('posts.unlike');
+    Route::delete('/posts/{post}/like', [PostLikesController::class, 'unlike'])->name('posts.unlike');
 });
 
 // Home route (no dashboard prefix)

@@ -15,13 +15,19 @@ class PostLikesController extends Controller
         if (!$post->likes()->where('user_id', $user->id)->exists()) {
             $post->likes()->create(['user_id' => $user->id]);
         }
-        return redirect()->back();
+       return response()->json([
+        'liked' => true,
+        'likes' => $post->likes()->count()
+        ]);
     }
 
     public function unlike(Post $post)
     {
         $user = auth()->user();
         $post->likes()->where('user_id', $user->id)->delete();
-        return redirect()->back();
+            return response()->json([
+                'liked' => false,
+                'likes' => $post->likes()->count()
+            ]);
     }
 }
