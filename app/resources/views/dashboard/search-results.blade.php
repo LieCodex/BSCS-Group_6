@@ -62,7 +62,7 @@
                 <img 
                     src="{{ $user->avatar ?? asset('assets/img/default-avatar.svg') }}"
                     alt="{{ $user->name }}"
-                    class="w-8 h-8 pr-10 rounded-full object-cover border border-gray-700">
+                    class="w-8 h-8 rounded-full object-cover">
                 <div>
                     <div class="font-bold">{{ $user->name }}</div>
                     <div class="text-sm text-gray-400">{{ $user->email }}</div>
