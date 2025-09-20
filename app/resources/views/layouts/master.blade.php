@@ -117,7 +117,10 @@
 
     <!-- Sidebar (Right) -->
     <aside class="w-80 p-6 hidden lg:block h-screen overflow-y-auto">
-        <input type="text" placeholder="Search" class="w-full p-2 rounded-full bg-gray-800 border-none" />
+        <form method="GET" action="{{ route('search') }}" class="mb-4">
+    <input type="text" name="q" placeholder="Search posts or users..." class="w-full p-2 rounded-full bg-gray-800 border-none text-white" required>
+    <button type="submit" class="hidden"></button>
+</form>
         
         <div class="mt-6 bg-gray-800 p-4 rounded-xl">
             <h3 class="font-bold text-lg mb-3">Who to follow</h3>

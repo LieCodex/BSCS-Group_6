@@ -60,6 +60,9 @@ Route::get('/login', function () {
     return view('auth.login-form');
 })->name('login.form');
 
+Route::get('/posts/{post}', [App\Http\Controllers\PostController::class, 'show'])->name('posts.show');
+Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
+
 Route::post('/register', [UserController::class, 'register'])->name('register');
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');

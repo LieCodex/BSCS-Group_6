@@ -108,6 +108,8 @@ class PostController extends Controller
         return redirect('/home')->with('success', 'Post deleted successfully!');
     }
 
+
+
     // Show all posts (global feed)
     public function showAllPosts() {
         $posts = Post::with(['user', 'images', 'comments'])
@@ -126,6 +128,7 @@ class PostController extends Controller
 
         return view('dashboard.profile', ['posts' => $posts]);
     }
+    
   // Show single post with comments
     public function show(Post $post){
     $post->load(['user', 'images', 'comments.user']); // eager load relationships
