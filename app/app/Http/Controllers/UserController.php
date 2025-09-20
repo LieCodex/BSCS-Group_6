@@ -51,7 +51,7 @@ class UserController extends Controller
         if(auth()->attempt(['email'=> $incomingFields['loginemail'], 'password'=> $incomingFields['loginpassword']])){
             $request->session()->regenerate();
         }
-          return redirect()->route('posts.all');
+          return redirect()->route('dashboard.home');
     }
 
    public function updateProfile(Request $request)
