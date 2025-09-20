@@ -42,8 +42,7 @@
                                                     placeholder="Email" required>
                                             </div>
                                             <div class="form-group mt-3">
-                                                <input name="loginpassword" type="password"
-                                                    class="form-control form-control-user" placeholder="Password" required>
+                                                <input name="loginpassword" type="password" class="form-control form-control-user" placeholder="Password" required>
                                             </div>
                                             <div class="form-group mt-3">
                                                 <input type="checkbox" name="remember" id="remember">

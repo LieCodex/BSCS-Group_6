@@ -116,6 +116,7 @@
     </main>
 
     <!-- Sidebar (Right) -->
+    @auth
     <aside class="w-80 p-6 hidden lg:block h-screen overflow-y-auto">
         <form method="GET" action="{{ route('search') }}" class="mb-4">
     <input type="text" name="q" placeholder="Search posts or users..." class="w-full p-2 rounded-full bg-gray-800 border-none text-white" required>
@@ -124,19 +125,43 @@
         
         <div class="mt-6 bg-gray-800 p-4 rounded-xl">
             <h3 class="font-bold text-lg mb-3">Who to follow</h3>
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img src="https://i.pravatar.cc/43" class="rounded-full" />
-                    <div>
-                        <p class="font-bold">Jenny Wilson</p>
-                        <p class="text-gray-400 text-sm">@gabrielcantar</p>
+
+            @php
+                // Get users excluding the current logged in user
+                $suggestedUsers = \App\Models\User::where('id', '!=', auth()->id())
+                    ->take(5)
+                    ->get();
+            @endphp
+
+            @foreach($suggestedUsers as $user)
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <img src="{{ $user->avatar ?? asset('assets/img/default-avatar.svg') }}" 
+                            class="w-10 h-10 rounded-full object-cover" />
+                        <div>
+                            <p class="font-bold">{{ $user->name }}</p>
+                        </div>
                     </div>
+
+                    @if(auth()->user()->following->contains($user->id))
+                        <!-- Already following -->
+                        <form action="{{ route('unfollow', $user->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="bg-gray-600 px-3 py-1 rounded-full text-sm">Unfollow</button>
+                        </form>
+                    @else
+                        <!-- Not following -->
+                        <form action="{{ route('follow', $user->id) }}" method="POST">
+                            @csrf
+                            <button class="bg-orange-400 px-3 py-1 rounded-full text-sm">Follow</button>
+                        </form>
+                    @endif
                 </div>
-                <button class="bg-orange-400 px-3 py-1 rounded-full text-sm">Follow</button>
-            </div>
+            @endforeach
         </div>
     </aside>
-
+    @endauth
     <script src="//unpkg.com/alpinejs" defer></script>
 </body>
 </html>

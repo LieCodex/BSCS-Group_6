@@ -51,4 +51,17 @@ class User extends Authenticatable
     public function userPosts(){ // shows the posts that the user has made
         return $this->hasMany(Post::class, 'user_id');
     }
+
+    // Users that this user follows
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followed_id');
+    }
+
+    // Users that follow this user
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'followed_id', 'follower_id');
+    }
+
 }

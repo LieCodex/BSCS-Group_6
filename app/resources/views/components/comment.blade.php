@@ -5,7 +5,7 @@
         <div class="flex items-center gap-2 justify-between">
             <div class="flex items-center gap-2">
                 <img 
-                    src="{{ optional($comment->user)->avatar ?: asset('assets/img/default-avatar.png') }}"
+                    src="{{ optional($comment->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                     alt="{{ optional($comment->user)->name ?? 'User' }}"
                     class="w-6 h-6 rounded-full object-cover">
                 <span class="font-bold text-orange-400">{{ optional($comment->user)->name ?? 'User' }}</span>
@@ -65,7 +65,7 @@
                             <div class="flex items-center gap-2 justify-between">
                                 <div class="flex items-center gap-2">
                                     <img 
-                                        src="{{ optional($reply->user)->avatar ?: asset('assets/img/default-avatar.png') }}"
+                                        src="{{ optional($reply->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                                         alt="{{ optional($reply->user)->name ?? 'User' }}"
                                         class="w-6 h-6 rounded-full object-cover">
                                     <span class="font-bold text-orange-400">{{ optional($reply->user)->name ?? 'User' }}</span>
