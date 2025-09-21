@@ -25,3 +25,21 @@ document.addEventListener('click', function(event) {
         }
     });
 });
+
+function toggleReplyForm(commentId, show = null) {
+    const replyForm = document.getElementById('reply-form-' + commentId);
+    if (!replyForm) return;
+
+    if (show === true) {
+        replyForm.classList.remove('hidden');
+    } else if (show === false) {
+        replyForm.classList.add('hidden');
+    } else {
+        replyForm.classList.toggle('hidden');
+    }
+}
+
+function autoGrow(element) {
+    element.style.height = "16px";
+    element.style.height = (element.scrollHeight)+"px";
+}

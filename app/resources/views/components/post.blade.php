@@ -8,7 +8,7 @@
         <!-- User info -->
         <div class="flex items-center gap-2">
             <img 
-                src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.png') }}"
+                src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                 alt="{{ optional($post->user)->name ?? 'Unknown User' }}"
                 class="w-8 h-8 rounded-full object-cover">
             <h2 class="font-bold text-orange-400">

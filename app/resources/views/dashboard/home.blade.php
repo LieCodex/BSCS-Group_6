@@ -102,7 +102,7 @@
                 <!-- Buttons wrapper -->
                 <div class="flex items-center gap-3 mt-3">
 
-                        <!-- Likes button -->
+                    <!-- Likes button -->
                     @auth
                         @if($post->isLikedBy(auth()->user()))
                             <!-- Unlike -->

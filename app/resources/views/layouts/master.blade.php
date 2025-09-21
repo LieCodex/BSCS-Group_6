@@ -11,7 +11,7 @@
     <aside class="w-60 h-screen p-6 flex flex-col justify-between sticky top-0 ml-32">
         <div>
             <a href="{{ route('dashboard.home') }}">
-                <img src="{{ asset('assets/img/squel logo orange.png') }}" alt="logo" class="h-16 w-16 mb-6">
+                <img src="{{ asset('assets/img/squeal_logo.png') }}" alt="logo" class="h-20 w-20 mb-6 ml-5">
             </a> 
                 <nav class="space-y-6">
                     <!-- Home -->
@@ -129,7 +129,7 @@
             @php
                 // Get users excluding the current logged in user
                 $suggestedUsers = \App\Models\User::where('id', '!=', auth()->id())
-                    ->take(5)
+                    ->take(10)
                     ->get();
             @endphp
 
@@ -164,61 +164,6 @@
     @endauth
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-document.querySelectorAll('.like-form').forEach(form => {
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const postId = form.getAttribute('data-post-id');
-        const methodInput = form.querySelector('input[name="_method"]');
-        const method = methodInput ? methodInput.value : 'POST';
-        const url = form.action;
-        const data = new FormData(form);
-
-        let config = {};
-        if (method === 'DELETE') {
-            config.headers = { 'X-HTTP-Method-Override': 'DELETE' };
-        }
-
-        axios.post(url, data, config)
-            .then(response => {
-                // Update like count
-                document.getElementById('like-count-' + postId).innerText = response.data.likes;
-                // Update icon color/fill
-                const icon = document.getElementById('like-icon-' + postId);
-                const countSpan = document.getElementById('like-count-' + postId);
-                if (response.data.liked) {
-                    icon.setAttribute('fill', 'orange');
-                    icon.setAttribute('stroke', 'orange');
-                    countSpan.classList.remove('text-white');
-                    countSpan.classList.add('text-orange-400');
-                    // Add or update _method input for unlike
-                    let methodInput = form.querySelector('input[name="_method"]');
-                    if (!methodInput) {
-                        methodInput = document.createElement('input');
-                        methodInput.type = 'hidden';
-                        methodInput.name = '_method';
-                        methodInput.value = 'DELETE';
-                        form.appendChild(methodInput);
-                    } else {
-                        methodInput.value = 'DELETE';
-                    }
-                } else {
-                    icon.setAttribute('fill', 'none');
-                    icon.setAttribute('stroke', 'white');
-                    countSpan.classList.remove('text-orange-400');
-                    countSpan.classList.add('text-white');
-                    // Remove _method input for like
-                    let methodInput = form.querySelector('input[name="_method"]');
-                    if (methodInput) {
-                        form.removeChild(methodInput);
-                    }
-                }
-            })
-            .catch(error => {
-                alert('Error liking/unliking post');
-            });
-    });
-});
-</script>
+<script src="{{ asset('assets/js/master_like.js') }}"></script>
 </body>
 </html>

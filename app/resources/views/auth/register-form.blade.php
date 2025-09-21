@@ -36,7 +36,7 @@
                                
                                 <div class="col-lg-6 d-none d-lg-flex flex-column align-items-center justify-content-center text-center logo-wrapper">
 
-                                    <img src="assets/img/squel logo orange.png" alt="logo" class="img-logo img-fluid">
+                                    <img src="assets/img/squeal_logo.png" alt="logo" class="img-logo img-fluid">
                                 </div>
 
                                 <!-- Right side (Register Form) -->

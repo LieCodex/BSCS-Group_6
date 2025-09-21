@@ -7,6 +7,7 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostLikesController;
+use App\Http\Controllers\CommentLikesController;
 
 Route::get('/', function () {
     // If user is authenticated, redirect to Tailwind dashboard
@@ -36,6 +37,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/posts/{post}/like', [PostLikesController::class, 'like'])->name('posts.like');
     Route::delete('/posts/{post}/like', [PostLikesController::class, 'unlike'])->name('posts.unlike');
+
+    Route::post('/comments/{comment}/like', [CommentLikesController::class, 'like'])->name('comments.like');
+    Route::delete('/comments/{comment}/unlike', [CommentLikesController::class, 'unlike'])->name('comments.unlike');
 });
 
 // Home route (no dashboard prefix)
