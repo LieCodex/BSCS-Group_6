@@ -12,7 +12,7 @@
     
     <!-- Show post form only for logged-in users -->
     @auth
-    <div class="p-4 border border-gray-700 rounded-lg bg-gray-800">
+    <div class="p-4 rounded-lg bg-gray-800">
         <form method="POST" action="/create-post" enctype="multipart/form-data">
             @csrf
             <textarea
@@ -51,7 +51,7 @@
     <!-- Posts Feed -->
     @if(isset($posts) && $posts->count())
         @foreach ($posts as $post)
-            <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 relative">
+            <div class="p-4 rounded-lg bg-gray-800 relative">
 
                 <!-- User info -->
                 <div class="flex items-center justify-between">
@@ -115,6 +115,7 @@
                                         class="w-6 h-6 mr-1 text-orange-400" 
                                         fill="{{ $post->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
                                         stroke="{{ $post->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
+                                        stroke-width="2"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" 
                                             d="M4.318 6.318a4.5 4.5 0 016.364 0L12 
@@ -137,6 +138,7 @@
                                         class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
                                         fill="{{ $post->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
                                         stroke="{{ $post->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
+                                        stroke-width="2"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" 
                                             d="M4.318 6.318a4.5 4.5 0 016.364 0L12 

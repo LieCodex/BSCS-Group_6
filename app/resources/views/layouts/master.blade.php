@@ -5,10 +5,10 @@
     <title>Squeal</title>
     @vite('resources/css/app.css')
 </head>
-<body class="bg-gray-900 text-white flex h-screen">
+<body class="bg-[#17202A] text-white flex h-screen">
 
     <!-- Sidebar (Left) -->
-    <aside class="w-60 h-screen bg-gray-800 p-6 flex flex-col justify-between sticky top-0">
+    <aside class="w-60 h-screen p-6 flex flex-col justify-between sticky top-0 ml-32">
         <div>
             <a href="{{ route('dashboard.home') }}">
                 <img src="{{ asset('assets/img/squel logo orange.png') }}" alt="logo" class="h-16 w-16 mb-6">
