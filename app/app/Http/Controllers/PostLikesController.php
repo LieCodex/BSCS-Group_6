@@ -13,9 +13,11 @@ class PostLikesController extends Controller
         if (!$post->likes()->where('user_id', $user->id)->exists()) {
             $post->likes()->create(['user_id' => $user->id]);
         }
-       return response()->json([
-        'liked' => true,
-        'likes' => $post->likes()->count()
+        return response()->json([
+            'liked' => true,
+            'likes' => $post->likes()->count(),
+            'like_url' => route('posts.like', $post->id),
+            'unlike_url' => route('posts.unlike', $post->id),
         ]);
     }
 
@@ -23,9 +25,11 @@ class PostLikesController extends Controller
     {
         $user = auth()->user();
         $post->likes()->where('user_id', $user->id)->delete();
-            return response()->json([
-                'liked' => false,
-                'likes' => $post->likes()->count()
-            ]);
+        return response()->json([
+            'liked' => false,
+            'likes' => $post->likes()->count(),
+            'like_url' => route('posts.like', $post->id),
+            'unlike_url' => route('posts.unlike', $post->id),
+        ]);
     }
 }
