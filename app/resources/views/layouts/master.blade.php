@@ -5,10 +5,60 @@
     <title>Squeal</title>
     @vite('resources/css/app.css')
 </head>
-<body class="bg-[#17202A] text-white flex h-screen">
+<!-- Bottom Nav (Mobile only) -->
+<nav class="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 
+            flex justify-around py-2 lg:hidden z-50">
+
+    <!-- Home -->
+    <a href="{{ route('dashboard.home') }}" class="flex flex-col items-center text-gray-400 hover:text-orange-400">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" 
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M3 9.75L12 3l9 6.75V21a.75.75 0 0 1-.75.75H3.75A.75.75 0 0 1 3 21V9.75z"/>
+        </svg>
+        <span class="text-xs">Home</span>
+    </a>
+
+    <!-- Notifications -->
+    <a href="{{ route('dashboard.notifications') }}" class="flex flex-col items-center text-gray-400 hover:text-orange-400">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" 
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 0 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L3 17h5m7 4a3 3 0 0 1-6 0"/>
+        </svg>
+        <span class="text-xs">Alerts</span>
+    </a>
+
+    <!-- Messages -->
+    <a href="{{ route('dashboard.messages') }}" class="flex flex-col items-center text-gray-400 hover:text-orange-400">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" 
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M21 11.5c0 4.142-3.806 7.5-8.5 7.5-1.143 0-2.228-.19-3.2-.53L5 20l1.2-3.2C5.45 15.5 4.5 13.6 4.5 11.5 4.5 7.358 8.306 4 13 4s8 3.358 8 7.5z"/>
+        </svg>
+        <span class="text-xs">Messages</span>
+    </a>
+
+    <!-- Profile -->
+    <a href="{{ route('dashboard.profile') }}" class="flex flex-col items-center text-gray-400 hover:text-orange-400">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" 
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+        <span class="text-xs">Profile</span>
+    </a>
+</nav>
+
+<body class="bg-[#17202A] text-white flex flex-col lg:flex-row h-screen">
 
     <!-- Sidebar (Left) -->
-    <aside class="w-60 h-screen p-6 flex flex-col justify-between sticky top-0 ml-32">
+    <aside class="hidden lg:flex w-60 h-screen p-6 flex-col justify-between sticky top-0 ml-32">
+
         <div>
             <a href="{{ route('dashboard.home') }}">
                 <img src="{{ asset('assets/img/squeal_logo.png') }}" alt="logo" class="h-20 w-20 mb-6 ml-5">
@@ -109,12 +159,12 @@
             @endauth
         </div>
     </aside>
-
+<div class="flex justify-center flex-1">
     <!-- Main Feed (middle) -->
-    <main class="flex-1 max-w-2xl border-x border-gray-700 h-screen overflow-y-auto">
+        <main class="w-full max-w-full lg:max-w-2xl border-x border-gray-700 h-screen overflow-y-auto">
         @yield('content')
     </main>
-
+</div>
     <!-- Sidebar (Right) -->
     @auth
     <aside class="w-80 p-6 hidden lg:block h-screen overflow-y-auto">
