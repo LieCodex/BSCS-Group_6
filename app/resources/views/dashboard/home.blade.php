@@ -217,16 +217,16 @@ function updatePreview() {
             reader.onload = e => {
                 // wrapper div for image + X
                 const wrapper = document.createElement("div");
-                wrapper.className = "relative w-32 h-32";
+                wrapper.className = "relative lg:w-32 lg:h-32 sm:w-64 sm:h-64";
 
                 const img = document.createElement("img");
                 img.src = e.target.result;
-                img.className = "w-32 h-32 object-cover rounded-lg border border-gray-700";
+                img.className = "lg:w-32 lg:h-32 sm:w-64 sm:h-64 object-cover rounded-lg border border-gray-700";
 
                 const btn = document.createElement("button");
                 btn.innerHTML = "✕";
                 btn.type = "button";
-                btn.className = "absolute top-0 right-0 bg-black bg-opacity-50 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs";
+                btn.className = "absolute top-0 right-0 bg-black bg-opacity-50 text-white rounded-full lg:w-6 lg:h-6 sm:w-12 sm:h-12 flex items-center justify-center lg:text-xs sm:text-3xl";
                 btn.onclick = () => {
                     selectedFiles.splice(index, 1);
                     updatePreview();
