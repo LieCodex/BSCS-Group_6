@@ -92,16 +92,35 @@
                 <p class="text-gray-300 sm:mt-10 sm:mb-10 lg:mt-1 lg:mb-1 text-lg sm:text-4xl lg:text-base">{{ $post->body }}</p>
 
                 <!-- Post images -->
-                @if($post->images->count())
-                    <div class="flex flex-wrap gap-2 mt-2">
-                        @foreach($post->images as $image)
-<img src="{{ $image->image_path }}" 
-     class="w-auto h-auto max-w-[160px] max-h-[160px] sm:max-w-[400px] sm:max-h-[400px] lg:max-w-[200px] lg:max-h-[200px] object-contain rounded-lg border border-gray-700">
-                        @endforeach
-                    </div>
-                @endif
+                    @if($post->images->count())
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            @foreach($post->images as $image)
+                                <img 
+                                src="{{ $image->image_path }}" 
+                                class="post-image w-auto h-auto max-w-[160px] max-h-[160px] sm:max-w-[400px] sm:max-h-[400px] lg:max-w-[200px] lg:max-h-[200px] object-contain rounded-lg border border-gray-700 cursor-pointer"
+                                onclick="openModal('{{ $image->image_path }}')"
+                            />
 
-                <!-- Timestamp -->
+                            @endforeach
+                        </div>
+                    @endif
+    
+                    <!-- Single reusable modal -->
+                    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+                        <div class="relative max-w-xl max-h-[90vh]">
+                            <button id="closeModal" class="absolute top-2 right-2 text-white text-3xl">&times;</button>
+                            <img id="modalImage" src="" alt="Full Image"
+                                class="rounded-lg object-contain w-full h-full transform scale-100 transition-transform duration-200 cursor-grab"/>
+
+                            
+                            <!-- Zoom Controls -->
+                            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                                <button id="zoomIn" class="bg-gray-800 text-white px-4 py-1 rounded">+</button>
+                                <button id="zoomOut" class="bg-gray-800 text-white px-4 py-1 rounded">−</button>
+                            </div>
+                        </div>
+                    </div>
+                                    <!-- Timestamp -->
                 <p class="text-xs sm:text-3xl lg:text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
 
                 <!-- Buttons wrapper -->
@@ -115,8 +134,8 @@
                                 @csrf
                                 @method('DELETE')
                                 <button 
-    type="submit" 
-    class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-400 text-sm sm:text-base lg:text-sm">
+                                    type="submit" 
+                                    class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-400 text-sm sm:text-base lg:text-sm">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" 
                                         id="like-icon-{{ $post->id }}"
@@ -169,8 +188,8 @@
                     @auth
                         <form action="{{ route('posts.show', $post->id) }}" method="GET">
                            <button 
-    type="submit" 
-    class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-400 text-sm sm:text-base lg:text-sm">
+                            type="submit" 
+                            class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-400 text-sm sm:text-base lg:text-sm">
 
                                 <svg xmlns="http://www.w3.org/2000/svg" 
                                     class="w-6 h-6 mr-1 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
@@ -249,4 +268,103 @@ function updatePreview() {
     }
 }
 </script>
+<script>
+const modal = document.getElementById('imageModal');
+const modalImg = document.getElementById('modalImage');
+const closeModalBtn = document.getElementById('closeModal');
+const zoomInBtn = document.getElementById('zoomIn');
+const zoomOutBtn = document.getElementById('zoomOut');
+
+let currentScale = 1;
+let currentX = 0;
+let currentY = 0;
+const SCALE_STEP = 0.2;
+const MAX_SCALE = 3;
+const MIN_SCALE = 0.5;
+
+// Drag variables
+let isDragging = false;
+let startX = 0;
+let startY = 0;
+
+// Open modal
+function openModal(src) {
+    modalImg.src = src;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    // Reset zoom and position
+    currentScale = 1;
+    currentX = 0;
+    currentY = 0;
+    updateTransform();
+}
+
+// Close modal
+function closeModal() {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    currentScale = 1;
+    currentX = 0;
+    currentY = 0;
+    updateTransform();
+}
+
+// Update transform for scale + translation
+function updateTransform() {
+    modalImg.style.transform = `scale(${currentScale}) translate(${currentX}px, ${currentY}px)`;
+}
+
+// Zoom handlers
+function zoomIn() {
+    currentScale = Math.min(currentScale + SCALE_STEP, MAX_SCALE);
+    updateTransform();
+}
+
+function zoomOut() {
+    currentScale = Math.max(currentScale - SCALE_STEP, MIN_SCALE);
+    updateTransform();
+}
+
+// Event listeners
+closeModalBtn.addEventListener('click', closeModal);
+zoomInBtn.addEventListener('click', zoomIn);
+zoomOutBtn.addEventListener('click', zoomOut);
+
+// Close modal if clicking outside image
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+});
+
+// Mouse wheel zoom
+modalImg.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    if (e.deltaY < 0) zoomIn();
+    else zoomOut();
+});
+
+// Drag-to-pan
+modalImg.addEventListener('mousedown', (e) => {
+    if (currentScale <= 1) return; // no drag if not zoomed
+    isDragging = true;
+    startX = e.clientX - currentX;
+    startY = e.clientY - currentY;
+    modalImg.style.cursor = 'grabbing';
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    currentX = e.clientX - startX;
+    currentY = e.clientY - startY;
+    updateTransform();
+});
+
+document.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    modalImg.style.cursor = 'grab';
+});
+</script>
+
+
 @endsection
