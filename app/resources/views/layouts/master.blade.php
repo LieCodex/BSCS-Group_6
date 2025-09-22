@@ -122,7 +122,7 @@
                     <img 
                         src="{{ auth()->user()->avatar ?? asset('assets/img/default-avatar.svg') }}"
                         alt="{{ auth()->user()->name }}"
-                        class="w-8 h-8 rounded-full object-cover">
+                        class="w-12 h-12 sm:w-14 sm:h-14 lg:w-10 lg:h-10 rounded-full object-cover">
                 </button>
 
                 <!-- Username -->
@@ -153,7 +153,7 @@
                     <img 
                         src="{{ asset('assets/img/default-avatar.svg') }}"
                         alt="Guest"
-                        class="w-8 h-8 rounded-full object-cover">
+                        class="w-12 h-12 sm:w-14 sm:h-14 lg:w-10 lg:h-10 rounded-full object-cover">
                     <p class="font-bold ml-2">Guest</p>
                 </div>
             @endauth
@@ -161,9 +161,9 @@
     </aside>
 <div class="flex justify-center flex-1">
     <!-- Main Feed (middle) -->
-        <main class="w-full max-w-full lg:max-w-2xl border-x border-gray-700 h-screen overflow-y-auto">
-        @yield('content')
-    </main>
+<main class="w-full max-w-full lg:max-w-2xl border-x border-gray-700 h-screen overflow-y-auto text-base sm:text-lg lg:text-base">
+    @yield('content')
+</main>
 </div>
     <!-- Sidebar (Right) -->
     @auth
@@ -187,7 +187,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-3">
                         <img src="{{ $user->avatar ?? asset('assets/img/default-avatar.svg') }}" 
-                            class="w-10 h-10 rounded-full object-cover" />
+                            class="w-12 h-12 sm:w-14 sm:h-14 lg:w-10 lg:h-10 rounded-full object-cover" />
                         <div>
                             <p class="font-bold">{{ $user->name }}</p>
                         </div>

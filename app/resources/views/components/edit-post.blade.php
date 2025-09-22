@@ -67,4 +67,61 @@
 
 <!-- JS for preview -->
 <script src="{{ asset('assets/js/edit_image.js') }}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const imageInput = document.getElementById("imageInput");
+    const previewContainer = document.getElementById("editPreviewContainer");
+
+    imageInput.addEventListener("change", (event) => {
+        previewContainer.innerHTML = ""; // clear previous previews
+
+        const files = event.target.files;
+        if (files.length > 0) {
+            Array.from(files).forEach((file, index) => {
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    const wrapper = document.createElement("div");
+                    wrapper.classList.add("relative", "w-24", "h-24");
+
+                    // Image
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.classList.add("w-24", "h-24", "object-cover", "rounded-lg", "border", "border-gray-700");
+
+                    // Remove button
+                    const removeBtn = document.createElement("button");
+                    removeBtn.innerHTML = "✕";
+                    removeBtn.type = "button";
+                    removeBtn.classList.add(
+                        "absolute", "top-0", "right-0", "bg-black", "text-white",
+                        "rounded-full", "w-6", "h-6", "flex", "items-center", "justify-center", "text-xs"
+                    );
+
+                    removeBtn.addEventListener("click", () => {
+                        wrapper.remove();
+
+                        // Update input.files (filtering out the removed file)
+                        const dataTransfer = new DataTransfer();
+                        Array.from(files).forEach((f, i) => {
+                            if (i !== index) {
+                                dataTransfer.items.add(f);
+                            }
+                        });
+                        imageInput.files = dataTransfer.files;
+                    });
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(removeBtn);
+                    previewContainer.appendChild(wrapper);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        }
+    });
+});
+
+
+</script>
 @endsection
