@@ -119,19 +119,10 @@ class PostController extends Controller
         return view('dashboard.home', ['posts' => $posts]);
     }
 
-    // Show logged-in user's posts (profile page)
-    public function showUserPosts() {
-        $posts = Post::with(['user', 'images', 'comments'])
-                    ->where('user_id', auth()->id())
-                    ->latest()
-                    ->get();
-
-        return view('dashboard.profile', ['posts' => $posts]);
-    }
     
   // Show single post with comments
     public function show(Post $post){
-    $post->load(['user', 'images', 'comments.user']); // eager load relationships
+    $post->load(['user', 'images', 'comments.user']); 
     return view('components.post', compact('post'));
     }
 

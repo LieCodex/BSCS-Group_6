@@ -58,7 +58,7 @@
 <body class="bg-[#17202A] text-white flex flex-col lg:flex-row h-screen">
 
     <!-- Sidebar (Left) -->
-    <aside class="hidden lg:flex w-60 h-screen p-6 flex-col justify-between sticky top-0 ml-32">
+    <aside class="hidden lg:flex w-60 h-screen p-6 flex-col justify-between sticky top-0 ml-15">
 
         <div>
             <a href="{{ route('dashboard.home') }}">
@@ -189,9 +189,11 @@
                     <div class="flex items-center gap-3">
                         <img src="{{ $user->avatar ?? asset('assets/img/default-avatar.svg') }}" 
                             class="w-12 h-12 sm:w-14 sm:h-14 lg:w-10 lg:h-10 rounded-full object-cover" />
-                        <div>
-                            <p class="font-bold">{{ $user->name }}</p>
-                        </div>
+                    <div class="font-bold hover:underline">
+                        <a href="{{ route('user.profile', $user->id) }}">
+                            {{ $user->name }}
+                        </a>
+                    </div>  
                     </div>
 
                     @if(auth()->user()->following->contains($user->id))

@@ -14,9 +14,12 @@
                             src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                             alt="{{ optional($post->user)->name ?? 'Guest' }}"
                             class="w-8 h-8 rounded-full object-cover">
-                        <h2 class="font-bold text-orange-400">
-                            {{ optional($post->user)->name ?? 'Unknown User' }}
-                        </h2>
+<h2 class="font-bold text-orange-400">
+    <a href="{{ route('user.profile', optional($post->user)->id) }}">
+        {{ optional($post->user)->name ?? 'Unknown User' }}
+    </a>
+</h2>
+                        
                     </div>
                 </div>
 
@@ -117,7 +120,12 @@
             alt="{{ $user->name }}"
             class="w-8 h-8 rounded-full object-cover">
         <div>
-            <div class="font-bold">{{ $user->name }}</div>
+            <div class="font-bold">
+    <a href="{{ route('user.profile', $user->id) }}" class="text-orange-400 hover:underline">
+        {{ $user->name }}
+    </a>
+</div>
+
             <div class="text-sm text-gray-400">{{ $user->email }}</div>
         </div>
 

@@ -64,9 +64,12 @@
     alt="{{ optional(auth()->user())->name ?? 'Guest' }}"
     class="w-14 h-14 sm:w-20 sm:h-20 lg:w-10 lg:h-10 rounded-full object-cover">
 
-                        <h2 class="font-bold text-orange-400 sm:text-3xl sm:ml-5 lg:ml-1 lg:text-base">
+
+                    <h2 class="font-bold text-orange-400">
+                        <a href="{{ route('user.profile', optional($post->user)->id) }}">
                             {{ optional($post->user)->name ?? 'Unknown User' }}
-                        </h2>
+                        </a>
+                    </h2>
                     </div>
 
                     <div class="relative">
@@ -367,4 +370,5 @@ document.addEventListener('mouseup', () => {
 </script>
 
 
+<script src="{{ asset('assets/js/home.js') }}"></script>
 @endsection
