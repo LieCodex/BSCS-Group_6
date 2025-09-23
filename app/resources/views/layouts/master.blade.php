@@ -218,6 +218,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="{{ asset('assets/js/master_like.js') }}"></script>
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 @livewireScripts
 </body>
 </html>

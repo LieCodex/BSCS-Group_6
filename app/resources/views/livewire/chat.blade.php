@@ -13,14 +13,13 @@
         </div>
         
         <div class="divide-y divide-gray-700">
-            <div class="p-3 cursor-pointer hover:bg-gray-800 transition">
-                <div class="text-white">Test User</div>
-                <div class="text-xs text-gray-400">test@gmail.com</div>
+            @foreach($users as $user)
+            <div wire:click="selectUser({{ $user->id}})" class="p-3 cursor-pointer hover:bg-gray-800 transition
+                {{$selectedUser->id === $user->id ? 'bg-gray-800 font-simibold' : ''}}">
+                <div class="text-white truncate overflow-hidden whitespace-nowrap">{{ $user->name }}</div>
+                <div class="text-xs text-gray-400 truncate overflow-hidden whitespace-nowrap">{{ $user->email}}</div>
             </div>
-            <div class="p-3 cursor-pointer hover:bg-gray-800 transition">
-                <div class="text-white">Another User</div>
-                <div class="text-xs text-gray-400">another@gmail.com</div>
-            </div>
+            @endforeach
         </div>
     </div>
 
@@ -29,8 +28,8 @@
         <!-- Header -->
         <div class="p-4 border-b border-gray-700 bg-gray-800 flex justify-between items-center">
             <div>
-                <div class="text-lg font-semibold text-white">Test User</div>
-                <div class="text-xs text-gray-400">test@gmail.com</div>
+                <div class="text-lg font-semibold text-white">{{$selectedUser->name}}</div>
+                <div class="text-xs text-gray-400">{{$selectedUser->email}}</div>
             </div>
             <!-- Mobile: Open sidebar button -->
             <button onclick="toggleSidebar()" class="lg:hidden bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-full text-xs">
@@ -41,23 +40,21 @@
         <!-- Messages -->
         <div class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-900">
             <!-- Message from me -->
-            <div class="flex justify-end">
-                <div class="max-w-xs px-4 py-2 rounded-2xl bg-orange-500 text-white shadow">
-                    Hi, This is test
-                </div>
-            </div>
 
-            <!-- Message from other -->
-            <div class="flex justify-start">
-                <div class="max-w-xs px-4 py-2 rounded-2xl bg-gray-700 text-gray-100 shadow">
-                    Hello, got your message!
+            @foreach ($messages as $message)
+                <div class="flex {{$message ->sender_id === auth()->id() ? 'justify-end' : 'justify-start'}}">
+                    <div class="max-w-xs px-4 py-2 rounded-2xl  {{$message ->sender_id === auth()->id() ? 'bg-orange-500 text-white' : 'bg-gray-700 text-gray-100'}}  shadow">
+                        {{ $message->message }}
+                    </div>
                 </div>
-            </div>
+            @endforeach
+
         </div>
 
         <!-- Input -->
-        <form class="p-3 border-t border-gray-700 bg-gray-800 flex items-center gap-2">
+        <form wire:submit.prevent="submit" class="p-3 border-t border-gray-700 bg-gray-800 flex items-center gap-2">
             <input 
+                wire:model.live="newMessage"
                 type="text"
                 class="flex-1 bg-gray-900 border border-gray-700 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 text-white placeholder-gray-400"
                 placeholder="Type your message..." />
