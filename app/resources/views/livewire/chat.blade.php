@@ -2,9 +2,9 @@
 
     <!-- Sidebar (User List) -->
     <div id="userSidebar" 
-        class="fixed inset-y-0 left-0 w-64 bg-gray-900 border-r border-gray-700 transform -translate-x-full lg:translate-x-0 lg:relative lg:w-1/4 transition-transform duration-300 ease-in-out z-50">
+        class="fixed inset-y-0 left-0 w-64 bg-gray-900 border-r border-gray-700 transform -translate-x-full lg:translate-x-0 lg:relative lg:w-1/4 transition-transform duration-300 ease-in-out z-50 flex flex-col">
         
-        <div class="flex justify-between items-center p-4 border-b border-gray-700">
+        <div class="flex justify-between items-center p-4 border-b border-gray-700 flex-shrink-0">
             <span class="font-bold text-orange-400">Chats</span>
             <!-- Close button (mobile only) -->
             <button onclick="toggleSidebar()" class="lg:hidden text-gray-400 hover:text-white">
@@ -12,7 +12,7 @@
             </button>
         </div>
         
-        <div class="divide-y divide-gray-700 overflow-y-auto">
+        <div class="divide-y divide-gray-700 overflow-y-auto flex-1">
             @foreach($users as $user)
             <div wire:click="selectUser({{ $user->id}})" class="p-3 cursor-pointer hover:bg-gray-800 transition
                 {{$selectedUser->id === $user->id ? 'bg-gray-800 font-simibold' : ''}}">
