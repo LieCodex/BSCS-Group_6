@@ -64,9 +64,12 @@
     alt="{{ optional(auth()->user())->name ?? 'Guest' }}"
     class="w-14 h-14 sm:w-20 sm:h-20 lg:w-10 lg:h-10 rounded-full object-cover">
 
-                        <h2 class="font-bold text-orange-400 sm:text-3xl sm:ml-5 lg:ml-1 lg:text-base">
+
+                    <h2 class="font-bold text-orange-400">
+                        <a href="{{ route('user.profile', optional($post->user)->id) }}">
                             {{ optional($post->user)->name ?? 'Unknown User' }}
-                        </h2>
+                        </a>
+                    </h2>
                     </div>
 
                     <div class="relative">
@@ -95,8 +98,8 @@
                 @if($post->images->count())
                     <div class="flex flex-wrap gap-2 mt-2">
                         @foreach($post->images as $image)
-<img src="{{ $image->image_path }}" 
-     class="w-auto h-auto max-w-[160px] max-h-[160px] sm:max-w-[400px] sm:max-h-[400px] lg:max-w-[200px] lg:max-h-[200px] object-contain rounded-lg border border-gray-700">
+                        <img src="{{ $image->image_path }}" 
+                        class="w-auto h-auto max-w-[160px] max-h-[160px] sm:max-w-[400px] sm:max-h-[400px] lg:max-w-[200px] lg:max-h-[200px] object-contain rounded-lg border border-gray-700">
                         @endforeach
                     </div>
                 @endif
@@ -115,9 +118,8 @@
                                 @csrf
                                 @method('DELETE')
                                 <button 
-    type="submit" 
-    class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-400 text-sm sm:text-base lg:text-sm">
-
+                                type="submit" 
+                                class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-400 text-sm sm:text-base lg:text-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" 
                                         id="like-icon-{{ $post->id }}"
                                         class="w-6 h-6 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 text-orange-400" 
@@ -169,9 +171,8 @@
                     @auth
                         <form action="{{ route('posts.show', $post->id) }}" method="GET">
                            <button 
-    type="submit" 
-    class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-400 text-sm sm:text-base lg:text-sm">
-
+                            type="submit" 
+                            class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-400 text-sm sm:text-base lg:text-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" 
                                     class="w-6 h-6 mr-1 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -195,58 +196,5 @@
         @endauth
     @endif
 </div>
-<script src="{{ asset('assets/js/post_menu.js') }}"></script>
-<script>
-const imageInput = document.getElementById("imageInput");
-const imagePreview = document.getElementById("imagePreview");
-let selectedFiles = [];
-
-imageInput.addEventListener("change", function () {
-    selectedFiles = Array.from(this.files); // store files
-    updatePreview();
-});
-
-function updatePreview() {
-    imagePreview.innerHTML = "";
-    
-    if (selectedFiles.length > 0) {
-        imagePreview.classList.remove("hidden");
-
-        selectedFiles.forEach((file, index) => {
-            const reader = new FileReader();
-            reader.onload = e => {
-                // wrapper div for image + X
-                const wrapper = document.createElement("div");
-                wrapper.className = "relative lg:w-32 lg:h-32 sm:w-64 sm:h-64";
-
-                const img = document.createElement("img");
-                img.src = e.target.result;
-                img.className = "lg:w-32 lg:h-32 sm:w-64 sm:h-64 object-cover rounded-lg border border-gray-700";
-
-                const btn = document.createElement("button");
-                btn.innerHTML = "✕";
-                btn.type = "button";
-                btn.className = "absolute top-0 right-0 bg-black bg-opacity-50 text-white rounded-full lg:w-6 lg:h-6 sm:w-12 sm:h-12 flex items-center justify-center lg:text-xs sm:text-3xl";
-                btn.onclick = () => {
-                    selectedFiles.splice(index, 1);
-                    updatePreview();
-                };
-
-                wrapper.appendChild(img);
-                wrapper.appendChild(btn);
-                imagePreview.appendChild(wrapper);
-            };
-            reader.readAsDataURL(file);
-        });
-
-        // Rebuild FileList for input
-        const dataTransfer = new DataTransfer();
-        selectedFiles.forEach(f => dataTransfer.items.add(f));
-        imageInput.files = dataTransfer.files;
-    } else {
-        imagePreview.classList.add("hidden");
-        imageInput.value = ""; // reset input
-    }
-}
-</script>
+<script src="{{ asset('assets/js/home.js') }}"></script>
 @endsection

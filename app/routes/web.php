@@ -55,9 +55,13 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 });
 
 // Profile route (only show logged-in user's posts)
-Route::get('/profile', [PostController::class, 'showUserPosts'])
+Route::get('/profile', [UserController::class, 'Profile'])
     ->middleware('auth')
     ->name('dashboard.profile');
+
+Route::get('/user/{id}', [UserController::class, 'show'])
+    ->name('user.profile');
+
 
 // Registration & Auth
 Route::get('/register-form', function () {

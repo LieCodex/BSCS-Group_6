@@ -5,9 +5,23 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use App\Models\Post;
 
 class UserController extends Controller 
 {
+
+    // Show logged in user's profile
+    public function Profile()
+    {
+        $user = auth()->user();
+        $posts = Post::with(['user', 'images', 'comments'])
+                    ->where('user_id', $user->id)
+                    ->latest()
+                    ->get();
+
+        return view('dashboard.profile', compact('user', 'posts'));
+    }
+
     public function register(Request $request){
         $incomingFields = $request->validate([
             'name' => ['required', 'min:3', Rule::unique('users', 'name')],
@@ -77,6 +91,17 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+        public function show($id)
+    {
+        $user = User::findOrFail($id);
+        $posts = Post::with(['user', 'images', 'comments'])
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
+
+        return view('dashboard.profile', compact('user', 'posts'));
     }
 
 }

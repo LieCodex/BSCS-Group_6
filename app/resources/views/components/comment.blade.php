@@ -7,7 +7,10 @@
                     src="{{ optional($comment->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                     alt="{{ optional($comment->user)->name ?? 'User' }}"
                     class="w-6 h-6 rounded-full object-cover">
-                <span class="font-bold text-orange-400">{{ optional($comment->user)->name ?? 'User' }}</span>
+                    <a href="{{ route('user.profile', optional($comment->user)->id) }}" 
+                    class="font-bold text-orange-400 hover:underline">
+                    {{ optional($comment->user)->name ?? 'User' }}
+                    </a>
                 <span class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
             </div>
 
@@ -138,7 +141,10 @@
                                     src="{{ optional($reply->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                                     alt="{{ optional($reply->user)->name ?? 'User' }}"
                                     class="w-6 h-6 rounded-full object-cover">
-                                <span class="font-bold text-orange-400">{{ optional($reply->user)->name ?? 'User' }}</span>
+                                    <a href="{{ route('user.profile', optional($comment->user)->id) }}" 
+                                    class="font-bold text-orange-400 hover:underline">
+                                    {{ optional($comment->user)->name ?? 'User' }}
+                                    </a>
                                 <span class="text-xs text-gray-500">{{ $reply->created_at->diffForHumans() }}</span>
                             </div>
                             <!-- 3 dots menu button for reply -->
