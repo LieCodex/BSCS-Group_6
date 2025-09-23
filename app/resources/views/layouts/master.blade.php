@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    @livewireStyles
     <meta charset="UTF-8">
     <title>Squeal</title>
     @vite('resources/css/app.css')
@@ -215,5 +216,6 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="{{ asset('assets/js/master_like.js') }}"></script>
+@livewireScripts
 </body>
 </html>
