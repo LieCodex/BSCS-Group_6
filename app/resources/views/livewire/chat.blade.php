@@ -12,7 +12,7 @@
             </button>
         </div>
         
-        <div class="divide-y divide-gray-700">
+        <div class="divide-y divide-gray-700 overflow-y-auto">
             @foreach($users as $user)
             <div wire:click="selectUser({{ $user->id}})" class="p-3 cursor-pointer hover:bg-gray-800 transition
                 {{$selectedUser->id === $user->id ? 'bg-gray-800 font-simibold' : ''}}">
