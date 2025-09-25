@@ -11,7 +11,7 @@
                 src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                 alt="{{ optional($post->user)->name ?? 'Unknown User' }}"
                 class="w-8 h-8 rounded-full object-cover">
-                <h2 class="font-bold text-orange-400">
+                <h2 class="font-medium text-orange-400">
                     <a href="{{ route('user.profile', optional($post->user)->id) }}">
                         {{ optional($post->user)->name ?? 'Unknown User' }}
                     </a>
@@ -19,7 +19,7 @@
         </div>
 
         <!-- Post body -->
-        <p class="text-gray-300 mt-2">{{ $post->body }}</p>
+        <p class="text-gray-300 mt-3">{{ $post->body }}</p>
 
         <!-- Post images -->
         @if($post->images->count())
@@ -58,7 +58,7 @@
                             style="box-sizing: border-box; padding-bottom: 2.5rem;" 
                         ></textarea>
                         <div class="absolute right-2 bottom-2 flex gap-2 hidden z-10">
-                            <button type="submit" class="bg-orange-400 text-white px-4 py-1 rounded-full">Comment</button>
+                            <button type="submit" class="bg-orange-500 text-white px-4 py-1 rounded-full">Comment</button>
                             <button type="button" class="bg-gray-500 text-white px-4 py-1 rounded-full" onclick="this.form.reset(); this.parentElement.classList.add('hidden');">Cancel</button>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                 <x-comment :comment="$comment" />
             @endforeach
         @else
-            <p class="text-gray-400">No comments yet.</p>
+            <p class="ml-56 mt-2 text-gray-400">No comments yet.</p>
         @endif
     </div>
 </div>

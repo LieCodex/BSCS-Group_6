@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="max-w-2xl mx-auto p-4">
+    <div class="max-w-2xl mx-auto p-4 mt-5">
         <h2 class="text-xl font-bold mb-4">Search results for "{{ $q }}"</h2>
 
         <h3 class="font-semibold mt-6 mb-2">Posts</h3>
@@ -14,12 +14,11 @@
                             src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                             alt="{{ optional($post->user)->name ?? 'Guest' }}"
                             class="w-8 h-8 rounded-full object-cover">
-<h2 class="font-bold text-orange-400">
-    <a href="{{ route('user.profile', optional($post->user)->id) }}">
-        {{ optional($post->user)->name ?? 'Unknown User' }}
-    </a>
-</h2>
-                        
+                            <h2 class="font-medium text-orange-400">
+                                <a href="{{ route('user.profile', optional($post->user)->id) }}">
+                                    {{ optional($post->user)->name ?? 'Unknown User' }}
+                                </a>
+                            </h2>
                     </div>
                 </div>
 
@@ -93,7 +92,7 @@
                     <!-- Comments button -->
                     @auth
                         <form action="{{ route('posts.show', $post->id) }}" method="GET">
-                            <button type="submit" class="group inline-flex items-center border border-white text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
+                            <button type="submit" class="group inline-flex items-centers text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" 
                                     class="w-5 h-5 mr-1 transition text-white group-hover:text-orange-400" 
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -113,21 +112,20 @@
         @endforelse
 
         <h3 class="font-semibold mt-6 mb-2">Users</h3>
-@forelse($users as $user)
-    <div class="mb-4 p-4 bg-gray-800 rounded flex items-center gap-6">
-        <img 
-            src="{{ $user->avatar ?? asset('assets/img/default-avatar.svg') }}"
-            alt="{{ $user->name }}"
-            class="w-8 h-8 rounded-full object-cover">
-        <div>
-            <div class="font-bold">
-    <a href="{{ route('user.profile', $user->id) }}" class="text-orange-400 hover:underline">
-        {{ $user->name }}
-    </a>
-</div>
-
-            <div class="text-sm text-gray-400">{{ $user->email }}</div>
-        </div>
+    @forelse($users as $user)
+        <div class="mb-4 p-4 bg-gray-800 rounded flex items-center gap-6">
+            <img 
+                src="{{ $user->avatar ?? asset('assets/img/default-avatar.svg') }}"
+                alt="{{ $user->name }}"
+                class="w-8 h-8 rounded-full object-cover">
+            <div>
+            <div class="font-medium">
+                <a href="{{ route('user.profile', $user->id) }}" class="text-orange-400 hover:underline">
+                {{ $user->name }}
+                </a>
+            </div>
+                <div class="text-sm text-gray-400">{{ $user->email }}</div>
+            </div>
 
             @auth
                 @if(auth()->id() !== $user->id)
@@ -136,15 +134,28 @@
                             <form action="{{ route('unfollow', $user->id) }}" method="POST" class="ml-auto">
                                 @csrf
                                 @method('DELETE')
-                                <button class="bg-gray-600 px-3 py-1 rounded-full text-sm">Unfollow</button>
+                                <button 
+                                class="text-gray-300 border border-gray-300 rounded-full 
+                                        px-3 py-1 text-sm
+                                        hover:bg-gray-600 hover:text-white
+                                        focus:outline-none focus:ring-2 focus:ring-gray-300
+                                        transition-colors duration-200">
+                                Unfollow
+                                </button>
                             </form>
                         @else
                             <form action="{{ route('follow', $user->id) }}" method="POST" class="ml-auto">
                                 @csrf
-                                <button class=" bg-orange-400 px-3 py-1 rounded-full text-sm">Follow</button>
+                                <button 
+                                class="text-orange-500 border border-orange-500 rounded-full 
+                                        px-3 py-1 text-sm
+                                        hover:bg-orange-500 hover:text-white
+                                        focus:outline-none focus:ring-2 focus:ring-orange-300
+                                        transition-colors duration-200">
+                                Follow
+                                </button>
                             </form>
                         @endif
-                   
                 @endif
             @endauth
         </div>

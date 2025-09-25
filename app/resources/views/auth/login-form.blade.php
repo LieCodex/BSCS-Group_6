@@ -44,11 +44,11 @@
                                             <div class="form-group mt-3">
                                                 <input name="loginpassword" type="password" class="form-control form-control-user" placeholder="Password" required>
                                             </div>
-                                            <div class="form-group mt-3">
+                                            <div class="form-group mt-3 ml-2">
                                                 <input type="checkbox" name="remember" id="remember">
                                                 <label for="remember">Remember Me</label>
                                             </div>
-                                            <button class="btn btn-orange btn-user btn-block mt-4">Login</button>
+                                            <button class="btn btn-orange btn-user btn-block">Login</button>
                                             <hr>
                                             <a href="{{ route('google.login') }}" class="btn btn-orange btn-user btn-block">
                                                 <img src="{{ asset('assets/img/GLogo.png') }}" alt="Google Logo" class="w-5 h-5 mr-2 inline-block">

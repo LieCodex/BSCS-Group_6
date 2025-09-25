@@ -28,3 +28,7 @@
 * {
   -ms-overflow-style: none;
 }
+
+body {
+    font-family: 'ABeeZee', sans-serif;
+}

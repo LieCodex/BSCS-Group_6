@@ -55,7 +55,7 @@ class Chat extends Component
         $this->messages->push($message);
 
         // Clear the input field
-        $this->newMessage = '';
+        $this->reset('newMessage');
 
         broadcast(new MessageSent($message));
     }

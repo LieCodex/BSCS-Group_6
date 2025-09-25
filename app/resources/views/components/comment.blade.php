@@ -46,7 +46,7 @@
                 <form action="{{ route('comments.unlike', $comment->id) }}" method="POST" class="like-form" data-post-id="{{ $comment->id }}">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" id="like-btn-{{ $comment->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
+                    <button type="submit" id="like-btn-{{ $comment->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-500">
                         <svg xmlns="http://www.w3.org/2000/svg" 
                             id="like-icon-{{ $comment->id }}"
                             class="w-6 h-6 mr-1 text-orange-400" 
@@ -69,7 +69,7 @@
                 <!-- Like -->
                 <form action="{{ route('comments.like', $comment->id) }}" method="POST" class="like-form" data-post-id="{{ $comment->id }}">
                     @csrf
-                    <button type="submit" id="like-btn-{{ $comment->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
+                    <button type="submit" id="like-btn-{{ $comment->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-500">
                         <svg xmlns="http://www.w3.org/2000/svg" 
                         id="like-icon-{{ $comment->id }}"
                             class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
@@ -93,7 +93,7 @@
             <!-- Reply button -->
             <button type="button" 
                     onclick="toggleReplyForm({{ $comment->id }})"
-                    class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
+                    class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-500">
                 <svg xmlns="http://www.w3.org/2000/svg" 
                      class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
                      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -120,7 +120,7 @@
                                   oninput="autoGrow(this)"
                                   style="box-sizing: border-box; padding-bottom: 2.5rem;"></textarea>
                         <div class="absolute right-2 bottom-2 flex gap-2 hidden z-10">
-                            <button type="submit" class="bg-orange-400 text-white px-4 py-1 rounded-full">Reply</button>
+                            <button type="submit" class="bg-orange-500 text-white px-4 py-1 rounded-full">Reply</button>
                             <button type="button" 
                                     class="bg-gray-500 text-white px-4 py-1 rounded-full" 
                                     onclick="this.form.reset(); this.parentElement.classList.add('hidden'); toggleReplyForm({{ $comment->id }}, false);">Cancel</button>
@@ -172,7 +172,7 @@
                 <form action="{{ route('comments.unlike', $reply->id) }}" method="POST" class="like-form" data-post-id="{{ $reply->id }}">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" id="like-btn-{{ $reply->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
+                    <button type="submit" id="like-btn-{{ $reply->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-500">
                         <svg xmlns="http://www.w3.org/2000/svg" 
                             id="like-icon-{{ $reply->id }}"
                             class="w-6 h-6 mr-1 text-orange-400" 
@@ -195,7 +195,7 @@
                 <!-- Like -->
                 <form action="{{ route('comments.like', $reply->id) }}" method="POST" class="like-form" data-post-id="{{ $reply->id }}">
                     @csrf
-                    <button type="submit" id="like-btn-{{ $reply->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
+                    <button type="submit" id="like-btn-{{ $reply->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-500">
                         <svg xmlns="http://www.w3.org/2000/svg" 
                         id="like-icon-{{ $reply->id }}"
                             class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
