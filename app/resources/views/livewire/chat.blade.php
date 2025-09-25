@@ -104,7 +104,12 @@
         <!-- Input -->
         <form wire:submit.prevent="submit" class="p-3 border-t border-gray-700 bg-gray-800 flex items-center gap-2">
             <input 
+<<<<<<< HEAD
                 wire:model.defer="newMessage"
+=======
+                id="chatInput"
+                wire:model.live="newMessage"
+>>>>>>> 606faad4cd4c9cb483e672ecfdfac149a31b1334
                 type="text"
                 class="flex-1 bg-gray-900 border border-gray-700 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 text-white placeholder-gray-400"
                 placeholder="Type your message..." />
@@ -120,7 +125,13 @@
         </form>
     </div>
 </div>
-
+<script>
+document.addEventListener("livewire:init", () => {
+    Livewire.on("messageSent", () => {
+        document.getElementById("chatInput").value = "";
+    });
+});
+</script>
 <!-- Sidebar Toggle Script -->
 <script>
 function toggleSidebar() {
