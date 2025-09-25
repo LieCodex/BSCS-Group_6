@@ -20,6 +20,7 @@
             @foreach($users as $user)
 
         <div 
+            wire:key="user-{{ $user->id }}"
             wire:click="selectUser({{ $user->id }})" 
             class="p-3 cursor-pointer hover:bg-gray-800 transition flex items-center gap-3
                 {{ isset($selectedUser) && $selectedUser->id === $user->id ? 'bg-gray-800 font-semibold' : '' }}">
@@ -30,7 +31,13 @@
                 class="w-8 h-8 rounded-full object-cover">
 
             <div class="flex flex-col overflow-hidden">
-                <div class="text-white truncate">{{ $user->name }}</div>
+                <div class="flex items-center gap-2">
+                    <span class="text-white truncate">{{ $user->name }}</span>
+                    
+                    @if(isset($unread[$user->id]))
+                        <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                    @endif
+                </div>
                 <div class="text-xs text-gray-400 truncate">{{ $user->email }}</div>
             </div>
         </div>
@@ -40,7 +47,7 @@
     </div>
 
     <!-- Right: Chat Section -->
-    <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col relative">
         <!-- Header -->
         <div class="p-4 border-b border-gray-700 bg-gray-800 flex justify-between items-center">
             <!-- Avatar + Name + Email -->
@@ -66,7 +73,7 @@
         </div>
 
 <!-- Messages -->
-<div class="flex-1 p-4 overflow-y-auto space-y-1 bg-gray-900">
+<div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-1  bg-gray-900">
     @foreach ($messages as $i => $message)
         @php
             $isMe = $message->sender_id === auth()->id();
@@ -92,13 +99,27 @@
             @endif
 
             {{-- Message bubble --}}
-            <div class="max-w-xs px-4 py-2 rounded-2xl shadow
-                {{ $isMe ? 'bg-orange-500 text-white order-1' : 'bg-gray-700 text-gray-100' }}">
+            <div 
+                class="max-w-xs px-4 py-2 rounded-2xl shadow cursor-pointer 
+                    break-words 
+                    {{ $isMe ? 'bg-orange-500 text-white order-1' : 'bg-gray-700 text-gray-100' }}"
+                data-message-id="{{ $message->id }}"
+                title="{{ $message->created_at->format('M d, Y h:i A') }}"
+            >
                 {{ $message->message }}
+            </div>
+            {{-- hidden timestamp (revealed when clicked) --}}
+            <div id="timestamp-{{ $message->id }}" 
+                class="hidden text-xs text-gray-400 mt-1 ml-2">
+                {{ $message->created_at->format('M d, Y h:i A') }}
             </div>
         </div>
     @endforeach
 </div>
+<button id="newMessagesBtn"
+        class="hidden absolute bottom-20 right-40 z-40 bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-full shadow-lg">
+    New messages ↓
+</button>
 
 
         <!-- Input -->
@@ -121,17 +142,4 @@
         </form>
     </div>
 </div>
-<script>
-document.addEventListener("livewire:init", () => {
-    Livewire.on("messageSent", () => {
-        document.getElementById("chatInput").value = "";
-    });
-});
-</script>
-<!-- Sidebar Toggle Script -->
-<script>
-function toggleSidebar() {
-    const sidebar = document.getElementById('userSidebar');
-    sidebar.classList.toggle('-translate-x-full');
-}
-</script>
+<script src = "{{ asset('assets/js/chat.js') }}"></script>

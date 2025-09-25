@@ -14,11 +14,10 @@
         crossorigin="anonymous">
 
     <!-- Custom fonts for this template-->
-    <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- Custom styles -->
-    <link href="{{ asset('assets/css/sb-admin-2.css') }}" rel="stylesheet">
+
 
 
 </head>

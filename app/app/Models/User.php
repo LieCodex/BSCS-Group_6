@@ -64,4 +64,27 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'follows', 'followed_id', 'follower_id');
     }
 
+    public function lastMessage()
+    {
+        return $this->hasOne(ChatMessage::class, 'sender_id')
+            ->orWhere('receiver_id', $this->id)
+            ->latestOfMany();
+    }
+
+    public function lastMessageWithAuth()
+    {
+        $authId = auth()->id();
+
+        return ChatMessage::where(function ($q) use ($authId) {
+                $q->where('sender_id', $authId)
+                ->where('receiver_id', $this->id);
+            })
+            ->orWhere(function ($q) use ($authId) {
+                $q->where('sender_id', $this->id)
+                ->where('receiver_id', $authId);
+            })
+            ->latest()
+            ->first();
+    }
+
 }
