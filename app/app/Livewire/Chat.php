@@ -18,18 +18,36 @@ class Chat extends Component
     public $authId;
     public $loginID;
     public $unread = []; // user_id => true
-
-
+    protected $listeners = [
+    'heartbeat' => 'heartbeat',
+    ];
+    
+    public function heartbeat()
+    {
+        if (auth()->check()) {
+            auth()->user()->forceFill(['last_seen_at' => now()])->save();
+            \Log::debug('UpdateLastSeen (heartbeat) for user ' . auth()->id());
+        }
+    }
     public function mount(){
         $this->authId = auth()->id();
         $this->loginID = $this->authId;
 
+        if (auth()->check()) {
+            auth()->user()->forceFill(['last_seen_at' => now()])->save();
+            \Log::info('UpdateLastSeen (mount) for user ' . auth()->id());
+        }
+
         $this->loadUsers();
 
+
+        
         $this->selectedUser = $this->users->first();
         if ($this->selectedUser) {
             $this->loadMessages();
         }
+
+        
 
     }
 
@@ -44,6 +62,7 @@ class Chat extends Component
     }
     public function render()
     {
+        
        return view('livewire.chat'); 
     }
 

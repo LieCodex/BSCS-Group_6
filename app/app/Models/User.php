@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'google_id',
         'avatar',
+        'last_seen_at', // 👈 add this if missing
     ];
 
     /**
@@ -45,6 +46,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_seen_at' => 'datetime',
         ];
     }
 
@@ -85,6 +87,10 @@ class User extends Authenticatable
             })
             ->latest()
             ->first();
+    }
+    public function isOnline(): bool
+    {
+        return $this->last_seen_at && $this->last_seen_at->gt(now()->subMinutes(2));
     }
 
 }
