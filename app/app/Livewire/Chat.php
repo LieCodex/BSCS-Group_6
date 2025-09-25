@@ -56,8 +56,11 @@ class Chat extends Component
 
         // Clear the input field
         $this->newMessage = '';
+        
+
 
         broadcast(new MessageSent($message));
+        $this->dispatch('messageSent');
     }
 
     public function getListeners()
