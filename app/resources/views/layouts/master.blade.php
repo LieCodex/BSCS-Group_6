@@ -135,15 +135,15 @@
                     x-show="open"
                     x-transition
                     @click.outside="open = false"
-                    class="absolute left-10 bottom-full mb-2 w-40 bg-gray-800 rounded-lg shadow-lg z-50 py-2 text-white">
+                    class="absolute left-10 bottom-full mb-2 w-40 bg-gray-800 rounded-lg shadow-lg z-50 text-white">
                     <ul>
                         <li>
-                            <a href="" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
+                            <a href="" class="block px-4 py-2 hover:bg-gray-700">Settings</a>
                         </li>
                         <li>
                             <form method="POST" action="/logout">
                                 @csrf
-                                <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">
+                                <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-700">
                                     Logout
                                 </button>
                             </form>
