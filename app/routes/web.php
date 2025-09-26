@@ -8,6 +8,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostLikesController;
 use App\Http\Controllers\CommentLikesController;
+use App\Http\Controllers\NotificationController;
+
 
 Route::get('/', function () {
     // If user is authenticated, redirect to Tailwind dashboard
@@ -40,6 +42,11 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/comments/{comment}/like', [CommentLikesController::class, 'like'])->name('comments.like');
     Route::delete('/comments/{comment}/unlike', [CommentLikesController::class, 'unlike'])->name('comments.unlike');
+
+    //notif routes
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{notification}/seen', [NotificationController::class, 'markAsSeen'])->name('notifications.seen');
+    Route::get('/notifications/unseen-count', [NotificationController::class, 'unseenCount'])->name('notifications.unseenCount');
 });
 
 // Home route (no dashboard prefix)
@@ -51,7 +58,6 @@ Route::middleware('auth')->get('/home', function () {
 // Other dashboard routes
 Route::prefix('')->middleware('auth')->group(function () {
     Route::get('/messages', fn() => view('dashboard.messages'))->name('dashboard.messages');
-    Route::get('/notifications', fn() => view('dashboard.notifications'))->name('dashboard.notifications');
 });
 
 // Profile route (only show logged-in user's posts)
