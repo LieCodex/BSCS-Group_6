@@ -8,15 +8,14 @@
 
   <title>Squeal</title>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-    }
-  </style>
+    <!-- Custom styles -->
+    <link href="{{ asset('assets/css/sb-admin-2.css') }}" rel="stylesheet">
+
+
 </head>
 
 <body class="bg-gray-900 text-white">

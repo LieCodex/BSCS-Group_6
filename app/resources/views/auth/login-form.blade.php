@@ -7,15 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Squeal</title>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-    }
-  </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="{{ asset('assets/css/sb-admin-2.css') }}" rel="stylesheet">
 </head>
 
 <body class="bg-gray-900 text-white">
@@ -29,38 +24,32 @@
             <img src="assets/img/squel logo orange.png" alt="logo" class="w-48 h-auto">
           </div>
 
-          <!-- Right Side Login -->
-          <div class="p-8">
-            <div class="text-center">
-              <h1 class="text-2xl font-semibold mb-6 text-orange-400">Sign In</h1>
-            </div>
-            <form action="{{ route('login') }}" method="POST" class="space-y-4">
-              @csrf
-              <div>
-                <input name="loginemail" type="email"
-                  class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none text-white placeholder-gray-400"
-                  placeholder="Email" required>
-              </div>
-              <div>
-                <input name="loginpassword" type="password"
-                  class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none text-white placeholder-gray-400"
-                  placeholder="Password" required>
-              </div>
-              <button
-                class="w-full bg-orange-500 text-white py-2 rounded-lg shadow-md hover:bg-orange-600 transition mt-4">
-                Login
-              </button>
-              <div class="flex items-center my-6">
-                <hr class="flex-grow border-gray-700">
-                <span class="mx-3 text-gray-400">OR</span>
-                <hr class="flex-grow border-gray-700">
-              </div>
-              <a href="{{ route('google.login') }}"
-                class="flex items-center justify-center w-full bg-orange-500 text-white py-2 rounded-lg shadow-md hover:bg-orange-600 transition">
-                <img src="{{ asset('assets/img/GLogo.png') }}" alt="Google Logo" class="w-5 h-5 mr-2 inline-block">
-                Sign in with Google
-              </a>
-            </form>
+                                <div class="col-lg-6">
+                                    <div class="p-5 position-relative">
+                                        <!-- Login Section -->
+                                        <div class="text-center">
+                                            <h1 class="h4 mb-4 login-register-heading">Sign In</h1>
+                                        </div>
+                                        <form action="{{ route('login') }}" method="POST" class="user">
+                                            @csrf
+                                            <div class="form-group">
+                                                <input name="loginemail" type="email" class="form-control form-control-user"
+                                                    placeholder="Email" required>
+                                            </div>
+                                            <div class="form-group mt-3">
+                                                <input name="loginpassword" type="password" class="form-control form-control-user" placeholder="Password" required>
+                                            </div>
+                                            <div class="form-group mt-3">
+                                                <input type="checkbox" name="remember" id="remember">
+                                                <label for="remember">Remember Me</label>
+                                            </div>
+                                            <button class="btn btn-orange btn-user btn-block mt-4">Login</button>
+                                            <hr>
+                                            <a href="{{ route('google.login') }}" class="btn btn-orange btn-user btn-block">
+                                                <img src="{{ asset('assets/img/GLogo.png') }}" alt="Google Logo" class="w-5 h-5 mr-2 inline-block">
+                                                Sign in with Google
+                                            </a>
+                                        </form>
 
             <div class="text-center mt-4">
               <a href="{{ route('register.form') }}" class="text-orange-400 hover:underline">

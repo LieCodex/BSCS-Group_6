@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="max-w-xl mx-auto mt-10 bg-gray-800 p-6 rounded-lg shadow">
-    <h2 class="text-xl font-bold text-orange-400 mb-4">Edit Comment</h2>
+    <h2 class="text-xl font-medium text-orange-400 mb-4">Edit Comment</h2>
     <form action="{{ route('comments.update', $comment->id) }}" method="POST">
         @csrf
         @method('PUT')

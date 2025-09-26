@@ -5,7 +5,7 @@
 
     <!-- Success message -->
     @if(session('success'))
-        <div id="successmsg" class="bg-orange-400 text-white p-2 rounded">
+        <div id="successmsg" class="bg-orange-500 text-white p-2 rounded">
             {{ session('success') }}
         </div>
     @endif
@@ -15,26 +15,38 @@
     <div class="p-4 rounded-lg bg-gray-800">
         <form method="POST" action="/create-post" enctype="multipart/form-data">
             @csrf
-<textarea
-    id="postBody"
-    name="body"
-    placeholder="What's happening?"
-    class="w-full min-h-[80px] bg-transparent border-none focus:ring-0 resize-none text-lg sm:text-4xl lg:text-base overflow-hidden"
-></textarea>
-
+            <textarea
+                id="postBody"
+                name="body"
+                placeholder="What's happening?"
+                class="w-full min-h-[80px] bg-transparent border-none focus:ring-0 resize-none text-lg sm:text-4xl lg:text-base overflow-hidden"
+            ></textarea>
 
             <!-- Preview area -->
             <div id="imagePreview" class="flex flex-wrap gap-2 mt-2 hidden"></div>
 
             <div class="flex items-center gap-2 mt-2">
-            <button type="submit" class="bg-orange-400 text-white px-4 py-1 lg:px-4 lg:py-1 sm:px-12 sm:py-5 rounded-full text-sm sm:text-3xl lg:text-base">
+            <button 
+            type="submit"
+            class="text-orange-500 border border-orange-500 rounded-full 
+                    px-4 py-1 lg:px-4 lg:py-1 sm:px-12 sm:py-5 
+                    text-sm sm:text-3xl lg:text-base
+                    hover:bg-orange-500 hover:text-white 
+                    focus:outline-none focus:ring-2 focus:ring-orange-300
+                    transition-colors duration-200">
                 Squeal
             </button>
+            <label for="imageInput" 
+                class="text-gray-300 border border-gray-300 rounded-full cursor-pointer 
+                        px-4 py-1 lg:px-4 lg:py-1 sm:px-12 sm:py-5 
+                        sm:text-3xl lg:text-base
+                        hover:bg-gray-600 hover:text-white
+                        focus:outline-none focus:ring-2 focus:ring-gray-300
+                        transition-colors duration-200">
+                Images
+            </label>
 
-                <label for="imageInput" class="bg-gray-600 text-white px-4 py-1 lg:px-4 lg:py-1 sm:px-12 sm:py-5 rounded-full cursor-pointer sm:text-3xl lg:text-base">
-                    Images
-                </label>
-                <input type="file" id="imageInput" name="images[]" multiple accept="image/*" class="hidden">
+            <input type="file" id="imageInput" name="images[]" multiple accept="image/*" class="hidden">
             </div>
         </form>
     </div>
@@ -43,7 +55,7 @@
     <!-- Guest message -->
     @guest
         <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 text-center text-gray-400">
-            <p>Welcome to <span class="text-orange-400 font-bold">Squeal</span> !</p>
+            <p>Welcome to <span class="text-orange-400 font-medium">Squeal</span> !</p>
             <p>Please <a href="{{ route('login') }}" class="text-orange-400">login</a> or 
                <a href="{{ route('register.form') }}" class="text-orange-400">register</a> 
                to squeal with others.</p>
@@ -55,17 +67,16 @@
         @foreach ($posts as $post)
             <div class="p-6 sm:p-6 lg:p-4 rounded-lg bg-gray-800 relative">
 
-
                 <!-- User info -->
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
-<img 
-    src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
-    alt="{{ optional(auth()->user())->name ?? 'Guest' }}"
-    class="w-14 h-14 sm:w-20 sm:h-20 lg:w-10 lg:h-10 rounded-full object-cover">
+            <img 
+                src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
+                alt="{{ optional(auth()->user())->name ?? 'Guest' }}"
+                class="w-14 h-14 sm:w-20 sm:h-20 lg:w-10 lg:h-10 rounded-full object-cover">
 
 
-                    <h2 class="font-bold text-orange-400">
+                    <h2 class="font-semibold text-orange-400">
                         <a href="{{ route('user.profile', optional($post->user)->id) }}">
                             {{ optional($post->user)->name ?? 'Unknown User' }}
                         </a>
@@ -92,7 +103,7 @@
                 </div>
 
                 <!-- Post body -->
-                <p class="text-gray-300 sm:mt-10 sm:mb-10 lg:mt-1 lg:mb-1 text-lg sm:text-4xl lg:text-base">{{ $post->body }}</p>
+                <p class="text-gray-300 mt-3">{{ $post->body }}</p>
 
                 <!-- Post images -->
                     @if($post->images->count())
@@ -123,7 +134,7 @@
                             </div>
                         </div>
                     </div>
-                                    <!-- Timestamp -->
+                <!-- Timestamp -->
                 <p class="text-xs sm:text-3xl lg:text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
 
                 <!-- Buttons wrapper -->
@@ -138,7 +149,7 @@
                                 @method('DELETE')
                                 <button 
                                     type="submit" 
-                                    class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-400 text-sm sm:text-base lg:text-sm">
+                                    class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-500 text-sm sm:text-base lg:text-sm">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" 
                                         id="like-icon-{{ $post->id }}"
@@ -164,7 +175,7 @@
                                 @csrf
                                 <button 
                                 type="submit" 
-                                class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-400 text-sm sm:text-base lg:text-sm">
+                                class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-500 text-sm sm:text-base lg:text-sm">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" 
                                     id="like-icon-{{ $post->id }}"
@@ -192,7 +203,7 @@
                         <form action="{{ route('posts.show', $post->id) }}" method="GET">
                            <button 
                             type="submit" 
-                            class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-400 text-sm sm:text-base lg:text-sm">
+                            class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-500 text-sm sm:text-base lg:text-sm">
 
                                 <svg xmlns="http://www.w3.org/2000/svg" 
                                     class="w-6 h-6 mr-1 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
@@ -218,102 +229,4 @@
     @endif
 </div>
 <script src="{{ asset('assets/js/home.js') }}"></script>
-
-<script>
-const modal = document.getElementById('imageModal');
-const modalImg = document.getElementById('modalImage');
-const closeModalBtn = document.getElementById('closeModal');
-const zoomInBtn = document.getElementById('zoomIn');
-const zoomOutBtn = document.getElementById('zoomOut');
-
-let currentScale = 1;
-let currentX = 0;
-let currentY = 0;
-const SCALE_STEP = 0.2;
-const MAX_SCALE = 3;
-const MIN_SCALE = 0.5;
-
-// Drag variables
-let isDragging = false;
-let startX = 0;
-let startY = 0;
-
-// Open modal
-function openModal(src) {
-    modalImg.src = src;
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-
-    // Reset zoom and position
-    currentScale = 1;
-    currentX = 0;
-    currentY = 0;
-    updateTransform();
-}
-
-// Close modal
-function closeModal() {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-    currentScale = 1;
-    currentX = 0;
-    currentY = 0;
-    updateTransform();
-}
-
-// Update transform for scale + translation
-function updateTransform() {
-    modalImg.style.transform = `scale(${currentScale}) translate(${currentX}px, ${currentY}px)`;
-}
-
-// Zoom handlers
-function zoomIn() {
-    currentScale = Math.min(currentScale + SCALE_STEP, MAX_SCALE);
-    updateTransform();
-}
-
-function zoomOut() {
-    currentScale = Math.max(currentScale - SCALE_STEP, MIN_SCALE);
-    updateTransform();
-}
-
-// Event listeners
-closeModalBtn.addEventListener('click', closeModal);
-zoomInBtn.addEventListener('click', zoomIn);
-zoomOutBtn.addEventListener('click', zoomOut);
-
-// Close modal if clicking outside image
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-});
-
-// Mouse wheel zoom
-modalImg.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    if (e.deltaY < 0) zoomIn();
-    else zoomOut();
-});
-
-// Drag-to-pan
-modalImg.addEventListener('mousedown', (e) => {
-    if (currentScale <= 1) return; // no drag if not zoomed
-    isDragging = true;
-    startX = e.clientX - currentX;
-    startY = e.clientY - currentY;
-    modalImg.style.cursor = 'grabbing';
-});
-
-document.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    currentX = e.clientX - startX;
-    currentY = e.clientY - startY;
-    updateTransform();
-});
-
-document.addEventListener('mouseup', () => {
-    if (!isDragging) return;
-    isDragging = false;
-    modalImg.style.cursor = 'grab';
-});
-</script>
 @endsection

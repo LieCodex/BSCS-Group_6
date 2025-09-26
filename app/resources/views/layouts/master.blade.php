@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Squeal</title>
     @vite('resources/css/app.css')
+    <link href="https://fonts.googleapis.com/css2?family=ABeeZee&display=swap" rel="stylesheet">
 </head>
 <!-- Bottom Nav (Mobile only) -->
 <nav class="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 
@@ -55,7 +56,7 @@
     </a>
 </nav>
 
-<body class="bg-[#17202A] text-white flex flex-col lg:flex-row h-screen">
+<body class="bg-gray-900 text-white flex flex-col lg:flex-row h-screen">
 
     <!-- Sidebar (Left) -->
     <aside class="hidden lg:flex w-60 h-screen p-6 flex-col justify-between sticky top-0 ml-15">
@@ -127,22 +128,22 @@
                 </button>
 
                 <!-- Username -->
-                <p class="font-bold ml-2">{{ auth()->user()->name }}</p>
+                <p class="font-medium ml-2">{{ auth()->user()->name }}</p>
 
                 <!-- Dropdown Menu -->
                 <div x-cloak
                     x-show="open"
                     x-transition
                     @click.outside="open = false"
-                    class="absolute left-10 bottom-full mb-2 w-40 bg-white border rounded-lg shadow-lg z-50 py-2 text-gray-700">
+                    class="absolute left-10 bottom-full mb-2 w-40 bg-gray-800 rounded-lg shadow-lg z-50 text-white">
                     <ul>
                         <li>
-                            <a href="" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
+                            <a href="" class="block px-4 py-2 hover:bg-gray-700">Settings</a>
                         </li>
                         <li>
                             <form method="POST" action="/logout">
                                 @csrf
-                                <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">
+                                <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-700">
                                     Logout
                                 </button>
                             </form>
@@ -155,7 +156,7 @@
                         src="{{ asset('assets/img/default-avatar.svg') }}"
                         alt="Guest"
                         class="w-12 h-12 sm:w-14 sm:h-14 lg:w-10 lg:h-10 rounded-full object-cover">
-                    <p class="font-bold ml-2">Guest</p>
+                    <p class="font-medium ml-2">Guest</p>
                 </div>
             @endauth
         </div>
@@ -169,13 +170,36 @@
     <!-- Sidebar (Right) -->
     @auth
     <aside class="w-80 p-6 hidden lg:block h-screen overflow-y-auto">
-        <form method="GET" action="{{ route('search') }}" class="mb-4">
-    <input type="text" name="q" placeholder="Search posts or users..." class="w-full p-2 rounded-full bg-gray-800 border-none text-white" required>
-    <button type="submit" class="hidden"></button>
-</form>
+        <form method="GET" action="{{ route('search') }}" class="mb-4 relative">
+            <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+                <!-- Search -->
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    class="h-5 w-5" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor" 
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" 
+                        d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
+                </svg>
+            </span>
+
+            <input 
+                type="text" 
+                name="q" 
+                placeholder="Search squeal" 
+                class="w-full pl-10 p-2 rounded-full bg-gray-800 border-none text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400"
+                required
+            >
+
+            <button type="submit" class="hidden"></button>
+        </form>
+
         
         <div class="mt-6 bg-gray-800 p-4 rounded-xl">
             <h3 class="font-bold text-lg mb-3">Who to follow</h3>
+            
+            <hr class="border-gray-700 mb-4">
 
             @php
                 // Get users excluding the current logged in user
@@ -189,7 +213,7 @@
                     <div class="flex items-center gap-3">
                         <img src="{{ $user->avatar ?? asset('assets/img/default-avatar.svg') }}" 
                             class="w-12 h-12 sm:w-14 sm:h-14 lg:w-10 lg:h-10 rounded-full object-cover" />
-                    <div class="font-bold hover:underline">
+                    <div class="font-medium hover:underline">
                         <a href="{{ route('user.profile', $user->id) }}">
                             {{ $user->name }}
                         </a>
@@ -201,13 +225,27 @@
                         <form action="{{ route('unfollow', $user->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button class="bg-gray-600 px-3 py-1 rounded-full text-sm">Unfollow</button>
+                            <button 
+                            class="text-gray-300 border border-gray-300 rounded-full 
+                                    px-3 py-1 text-sm
+                                    hover:bg-gray-600 hover:text-white
+                                    focus:outline-none focus:ring-2 focus:ring-gray-300
+                                    transition-colors duration-200">
+                            Unfollow
+                            </button>
                         </form>
                     @else
                         <!-- Not following -->
                         <form action="{{ route('follow', $user->id) }}" method="POST">
                             @csrf
-                            <button class="bg-orange-400 px-3 py-1 rounded-full text-sm">Follow</button>
+                            <button 
+                            class="text-orange-500 border border-orange-500 rounded-full 
+                                    px-3 py-1 text-sm 
+                                    hover:bg-orange-500 hover:text-white 
+                                    focus:outline-none focus:ring-2 focus:ring-orange-300
+                                    transition-colors duration-200">
+                            Follow
+                            </button>
                         </form>
                     @endif
                 </div>
@@ -217,8 +255,8 @@
     @endauth
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="{{ asset('assets/js/master_like.js') }}"></script>
-@vite(['resources/css/app.css', 'resources/js/app.js'])
-@livewireScripts
+    <script src="{{ asset('assets/js/master_like.js') }}"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireScripts
 </body>
 </html>
