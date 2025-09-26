@@ -49,15 +49,36 @@ class User extends Authenticatable
             'last_seen_at' => 'datetime',
         ];
     }
+    
 
     public function userPosts(){ // shows the posts that the user has made
         return $this->hasMany(Post::class, 'user_id');
     }
+    
 
     // Users that this user follows
     public function following()
     {
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followed_id');
+    }
+    // Messages this user sent
+    public function sentMessages()
+    {
+        return $this->hasMany(ChatMessage::class, 'sender_id');
+    }
+
+    // Messages this user received
+    public function receivedMessages()
+    {
+        return $this->hasMany(ChatMessage::class, 'receiver_id');
+    }
+
+    public function messagesWithAuth()
+    {
+        $authId = auth()->id();
+        return $this->hasMany(ChatMessage::class, 'sender_id')
+            ->where('sender_id', $authId)
+            ->orWhere('receiver_id', $authId);
     }
 
     // Users that follow this user

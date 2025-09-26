@@ -92,17 +92,18 @@
                     </form>
                 @endif
                     <!-- Chat -->
-                    <form action="{{ route('dashboard.messages') }}">
-                        @csrf
-                        <button 
+                <form action="{{ route('dashboard.messages') }}" method="GET">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                    <button 
                         class="text-orange-500 border border-orange-500 rounded-full 
-                                px-5 py-2 text-sm
-                                hover:bg-orange-500 hover:text-white
-                                focus:outline-none focus:ring-2 focus:ring-orange-300
-                                transition-colors duration-200">
+                            px-5 py-2 text-sm
+                            hover:bg-orange-500 hover:text-white
+                            focus:outline-none focus:ring-2 focus:ring-orange-300
+                            transition-colors duration-200">
                         Chat
-                        </button>
-                    </form>
+                    </button>
+                </form>
             </div>
         @endif
     </div>

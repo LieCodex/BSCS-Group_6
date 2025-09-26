@@ -35,19 +35,20 @@ class Chat extends Component
 
         if (auth()->check()) {
             auth()->user()->forceFill(['last_seen_at' => now()])->save();
-            \Log::info('UpdateLastSeen (mount) for user ' . auth()->id());
         }
 
         $this->loadUsers();
 
+        $selectedUserId = request('user_id'); // from profile link
+        $this->selectedUser = $selectedUserId
+            ? User::find($selectedUserId)  // could be a new user with no messages
+            : $this->users->first() ?? null;
 
-        
-        $this->selectedUser = $this->users->first();
         if ($this->selectedUser) {
-            $this->loadMessages();
+            $this->loadMessages(); // returns empty collection if no messages
+        } else {
+            $this->messages = collect();
         }
-
-        
 
     }
 
@@ -56,6 +57,14 @@ class Chat extends Component
         $authId = auth()->id();
 
         $this->users = User::where('id', '!=', $authId)
+            ->where(function($q) use ($authId) {
+                $q->whereHas('sentMessages', function($q) use ($authId) {
+                    $q->where('receiver_id', $authId);
+                })
+                ->orWhereHas('receivedMessages', function($q) use ($authId) {
+                    $q->where('sender_id', $authId);
+                });
+            })
             ->get()
             ->sortByDesc(fn($user) => optional($user->lastMessageWithAuth())->created_at)
             ->values();
@@ -68,14 +77,20 @@ class Chat extends Component
 
     public function loadMessages()
     {
-            $this->messages = ChatMessage::where(function($query){
+        if (!$this->selectedUser) {
+            $this->messages = collect();
+            return;
+        }
+
+        $this->messages = ChatMessage::where(function($query){
             $query->where('sender_id', auth()->id())
-                  ->where('receiver_id', $this->selectedUser->id);
-            })->orWhere(function($query){
-                $query->where('sender_id', $this->selectedUser->id)
-                    ->where('receiver_id', auth()->id());
-            })->get();
-            $this->dispatch('chatChanged');
+                ->where('receiver_id', $this->selectedUser->id);
+        })->orWhere(function($query){
+            $query->where('sender_id', $this->selectedUser->id)
+                ->where('receiver_id', auth()->id());
+        })->get();
+
+        $this->dispatch('chatChanged');
     }
 
     public function submit(){
@@ -125,8 +140,19 @@ class Chat extends Component
     }
 
     public function selectUser($id){
-        $this->selectedUser = User::find($id);
-        $this->loadMessages();
+    $this->selectedUser = User::find($id);
+
+    // If user has previous messages, load them; otherwise, empty collection
+    $this->messages = $this->selectedUser
+            ? ChatMessage::where(function($query){
+                    $query->where('sender_id', auth()->id())
+                        ->where('receiver_id', $this->selectedUser->id);
+                })->orWhere(function($query){
+                    $query->where('sender_id', $this->selectedUser->id)
+                        ->where('receiver_id', auth()->id());
+                })->get()
+            : collect();
+
         unset($this->unread[$id]);
     }
 }

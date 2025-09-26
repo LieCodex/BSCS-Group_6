@@ -23,7 +23,7 @@
             wire:key="user-{{ $user->id }}"
             wire:click="selectUser({{ $user->id }})" 
             class="p-3 cursor-pointer hover:bg-gray-800 transition flex items-center gap-3
-                {{ isset($selectedUser) && $selectedUser->id === $user->id ? 'bg-gray-800 font-semibold' : '' }}">
+                {{ isset($selectedUser) && optional($selectedUser)->id === $user->id ? 'bg-gray-800 font-semibold' : '' }}">
             <div class="relative w-8 h-8 flex-shrink-0">
                         <img 
                             src="{{ $user->avatar ?: asset('assets/img/default-avatar.svg') }}"
@@ -60,13 +60,13 @@
     <div class="flex items-center gap-3">
         <div class="relative w-10 h-10">
             <img 
-                src="{{ $selectedUser->avatar ?: asset('assets/img/default-avatar.svg') }}"
-                alt="{{ $selectedUser->name ?? 'Unknown User' }}"
+                src="{{ optional($selectedUser)->avatar ?: asset('assets/img/default-avatar.svg') }}"
+                alt="{{ optional($selectedUser)->name ?? 'Unknown User' }}"
                 class="w-10 h-10 rounded-full object-cover"
             >
 
             {{-- Status dot --}}
-            @if($selectedUser->isOnline())
+            @if(optional($selectedUser)->isOnline())
                 <span class="absolute bottom-0 right-0 block w-3 h-3 bg-green-500 
                              border-2 border-gray-800 rounded-full"></span>
             @else
@@ -76,8 +76,8 @@
         </div>
 
         <div class="flex flex-col">
-            <div class="text-lg font-semibold text-white">{{ $selectedUser->name }}</div>
-            <div class="text-xs text-gray-400">{{ $selectedUser->email }}</div>
+            <div class="text-lg font-semibold text-white">{{ optional($selectedUser)->name }}</div>
+            <div class="text-xs text-gray-400">{{ optional($selectedUser)->email }}</div>
         </div>
     </div>
 
@@ -96,7 +96,7 @@
     @foreach ($messages as $i => $message)
         @php
             $isMe = $message->sender_id === auth()->id();
-            $sender = $isMe ? auth()->user() : $selectedUser;
+            $sender = $isMe ? auth()->user() : optional($selectedUser);
 
             // Check if next message exists and is from the same sender
             $next = $messages[$i + 1] ?? null;
