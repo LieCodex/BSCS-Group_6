@@ -43,10 +43,8 @@ Route::middleware('auth')->group(function () {
 });
 
 // Home route (no dashboard prefix)
-Route::middleware('auth')->get('/home', function () {
-    $posts = \App\Models\Post::latest()->get();
-    return view('dashboard.home', compact('posts'));
-})->name('dashboard.home');
+Route::middleware('auth')->get('/home', [PostController::class, 'showAllPosts'])->name('dashboard.home');
+
 
 // Other dashboard routes
 Route::prefix('')->middleware('auth')->group(function () {

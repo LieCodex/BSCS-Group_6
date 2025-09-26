@@ -172,3 +172,4 @@ document.addEventListener('mouseup', () => {
     isDragging = false;
     modalImg.style.cursor = 'grab';
 });
+

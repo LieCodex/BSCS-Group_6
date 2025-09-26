@@ -179,7 +179,7 @@
 
                                     <svg xmlns="http://www.w3.org/2000/svg" 
                                     id="like-icon-{{ $post->id }}"
-                                        class="w-6 h-6 mr-1 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
+                                        class="w-6 h-6 mr-1  sm:w-15 sm:h-15 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
                                         fill="{{ $post->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
                                         stroke="{{ $post->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
                                         stroke-width="2"
@@ -206,7 +206,7 @@
                             class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-500 text-sm sm:text-base lg:text-sm">
 
                                 <svg xmlns="http://www.w3.org/2000/svg" 
-                                    class="w-6 h-6 mr-1 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
+                                    class="w-6 h-6 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" 
                                         d="M7 8h10M7 12h6m-6 4h4m10-2.586V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9l4 4v-5.586a2 2 0 0 0 .586-1.414z"/>
