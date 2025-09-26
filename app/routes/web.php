@@ -49,7 +49,7 @@ Route::middleware('auth')->get('/home', function () {
 })->name('dashboard.home');
 
 // Other dashboard routes
-Route::prefix('dashboard')->middleware('auth')->group(function () {
+Route::prefix('')->middleware('auth')->group(function () {
     Route::get('/messages', fn() => view('dashboard.messages'))->name('dashboard.messages');
     Route::get('/notifications', fn() => view('dashboard.notifications'))->name('dashboard.notifications');
 });

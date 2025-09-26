@@ -135,7 +135,7 @@
                     x-show="open"
                     x-transition
                     @click.outside="open = false"
-                    class="absolute left-10 bottom-full mb-2 w-40 bg-white border rounded-lg shadow-lg z-50 py-2 text-gray-700">
+                    class="absolute left-10 bottom-full mb-2 w-40 bg-gray-800 rounded-lg shadow-lg z-50 py-2 text-white">
                     <ul>
                         <li>
                             <a href="" class="block px-4 py-2 hover:bg-gray-100">Settings</a>

@@ -171,12 +171,16 @@
                             <form action="{{ route('posts.unlike', $post->id) }}" method="POST" class="like-form" data-post-id="{{ $post->id }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" id="like-btn-{{ $post->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
+                                <button 
+                                    type="submit" 
+                                    class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-500 text-sm sm:text-base lg:text-sm">
+
                                     <svg xmlns="http://www.w3.org/2000/svg" 
                                         id="like-icon-{{ $post->id }}"
-                                        class="w-6 h-6 mr-1 text-orange-400" 
-                                        fill="currentColor"
-                                        stroke="orange"
+                                        class="w-6 h-6 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 text-orange-400" 
+                                        fill="{{ $post->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
+                                        stroke="{{ $post->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
+                                        stroke-width="2"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" 
                                             d="M4.318 6.318a4.5 4.5 0 016.364 0L12 
@@ -184,21 +188,25 @@
                                             6.364L12 20.364l-7.682-7.682a4.5 
                                             4.5 0 010-6.364z"/>
                                     </svg>
-                                    <span id="like-count-{{ $post->id }}" class="text-orange-400">
+                                       <span id="like-count-{{ $post->id }}" class="{{ $post->isLikedBy(auth()->user()) ? 'text-orange-400' : 'text-white' }} sm:text-3xl lg:text-sm">
                                         {{ $post->likes->count() }}
-                                    </span>
+                                        </span>
                                 </button>
                             </form>
                         @else
                             <!-- Like -->
                             <form action="{{ route('posts.like', $post->id) }}" method="POST" class="like-form" data-post-id="{{ $post->id }}">
                                 @csrf
-                                <button type="submit" id="like-btn-{{ $post->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
+                                <button 
+                                type="submit" 
+                                class="group inline-flex items-center text-white px-4 py-2 rounded-full bg-gray-800 hover:border-orange-500 text-sm sm:text-base lg:text-sm">
+
                                     <svg xmlns="http://www.w3.org/2000/svg" 
-                                        id="like-icon-{{ $post->id }}"
-                                        class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
-                                        fill="none"
-                                        stroke="white"
+                                    id="like-icon-{{ $post->id }}"
+                                        class="w-6 h-6 mr-1 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
+                                        fill="{{ $post->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
+                                        stroke="{{ $post->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
+                                        stroke-width="2"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" 
                                             d="M4.318 6.318a4.5 4.5 0 016.364 0L12 
@@ -206,9 +214,9 @@
                                             6.364L12 20.364l-7.682-7.682a4.5 
                                             4.5 0 010-6.364z"/>
                                     </svg>
-                                    <span id="like-count-{{ $post->id }}" class="text-white group-hover:text-orange-400">
+                                        <span id="like-count-{{ $post->id }}" class="{{ $post->isLikedBy(auth()->user()) ? 'text-orange-400' : 'text-white' }} sm:text-3xl lg:text-sm">
                                         {{ $post->likes->count() }}
-                                    </span>
+                                        </span>
                                 </button>
                             </form>
                         @endif

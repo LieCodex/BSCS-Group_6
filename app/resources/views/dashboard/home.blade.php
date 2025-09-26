@@ -67,7 +67,6 @@
         @foreach ($posts as $post)
             <div class="p-6 sm:p-6 lg:p-4 rounded-lg bg-gray-800 relative">
 
-
                 <!-- User info -->
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">

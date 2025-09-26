@@ -40,7 +40,7 @@
             Comments ({{ $post->comments->count() }})
         </h3>
 
-        <!-- Add Comment Form -->
+        <!-- Comment Form -->
         @auth
             <div class="mt-4">
                 <form action="{{ route('comments.create', $post->id) }}" method="POST">
