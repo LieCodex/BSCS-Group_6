@@ -138,18 +138,21 @@
                     class="absolute left-10 bottom-full mb-2 w-40 bg-gray-800 rounded-lg shadow-lg z-50 text-white">
                     <ul>
                         <li>
-                            <a href="" class="block px-4 py-2 hover:bg-gray-700">Settings</a>
+                            <a href="" class="block px-6 py-3 text-center hover:bg-gray-700 rounded-md">
+                                Settings
+                            </a>
                         </li>
                         <li>
                             <form method="POST" action="/logout">
                                 @csrf
-                                <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-700">
+                                <button type="submit" class="w-full px-6 py-3 text-center hover:bg-gray-700 rounded-md">
                                     Logout
                                 </button>
                             </form>
                         </li>
                     </ul>
                 </div>
+
             @else
                 <div class="flex items-center gap-2">
                     <img 

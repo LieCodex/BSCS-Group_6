@@ -54,7 +54,7 @@
     <!-- Right: Chat Section -->
     <div class="flex-1 flex flex-col relative">
         <!-- Header -->
-        <!-- Header -->
+
 <div class="p-4 border-b border-gray-700 bg-gray-800 flex justify-between items-center">
     <!-- Avatar + Name + Email -->
     <div class="flex items-center gap-3">

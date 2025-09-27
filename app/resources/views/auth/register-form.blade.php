@@ -33,7 +33,7 @@
           <!-- Right Form Section -->
           <div class="p-8">
             <div class="text-center">
-              <h1 class="text-2xl font-semibold mb-6 text-orange-400">Sign Up</h1>
+              <h1 class="text-2xl font-semibold mb-6 text-orange-500">Sign Up</h1>
             </div>
 
             <form action="/register" method="POST" class="space-y-4">
@@ -54,7 +54,12 @@
                   placeholder="Password" required>
               </div>
               <button type="submit"
-                class="w-full bg-orange-500 text-white py-2 rounded-lg shadow-md hover:bg-orange-600 transition">
+              class="flex items-center justify-center w-full 
+                    text-orange-500 border border-orange-500 
+                    rounded-full py-2 
+                    hover:bg-orange-500 hover:text-white 
+                    focus:outline-none focus:ring-2 focus:ring-orange-300
+                    transition-colors duration-200">
                 Register
               </button>
 
@@ -66,14 +71,19 @@
 
               <!-- Google Sign up -->
               <a href="{{ route('google.login') }}"
-                class="flex items-center justify-center w-full bg-orange-500 text-white py-2 rounded-lg shadow-md hover:bg-orange-600 transition">
+                class="flex items-center justify-center w-full 
+                text-orange-500 border border-orange-500 
+                rounded-full py-2 
+                hover:bg-orange-500 hover:text-white 
+                focus:outline-none focus:ring-2 focus:ring-orange-300
+                transition-colors duration-200">
                 <img src="{{ asset('assets/img/GLogo.png') }}" alt="Google Logo" class="w-5 h-5 mr-2 inline-block">
                 Sign up with Google
               </a>
             </form>
 
             <div class="text-center mt-4">
-              <a href="{{ route('login.form') }}" class="text-orange-400 hover:underline">
+              <a href="{{ route('login.form') }}" class="text-orange-500 hover:underline">
                 Already have an account? Login
               </a>
             </div>
