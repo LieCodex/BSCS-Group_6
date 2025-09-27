@@ -248,7 +248,7 @@
 
                                     <svg xmlns="http://www.w3.org/2000/svg" 
                                     id="like-icon-{{ $post->id }}"
-                                        class="w-6 h-6 mr-1 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
+                                        class="w-6 h-6 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
                                         fill="{{ $post->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
                                         stroke="{{ $post->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
                                         stroke-width="2"

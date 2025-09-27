@@ -112,11 +112,29 @@ class PostController extends Controller
 
     // Show all posts (global feed)
     public function showAllPosts() {
-        $posts = Post::with(['user', 'images', 'comments'])
-                    ->latest()
-                    ->get();
+            $user = auth()->user();
 
-        return view('dashboard.home', ['posts' => $posts]);
+    $posts = Post::with(['user', 'images', 'comments', 'likes'])->get();
+
+    $posts = $posts->map(function ($post) use ($user) {
+        // Base score ensures even new posts have a chance
+        $score = 1 + $post->likes->count() * 2 + $post->comments->count();
+
+        // Reduce score if user already liked the post
+        if ($user && $post->isLikedBy($user)) {
+            $score *= 0.5; // less aggressive than 0.3
+        }
+
+        // Add randomness
+        $score += rand(0, 5) * 0.5; // bigger random factor
+
+        $post->score = $score;
+        return $post;
+    })
+    ->sortByDesc('score')
+    ->values();
+
+    return view('dashboard.home', ['posts' => $posts]);
     }
 
     
