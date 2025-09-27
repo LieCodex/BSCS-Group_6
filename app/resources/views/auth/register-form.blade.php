@@ -27,7 +27,7 @@
 
           <!-- Left Logo Section -->
           <div class="hidden lg:flex flex-col items-center justify-center text-center p-8 bg-gray-900">
-            <img src="assets/img/squeal_logo.png" alt="logo" class="w-48 h-auto">
+            <img src="assets/img/squeal_logo.png" alt="logo" class="w-80 h-auto">
           </div>
 
           <!-- Right Form Section -->
