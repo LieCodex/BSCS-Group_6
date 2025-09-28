@@ -1,72 +1,51 @@
-@extends('layouts.master')
-
-@section('content')
-<div class="p-6 space-y-6">
-
-    <!-- Trigger (Textbox) -->
-    <textarea 
-        id="openModal"
-        placeholder="What's happening?"
-        class="w-full bg-transparent border border-gray-600 rounded-lg p-2 text-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none cursor-pointer"
-        rows="3"
-        readonly
-        tabindex="0"
-        aria-haspopup="dialog"
-        aria-controls="postModal"
-    ></textarea>
-
-</div>
-
-<!-- Modal -->
-<div id="postModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50" role="dialog" aria-modal="true" aria-labelledby="postModalLabel">
-    <div class="bg-gray-800 rounded-lg p-6 w-full max-w-lg shadow-lg relative">
-
-        <!-- Close Button -->
-        <button id="closeModal" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl" aria-label="Close">&times;</button>
-
-        <!-- Create Post -->
-        <form method="POST" action="{{ route('posts.create') }}" enctype="multipart/form-data" class="space-y-4" id="postForm">
+    <!-- Show post form only for logged-in users -->
+    @auth
+    <div class="p-4 rounded-lg bg-gray-800">
+        <form method="POST" action="/create-post" enctype="multipart/form-data">
             @csrf
-
-            <h2 id="postModalLabel" class="text-lg font-semibold text-gray-100">Create post</h2>
-
-            <!-- Post Body -->
-            <textarea 
+            <textarea
+                id="postBody"
                 name="body"
                 placeholder="What's happening?"
-                class="w-full bg-transparent border border-gray-600 rounded-lg p-2 text-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none"
-                rows="4"
-                required
+                class="w-full min-h-[80px] bg-transparent border-none focus:ring-0 resize-none text-lg sm:text-4xl lg:text-base overflow-hidden"
             ></textarea>
 
-            <!-- Image Upload -->
-            <div>
-                <label for="imageInput" class="cursor-pointer bg-gray-700 text-gray-200 px-4 py-2 rounded-lg inline-flex items-center hover:bg-gray-600">
-                    📷 Upload Images
-                </label>
-                <input 
-                    type="file" 
-                    name="images[]" 
-                    id="imageInput" 
-                    multiple 
-                    accept="image/*" 
-                    class="hidden"
-                >
-            </div>
+            <!-- Preview area -->
+            <div id="imagePreview" class="flex flex-wrap gap-2 mt-2 hidden"></div>
 
-            <!-- Preview -->
-            <div id="previewContainer" class="flex flex-wrap gap-2 mt-2"></div>
+            <div class="flex items-center gap-2 mt-2">
+            <button 
+            type="submit"
+            class="text-orange-500 border border-orange-500 rounded-full 
+                    px-4 py-1 lg:px-4 lg:py-1 sm:px-12 sm:py-5 
+                    text-sm sm:text-3xl lg:text-base
+                    hover:bg-orange-500 hover:text-white 
+                    focus:outline-none focus:ring-2 focus:ring-orange-300
+                    transition-colors duration-200">
+                Squeal
+            </button>
+            <label for="imageInput" 
+                class="text-gray-300 border border-gray-300 rounded-full cursor-pointer 
+                        px-4 py-1 lg:px-4 lg:py-1 sm:px-12 sm:py-5 
+                        sm:text-3xl lg:text-base
+                        hover:bg-gray-600 hover:text-white
+                        focus:outline-none focus:ring-2 focus:ring-gray-300
+                        transition-colors duration-200">
+                Images
+            </label>
 
-            <!-- Buttons -->
-            <div class="flex justify-end space-x-2">
-                <button type="submit" class="bg-orange-500 text-white px-4 py-1 rounded-full hover:bg-orange-600">
-                    Squeal
-                </button>
-                <button type="button" id="cancelModal" class="bg-gray-600 text-white px-4 py-1 rounded-full hover:bg-gray-500">
-                    Cancel
-                </button>
+            <input type="file" id="imageInput" name="images[]" multiple accept="image/*" class="hidden">
             </div>
         </form>
     </div>
-</div>
-@endsection
+    @endauth
+
+    <!-- Guest message -->
+    @guest
+        <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 text-center text-gray-400">
+            <p>Welcome to <span class="text-orange-400 font-medium">Squeal</span> !</p>
+            <p>Please <a href="{{ route('login') }}" class="text-orange-400">login</a> or 
+               <a href="{{ route('register.form') }}" class="text-orange-400">register</a> 
+               to squeal with others.</p>
+        </div>
+    @endguest

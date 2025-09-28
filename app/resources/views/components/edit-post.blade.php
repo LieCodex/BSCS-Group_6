@@ -37,15 +37,23 @@
 
             <!-- Upload new images -->
             <div class="form-group">
-                <label for="imageInput" class="custom-file-upload">
-                    <i class="fas fa-cloud-upload-alt"></i> Upload Images
+                <label for="imageInput" 
+                class= "text-orange-500 border border-orange-500 rounded-full 
+                        px-4 py-1 lg:px-4 lg:py-1 sm:px-12 sm:py-5 
+                        text-sm sm:text-3xl lg:text-base
+                        hover:bg-orange-500 hover:text-white 
+                        focus:outline-none focus:ring-2 focus:ring-orange-300
+                        transition-colors duration-200">
+                    Upload Images
                 </label>
+
                 <input 
                     type="file" 
                     name="images[]" 
                     id="imageInput" 
                     multiple 
-                    accept="image/*"
+                    accept="image/*" 
+                    class="hidden"
                 >
             </div>
 
@@ -54,10 +62,22 @@
 
             <!-- Buttons -->
             <div class="flex justify-end space-x-2">
-                <button type="submit" class="bg-orange-500 text-white px-4 py-1 rounded-full hover:bg-orange-600">
-                    Save Changes
+                <button type="submit"             
+                class= "text-orange-500 border border-orange-500 rounded-full 
+                        px-4 py-1 lg:px-4 lg:py-1 sm:px-12 sm:py-5 
+                        text-sm sm:text-3xl lg:text-base
+                        hover:bg-orange-500 hover:text-white 
+                        focus:outline-none focus:ring-2 focus:ring-orange-300
+                        transition-colors duration-200">
+                        Save Changes
                 </button>
-                <a href="{{ route('dashboard.home') }}" class="bg-gray-600 text-white px-4 py-1 rounded-full hover:bg-gray-500">
+                <a href="{{ route('dashboard.home') }}"                    
+                class= "text-gray-300 border border-gray-300 rounded-full cursor-pointer 
+                        px-4 py-1 lg:px-4 lg:py-1 sm:px-12 sm:py-5 
+                        sm:text-3xl lg:text-base
+                        hover:bg-gray-600 hover:text-white
+                        focus:outline-none focus:ring-2 focus:ring-gray-300
+                        transition-colors duration-200">
                     Cancel
                 </a>
             </div>

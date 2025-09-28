@@ -11,7 +11,7 @@
                 src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                 alt="{{ optional($post->user)->name ?? 'Unknown User' }}"
                 class="w-8 h-8 rounded-full object-cover">
-                <h2 class="font-medium text-orange-400">
+                <h2 class="font-bold text-orange-400">
                     <a href="{{ route('user.profile', optional($post->user)->id) }}">
                         {{ optional($post->user)->name ?? 'Unknown User' }}
                     </a>

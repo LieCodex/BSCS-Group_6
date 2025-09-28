@@ -164,12 +164,14 @@
             @endauth
         </div>
     </aside>
-<div class="flex justify-center flex-1">
+    <div class="flex justify-center flex-1">
+
     <!-- Main Feed (middle) -->
-<main class="w-full max-w-full lg:max-w-2xl border-x border-gray-700 h-screen overflow-y-auto text-base sm:text-lg lg:text-base">
-    @yield('content')
-</main>
-</div>
+    <main class="w-full max-w-full lg:max-w-2xl border-x border-gray-700 h-screen overflow-y-auto text-base sm:text-lg lg:text-base">
+        @yield('content')
+    </main>
+    </div>
+
     <!-- Sidebar (Right) -->
     @auth
     <aside class="w-80 p-6 hidden lg:block h-screen overflow-y-auto">
@@ -207,7 +209,7 @@
             @php
                 // Get users excluding the current logged in user
                 $suggestedUsers = \App\Models\User::where('id', '!=', auth()->id())
-                    ->take(10)
+                    ->take(100)
                     ->get();
             @endphp
 
