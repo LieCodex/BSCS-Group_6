@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; 
 use Illuminate\Support\Str;
+use App\Http\Controllers\FollowController;
 
 class PostController extends Controller
 {
@@ -111,31 +112,66 @@ class PostController extends Controller
 
 
     // Show all posts (global feed)
-    public function showAllPosts() {
-            $user = auth()->user();
+// Show all posts (global feed)
+public function showAllPosts()
+{
+    $user = auth()->user();
 
-    $posts = Post::with(['user', 'images', 'comments', 'likes'])->get();
+    $followedIds = $user
+        ? $user->following()->pluck('followed_id')->toArray()
+        : [];
 
-    $posts = $posts->map(function ($post) use ($user) {
-        // Base score ensures even new posts have a chance
-        $score = 1 + $post->likes->count() * 2 + $post->comments->count();
+    // Step 1: Base scoring inside DB
+    $posts = Post::with(['user', 'images', 'comments', 'likes'])
+        ->selectRaw("
+            posts.*,
+            (
+                1
+                + (2 * (select count(*) from post_likes where post_likes.post_id = posts.id))
+                + (select count(*) from comments where comments.post_id = posts.id)
+                + (0.5 * (
+                    select count(*) 
+                    from comment_likes 
+                    join comments on comments.id = comment_likes.comment_id 
+                    where comments.post_id = posts.id
+                ))
+                + 50 / (1 + TIMESTAMPDIFF(HOUR, posts.created_at, NOW()))
+            ) as base_score
+        ")
+        ->orderByDesc('base_score')
+        ->paginate(5);
 
-        // Reduce score if user already liked the post
+    // Step 2: Refine scoring in PHP
+    $posts->getCollection()->transform(function ($post) use ($user, $followedIds) {
+        $score = $post->base_score;
+
+        // Downweight if user already liked
         if ($user && $post->isLikedBy($user)) {
-            $score *= 0.5; // less aggressive than 0.3
+            $score *= 0.4;
         }
 
-        // Add randomness
-        $score += rand(0, 5) * 0.5; // bigger random factor
+        // Boost if post author is followed
+        if (in_array($post->user_id, $followedIds)) {
+            $score *= 1.5;
+        }
+
+        // Add some randomness
+        $score += (mt_rand(0, 10) / 10 * 0.2 * $score);
 
         $post->score = $score;
         return $post;
-    })
-    ->sortByDesc('score')
-    ->values();
+    });
+
+    // Step 3: Resort after refinement
+    $posts->setCollection(
+        $posts->getCollection()->sortByDesc('score')->values()
+    );
 
     return view('dashboard.home', ['posts' => $posts]);
-    }
+}
+
+
+
 
     
   // Show single post with comments

@@ -19,4 +19,10 @@ class FollowController extends Controller
 
         return back()->with('success', 'You unfollowed ' . $user->name);
     }
+
+
+    public function isFollowing(User $user)
+    {
+        return auth()->user()->following()->where('followed_id', $user->id)->exists();
+    }
 }

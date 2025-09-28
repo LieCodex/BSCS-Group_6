@@ -169,7 +169,11 @@
                     @endauth
                 </div>
             </div>
+
         @endforeach
+            <div class="mt-6">
+                {{ $posts->links() }}
+            </div>
     @else
         @auth
             <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 text-center text-gray-400">
