@@ -139,7 +139,7 @@ public function showAllPosts()
             ) as base_score
         ")
         ->orderByDesc('base_score')
-        ->paginate(5);
+        ->paginate(50);
 
     // Step 2: Refine scoring in PHP
     $posts->getCollection()->transform(function ($post) use ($user, $followedIds) {
