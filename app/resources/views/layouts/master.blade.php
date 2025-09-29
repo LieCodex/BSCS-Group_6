@@ -3,10 +3,18 @@
 <head>
     @livewireStyles
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Squeal</title>
     @vite('resources/css/app.css')
     <link href="https://fonts.googleapis.com/css2?family=ABeeZee&display=swap" rel="stylesheet">
-</head>
+    <title>Squeal - Connect & Share</title>
+    <meta name="description" content="A new social platform to share your thoughts instantly.">
+    <meta property="og:title" content="Squeal - Connect & Share" />
+    <meta property="og:description" content="A new social platform to share your thoughts instantly." />
+    <meta property="og:url" content="https://squeal.site" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://squeal.site/preview.png" />
+    </head>
 <!-- Bottom Nav (Mobile only) -->
 <nav class="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 
             flex justify-around py-2 lg:hidden z-50">
@@ -78,17 +86,16 @@
                         Home
                     </a>
 
-                    <!-- Notifications -->
                     <a href="{{ route('dashboard.notifications') }}" 
-                    class="flex items-center gap-3 text-lg text-white transition group hover:text-orange-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" 
-                            class="h-6 w-6 transition text-white group-hover:text-orange-400" 
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" 
-                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 0 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L3 17h5m7 4a3 3 0 0 1-6 0"/>
-                        </svg>
-                        Notifications
-                    </a>
+                        class="flex items-center gap-3 text-lg text-white transition group hover:text-orange-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                class="h-6 w-6 transition text-white group-hover:text-orange-400" 
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" 
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 0 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L3 17h5m7 4a3 3 0 0 1-6 0"/>
+                            </svg>
+                            Notifications
+                        </a>
 
                     <!-- Messages-->
                     <a href="{{ route('dashboard.messages') }}" 

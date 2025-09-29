@@ -23,14 +23,21 @@
             <img 
                 src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                 alt="{{ optional(auth()->user())->name ?? 'Guest' }}"
-                class="w-14 h-14 sm:w-20 sm:h-20 lg:w-10 lg:h-10 rounded-full object-cover">
+                class="w-14 h-14 sm:w-20 sm:h-20 lg:w-10 lg:h-10 rounded-full object-cover mt-5">
 
 
-                    <h2 class="font-semibold text-orange-400">
+                    <h2 class="font-bold text-orange-400">
                         <a href="{{ route('user.profile', optional($post->user)->id) }}">
                             {{ optional($post->user)->name ?? 'Unknown User' }}
                         </a>
                     </h2>
+                    
+                    <h2 class="font-extralight text-sm mt-1 text-gray-500">
+                        <a href="{{ route('user.profile', optional($post->user)->id) }}">
+                            {{ optional($post->user)->email ?? 'Unknown User' }}
+                        </a>
+                    </h2>
+                    <p class="text-xs sm:text-3xl lg:text-xs text-gray-500 mt-1"> • {{ $post->created_at->diffForHumans() }}</p>
                     </div>
 
                     <div class="relative">
@@ -53,15 +60,25 @@
                 </div>
 
                 <!-- Post body -->
-                <p class="text-gray-300 mt-3">{{ $post->body }}</p>
+                <p class="text-gray-300 -mt-5 ml-11.5 break-words mr-11.5">    
+                {!! preg_replace_callback(
+                    '/https?:\/\/[^\s]+/',
+                    function ($matches) {
+                        $url = $matches[0];
+                        // Remove protocol for display
+                        $display = preg_replace('#^https?://www.#', '', $url);
+                        return '<a href="' . $url . '" class="text-blue-400 hover:underline" target="_blank">' . $display . '</a>';
+                    },
+                    e($post->body)
+                ) !!}</p>
 
                 <!-- Post images -->
                     @if($post->images->count())
-                        <div class="flex flex-wrap gap-2 mt-2">
+                        <div class="flex flex-wrap justify-center items-center gap-2 mt-2 mr-25 ">
                             @foreach($post->images as $image)
                                 <img 
                                 src="{{ $image->image_path }}" 
-                                class="post-image w-auto h-auto max-w-[160px] max-h-[160px] sm:max-w-[400px] sm:max-h-[400px] lg:max-w-[200px] lg:max-h-[200px] object-contain rounded-lg border border-gray-700 cursor-pointer"
+                                class="post-image w-auto h-auto max-w-[160px] max-h-[160px] sm:max-w-[400px] sm:max-h-[400px] lg:max-w-[400px] lg:max-h-[600px] lg:min-h-[300px] lg:min-w-[400px]object-contain rounded-lg border border-gray-700 cursor-pointer"
                                 onclick="openModal('{{ $image->image_path }}')"
                             />
 
@@ -85,10 +102,10 @@
                         </div>
                     </div>
                 <!-- Timestamp -->
-                <p class="text-xs sm:text-3xl lg:text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
+                
 
                 <!-- Buttons wrapper -->
-                <div class="flex items-center gap-3 mt-3">
+                <div class="flex items-center gap-3 mt-3 ml-7">
 
                     <!-- Likes button -->
                     @auth
