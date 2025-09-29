@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Aws\Rekognition\RekognitionClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; 
 use Illuminate\Support\Str;
@@ -11,11 +12,6 @@ use App\Http\Controllers\FollowController;
 class PostController extends Controller
 {
     // Show create post form
-    public function showCreatePost() {
-        return view('components.create-post');
-    }
-
-    // Create a post
     public function createPost(Request $request) {
         $incomingFields = $request->validate([
             'body'  => 'required|max:500',
@@ -25,25 +21,67 @@ class PostController extends Controller
         $incomingFields['body']    = strip_tags($incomingFields['body']);
         $incomingFields['user_id'] = auth()->id();
 
-        // Create post
+        // Create the post
         $post = Post::create($incomingFields);
+
+        // Setup Rekognition client
+        $rekognition = new RekognitionClient([
+            'version' => 'latest',
+            'region'  => env('AWS_DEFAULT_REGION'),
+            'credentials' => [
+                'key'    => env('AWS_ACCESS_KEY_ID'),
+                'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            ],
+        ]);
 
         // Handle image uploads
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
                 if ($file && $file->isValid()) {
+                    // Upload to DigitalOcean Spaces first
                     $filename = Str::random(12) . '_' . time() . '.' . $file->getClientOriginalExtension();
                     $path = Storage::disk('spaces')->putFileAs('post_images', $file, $filename, ['visibility' => 'public']);
-                    
+
                     if ($path) {
                         $url = Storage::disk('spaces')->url($path);
+
+                        // Run Rekognition Moderation
+                        $result = $rekognition->detectModerationLabels([
+                            'Image' => [
+                                'Bytes' => file_get_contents($file->getRealPath()), // send raw image bytes
+                            ],
+                            'MinConfidence' => 80, // only return if >80% confident
+                        ]);
+
+                        $labels = $result['ModerationLabels'];
+                        $flagged = false;
+
+                        foreach ($labels as $label) {
+                            if (in_array($label['Name'], ['Explicit Nudity', 'Sexual Activity', 'Violence', 'Drugs'])) {
+                                $flagged = true;
+                                break;
+                            }
+                        }
+
+                        if ($flagged) {
+                            // Delete image from Spaces since it's unsafe
+                            Storage::disk('spaces')->delete($path);
+
+                            // Option 1: skip image but keep post
+                            // Option 2: delete post entirely
+                            $post->delete();
+
+                            return redirect()->route('dashboard.home')->with('success', 'Image rejected due to unsafe content.');
+                        }
+
+                        // Safe → save image record
                         $post->images()->create(['image_path' => $url]);
                     }
                 }
             }
         }
 
-        return redirect()->route('dashboard.home')->with("success, Post created succesfully");
+        return redirect()->route('dashboard.home')->with('success', 'Post created successfully!');
     }
 
     // Show edit form
