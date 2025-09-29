@@ -8,11 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; 
 use Illuminate\Support\Str;
 use App\Http\Controllers\FollowController;
+use Intervention\Image\Facades\Image;
 
 class PostController extends Controller
 {
     // Show create post form
-    public function createPost(Request $request) {
+    public function createPost(Request $request)
+    {
         $incomingFields = $request->validate([
             'body'  => 'required|max:500',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
@@ -21,7 +23,7 @@ class PostController extends Controller
         $incomingFields['body']    = strip_tags($incomingFields['body']);
         $incomingFields['user_id'] = auth()->id();
 
-        // Create the post
+        // Create the post first
         $post = Post::create($incomingFields);
 
         // Setup Rekognition client
@@ -38,19 +40,32 @@ class PostController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
                 if ($file && $file->isValid()) {
-                    // Upload to DigitalOcean Spaces first
                     $filename = Str::random(12) . '_' . time() . '.' . $file->getClientOriginalExtension();
                     $path = Storage::disk('spaces')->putFileAs('post_images', $file, $filename, ['visibility' => 'public']);
 
                     if ($path) {
                         $url = Storage::disk('spaces')->url($path);
 
-                        // Run Rekognition Moderation
+                        // --- Rekognition moderation check ---
+                        $extension = strtolower($file->getClientOriginalExtension());
+                        if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+                            // Directly use file
+                            $imageBytes = file_get_contents($file->getRealPath());
+                        } elseif ($extension === 'gif') {
+                            // Convert GIF -> PNG for moderation
+                            $image = Image::make($file)->encode('png');
+                            $imageBytes = (string) $image;
+                        } else {
+                            // Skip unsupported format
+                            Storage::disk('spaces')->delete($path);
+                            $post->delete();
+                            return redirect()->route('dashboard.home')->with('error', 'Unsupported image format.');
+                        }
+
+                        // Call Rekognition
                         $result = $rekognition->detectModerationLabels([
-                            'Image' => [
-                                'Bytes' => file_get_contents($file->getRealPath()), // send raw image bytes
-                            ],
-                            'MinConfidence' => 80, // only return if >80% confident
+                            'Image' => ['Bytes' => $imageBytes],
+                            'MinConfidence' => 80,
                         ]);
 
                         $labels = $result['ModerationLabels'];
@@ -64,17 +79,13 @@ class PostController extends Controller
                         }
 
                         if ($flagged) {
-                            // Delete image from Spaces since it's unsafe
+                            // Delete unsafe image + post
                             Storage::disk('spaces')->delete($path);
-
-                            // Option 1: skip image but keep post
-                            // Option 2: delete post entirely
                             $post->delete();
-
-                            return redirect()->route('dashboard.home')->with('success', 'Image rejected due to unsafe content.');
+                            return redirect()->route('dashboard.home')->with('error', 'Image rejected due to unsafe content.');
                         }
 
-                        // Safe → save image record
+                        // Safe -> save in DB
                         $post->images()->create(['image_path' => $url]);
                     }
                 }
