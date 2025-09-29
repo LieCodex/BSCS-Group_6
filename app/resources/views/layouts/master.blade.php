@@ -3,9 +3,10 @@
 <head>
     @livewireStyles
     <meta charset="UTF-8">
-    <title>Squeal</title>
     @vite('resources/css/app.css')
     <link href="https://fonts.googleapis.com/css2?family=ABeeZee&display=swap" rel="stylesheet">
+    <title>Squeal - Connect & Share</title>
+    <meta name="description" content="A new social platform to share your thoughts instantly.">
     <meta property="og:title" content="Squeal - Connect & Share" />
     <meta property="og:description" content="A new social platform to share your thoughts instantly." />
     <meta property="og:url" content="https://squeal.site" />
