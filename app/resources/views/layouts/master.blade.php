@@ -6,7 +6,12 @@
     <title>Squeal</title>
     @vite('resources/css/app.css')
     <link href="https://fonts.googleapis.com/css2?family=ABeeZee&display=swap" rel="stylesheet">
-</head>
+    <meta property="og:title" content="Squeal - Connect & Share" />
+    <meta property="og:description" content="A new social platform to share your thoughts instantly." />
+    <meta property="og:url" content="https://squeal.site" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://squeal.site/preview.png" />
+    </head>
 <!-- Bottom Nav (Mobile only) -->
 <nav class="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 
             flex justify-around py-2 lg:hidden z-50">
