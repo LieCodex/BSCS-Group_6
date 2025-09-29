@@ -28,7 +28,7 @@ class Comment extends Model
 
     public function likes()
     {
-        return $this->hasMany(\App\Models\CommentLike::class);
+        return $this->hasMany(\App\Models\CommentLike::class, 'comment_id');
     }
 
     public function isLikedBy(User $user)

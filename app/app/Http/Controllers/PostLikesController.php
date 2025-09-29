@@ -13,6 +13,29 @@ class PostLikesController extends Controller
         if (!$post->likes()->where('user_id', $user->id)->exists()) {
             $post->likes()->create(['user_id' => $user->id]);
         }
+        
+        if ($post->user_id !== auth()->id()) {
+        $post->user->notifications()->create([
+            'actor_id' => auth()->id(),
+            'post_id' => $post->id,
+            'type' => 'like_post',
+            'preview_text' => 'liked your post.',
+        ]);
+        //milestone 5,10,15 etc
+        $totalLikes = $post->likes()->count();
+        if ($totalLikes % 5 === 0) {
+        $exists = $post->user->notifications()
+            ->where('post_id', $post->id)
+            ->where('type', 'milestone')
+            ->where('preview_text', "Your post has reached {$totalLikes} likes!")
+            ->exists();
+        if (!$exists) {
+            $post->user->notifications()->create([
+                'post_id' => $post->id,
+                'type' => 'milestone',
+                'preview_text' => "Your post has reached {$totalLikes} likes!",
+            ]);
+        }}}
         return response()->json([
             'liked' => true,
             'likes' => $post->likes()->count(),
