@@ -25,11 +25,36 @@ class CommentController extends Controller
         }
 
         // Create the comment
-        $post->comments()->create([
+        $comment = $post->comments()->create([
             'user_id' => auth()->id(),
             'content' => $validated['content'],
             'parent_comment_id' => $validated['parent_comment_id'] ?? null
         ]);
+
+        // Notification logic
+        if ($comment->parent_comment_id) {
+            // Reply → notify parent comment owner
+            $parentUser = $comment->replies()->first()?->user;
+            if ($parentUser && $parentUser->id !== auth()->id()) {
+                $parentUser->notifications()->create([
+                    'actor_id' => auth()->id(),
+                    'comment_id' => $comment->id,
+                    'type' => 'reply',
+                    'preview_text' => substr($comment->content, 0, 50),
+                ]);
+            }
+        } else {
+            // Normal comment → notify post owner
+            if ($post->user_id !== auth()->id()) {
+                $post->user->notifications()->create([
+                    'actor_id' => auth()->id(),
+                    'post_id' => $post->id,
+                    'comment_id' => $comment->id,
+                    'type' => 'comment',
+                    'preview_text' => substr($comment->content, 0, 50),
+                ]);
+            }
+        }
 
         return redirect()->back()->with('success', 'Comment added successfully.');
     }
