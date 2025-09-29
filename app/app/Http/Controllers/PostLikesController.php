@@ -22,7 +22,7 @@ class PostLikesController extends Controller
             'preview_text' => 'liked your post.',
         ]);
         //milestone 5,10,15 etc
-        $totalLikes = $post->like()->count();
+        $totalLikes = $post->likes()->count();
         if ($totalLikes % 5 === 0) {
         $exists = $post->user->notifications()
             ->where('post_id', $post->id)

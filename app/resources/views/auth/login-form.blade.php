@@ -45,11 +45,19 @@
                 <input name="loginpassword" type="password"
                   class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none text-white placeholder-gray-400"
                   placeholder="Password" required>
+              </div> 
+              <!-- Remember Me -->
+              <div class="flex items-center">
+                <input type="checkbox" name="remember" id="remember"
+                  class="h-4 w-4 text-orange-500 focus:ring-orange-400 border-gray-700 rounded bg-gray-900">
+                <label for="remember" class="ml-2 text-gray-400">Remember Me</label>
               </div>
+
               <button
                 class="w-full bg-orange-500 text-white py-2 rounded-lg shadow-md hover:bg-orange-600 transition mt-4">
                 Login
               </button>
+
               <div class="flex items-center my-6">
                 <hr class="flex-grow border-gray-700">
                 <span class="mx-3 text-gray-400">OR</span>
@@ -61,7 +69,6 @@
                 Sign in with Google
               </a>
             </form>
-
             <div class="text-center mt-4">
               <a href="{{ route('register.form') }}" class="text-orange-400 hover:underline">
                 Don't have an account? Register

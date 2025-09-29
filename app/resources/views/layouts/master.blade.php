@@ -3,6 +3,7 @@
 <head>
     @livewireStyles
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Squeal</title>
     @vite('resources/css/app.css')
     <link href="https://fonts.googleapis.com/css2?family=ABeeZee&display=swap" rel="stylesheet">
@@ -78,7 +79,7 @@
                         Home
                     </a>
 
-                    <a href="{{ route('notifications.index') }}" 
+                    <a href="{{ route('dashboard.notifications') }}" 
                         class="flex items-center gap-3 text-lg text-white transition group hover:text-orange-400">
                             <svg xmlns="http://www.w3.org/2000/svg" 
                                 class="h-6 w-6 transition text-white group-hover:text-orange-400" 

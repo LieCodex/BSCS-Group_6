@@ -81,6 +81,13 @@ class User extends Authenticatable
             ->orWhere('receiver_id', $authId);
     }
 
+    //notification
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+
     // Users that follow this user
     public function followers()
     {

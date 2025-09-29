@@ -41,10 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/posts/{post}/like', [PostLikesController::class, 'unlike'])->name('posts.unlike');
 
     Route::post('/comments/{comment}/like', [CommentLikesController::class, 'like'])->name('comments.like');
-    Route::delete('/comments/{comment}/unlike', [CommentLikesController::class, 'unlike'])->name('comments.unlike');
+    Route::delete('/comments/{comment}/like', [CommentLikesController::class, 'unlike'])->name('comments.unlike');
 
     //notif routes
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('dashboard.notifications')->middleware('auth');
     Route::post('/notifications/{notification}/seen', [NotificationController::class, 'markAsSeen'])->name('notifications.seen');
     Route::get('/notifications/unseen-count', [NotificationController::class, 'unseenCount'])->name('notifications.unseenCount');
 });

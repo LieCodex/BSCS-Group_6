@@ -25,7 +25,7 @@ class CommentController extends Controller
         }
 
         // Create the comment
-        $post->comments()->create([
+        $comment = $post->comments()->create([
             'user_id' => auth()->id(),
             'content' => $validated['content'],
             'parent_comment_id' => $validated['parent_comment_id'] ?? null
