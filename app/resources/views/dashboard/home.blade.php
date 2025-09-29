@@ -60,7 +60,12 @@
                 </div>
 
                 <!-- Post body -->
-                <p class="text-gray-300 -mt-5 ml-11.5 break-words mr-11.5">{{ $post->body }}</p>
+                <p class="text-gray-300 -mt-5 ml-11.5 break-words mr-11.5">    
+                    {!! preg_replace(
+            '/(https?:\/\/[^\s]+)/',
+            '<a href="$1" class="text-blue-400 hover:underline" target="_blank">$1</a>',
+            e($post->body)
+                    ) !!}</p>
 
                 <!-- Post images -->
                     @if($post->images->count())
