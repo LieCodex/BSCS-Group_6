@@ -20,6 +20,6 @@ class SearchController extends Controller
             ->orWhere('email', 'like', "%{$q}%")
             ->get();
 
-        return view('dashboard.search-results', compact('posts', 'users', 'q'));
+        return view('components.search-results', compact('posts', 'users', 'q'));
     }
 }

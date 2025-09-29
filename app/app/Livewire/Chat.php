@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\ChatMessage;
 use Illuminate\Support\Facades\Auth;
 use App\Events\MessageSent;
+use Illuminate\Support\Facades\Log;
 
 
 class Chat extends Component
@@ -26,7 +27,7 @@ class Chat extends Component
     {
         if (auth()->check()) {
             auth()->user()->forceFill(['last_seen_at' => now()])->save();
-            \Log::debug('UpdateLastSeen (heartbeat) for user ' . auth()->id());
+            Log::debug('UpdateLastSeen (heartbeat) for user ' . auth()->id());
         }
     }
     public function mount(){

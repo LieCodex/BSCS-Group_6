@@ -174,7 +174,7 @@
 
     <!-- Sidebar (Right) -->
     @auth
-    <aside class="w-80 p-6 hidden lg:block h-screen overflow-y-auto">
+    <aside class="w-85 p-6 hidden lg:block h-screen overflow-y-auto">
         <form method="GET" action="{{ route('search') }}" class="mb-4 relative">
             <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
                 <!-- Search -->
@@ -215,7 +215,7 @@
 
             @foreach($suggestedUsers as $user)
                 <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 mr-2">
                         <img src="{{ $user->avatar ?? asset('assets/img/default-avatar.svg') }}" 
                             class="w-12 h-12 sm:w-14 sm:h-14 lg:w-10 lg:h-10 rounded-full object-cover" />
                     <div class="font-medium hover:underline">
