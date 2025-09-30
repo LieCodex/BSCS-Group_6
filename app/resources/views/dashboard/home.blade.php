@@ -74,11 +74,11 @@
 
                 <!-- Post images -->
                     @if($post->images->count())
-                        <div class="flex flex-wrap justify-center items-center gap-2 mt-2 mr-25 ml-20">
+                        <div class="flex flex-wrap justify-center items-center gap-2 mt-2 lg:mr-25 md:mr-25">
                             @foreach($post->images as $image)
                                 <img 
                                 src="{{ $image->image_path }}" 
-                                class="post-image w-auto h-auto max-w-[160px] max-h-[160px] sm:max-w-[400px] sm:max-h-[400px] lg:max-w-[400px] lg:max-h-[600px] lg:min-h-[300px] lg:min-w-[400px]object-contain rounded-lg border border-gray-700 cursor-pointer"
+                                class="post-image w-auto h-auto max-w-[160px] max-h-[160px] sm:max-w-[400px] sm:max-h-[400px] lg:max-w-[400px] lg:max-h-[600px] lg:min-h-[300px] lg:min-w-[400px] md:max-w-[400px] md:max-h-[600px] md:min-h-[300px] md:min-w-[400px]object-contain rounded-lg border border-gray-700 cursor-pointer"
                                 onclick="openModal('{{ $image->image_path }}')"
                             />
 
