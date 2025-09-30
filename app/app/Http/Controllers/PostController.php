@@ -115,7 +115,7 @@ public function createPost(Request $request)
 
         $incomingFields = $request->validate([
             'body'  => 'required|max:500',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240'
         ]);
 
         $incomingFields['body']  = strip_tags($incomingFields['body']);
