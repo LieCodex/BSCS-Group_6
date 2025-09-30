@@ -74,7 +74,7 @@
 
                 <!-- Post images -->
                     @if($post->images->count())
-                        <div class="flex flex-wrap justify-center items-center gap-2 mt-2 mr-25 ">
+                        <div class="flex flex-wrap justify-center items-center gap-2 mt-2 mr-25 ml-20">
                             @foreach($post->images as $image)
                                 <img 
                                 src="{{ $image->image_path }}" 
