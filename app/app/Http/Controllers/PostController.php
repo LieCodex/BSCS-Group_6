@@ -233,4 +233,39 @@ public function showAllPosts()
     return view('components.post', compact('post'));
     }
 
+
+    public function apiGetPosts()
+    {
+        $posts = Post::with('user')->latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $posts
+        ]);
+    }
+
+    public function apiCreatePost(Request $request)
+    {
+            $data = $request->validate([
+                'body' => 'required|string|max:500',
+                'image_urls' => 'array',            // optional array of image URLs
+                'image_urls.*' => 'url'             // validate each entry is a URL
+            ]);
+
+            $post = auth()->user()->posts()->create([
+                'body' => $data['body'],
+            ]);
+
+            // Save any image URLs provided
+            if (!empty($data['image_urls'])) {
+                foreach ($data['image_urls'] as $url) {
+                    $post->images()->create(['image_path' => $url]);
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'post' => $post->load('images', 'user')
+            ], 201);
+    }
 }
