@@ -12,7 +12,7 @@
             required
         >{{ old('content', $comment->content) }}</textarea>
         <div class="flex gap-2 mt-4">
-            <button type="submit" class="bg-orange-400 text-white px-4 py-1 rounded-full">Save</button>
+            <button type="submit" class="bg-orange-500 text-white px-4 py-1 rounded-full">Save</button>
             <a href="{{ url()->previous() }}" class="bg-gray-500 text-white px-4 py-1 rounded-full">Cancel</a>
         </div>
     </form>

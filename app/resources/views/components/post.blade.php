@@ -3,36 +3,8 @@
 @section('content')
 <div class="p-6 space-y-6">
 
-    <!-- Post Card -->
-    <div class="p-4 border border-gray-700 rounded-lg bg-gray-800">
-        <!-- User info -->
-        <div class="flex items-center gap-2">
-            <img 
-                src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
-                alt="{{ optional($post->user)->name ?? 'Unknown User' }}"
-                class="w-8 h-8 rounded-full object-cover">
-                <h2 class="font-bold text-orange-400">
-                    <a href="{{ route('user.profile', optional($post->user)->id) }}">
-                        {{ optional($post->user)->name ?? 'Unknown User' }}
-                    </a>
-                </h2>
-        </div>
-
-        <!-- Post body -->
-        <p class="text-gray-300 mt-3">{{ $post->body }}</p>
-
-        <!-- Post images -->
-        @if($post->images->count())
-            <div class="flex flex-wrap gap-2 mt-2">
-                @foreach($post->images as $image)
-                    <img src="{{ $image->image_path }}" class="w-32 h-32 object-cover rounded-lg border border-gray-700">
-                @endforeach
-            </div>
-        @endif
-
-        <!-- Timestamp -->
-        <p class="text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
-    </div>
+    {{-- Reuse post-card component --}}
+    @include('components.post-card', ['post' => $post])
 
     <!-- Comments Section -->
     <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 mt-6">
@@ -90,4 +62,5 @@ function autoGrow(element) {
     }
 }
 </script>
+<script src="{{ asset('assets/js/home.js') }}"></script>
 @endsection

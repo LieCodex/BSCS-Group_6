@@ -159,15 +159,6 @@
                         </li>
                     </ul>
                 </div>
-
-            @else
-                <div class="flex items-center gap-2">
-                    <img 
-                        src="{{ asset('assets/img/default-avatar.svg') }}"
-                        alt="Guest"
-                        class="w-12 h-12 sm:w-14 sm:h-14 lg:w-10 lg:h-10 rounded-full object-cover">
-                    <p class="font-medium ml-2">Guest</p>
-                </div>
             @endauth
         </div>
     </aside>
@@ -251,7 +242,7 @@
                         <form action="{{ route('follow', $user->id) }}" method="POST">
                             @csrf
                             <button 
-                            class="text-orange-500 border border-orange-500 rounded-full 
+                            class="text-orange-400 border border-orange-400 rounded-full 
                                     px-3 py-1 text-sm 
                                     hover:bg-orange-500 hover:text-white 
                                     focus:outline-none focus:ring-2 focus:ring-orange-300
@@ -265,10 +256,35 @@
         </div>
     </aside>
     @endauth
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+        <div class="relative max-w-xl max-h-[90vh]">
+            <button id="closeModal" class="absolute top-2 right-2 text-white text-3xl">&times;</button>
+            <img id="modalImage" src="" alt="Full Image"
+                class="rounded-lg object-contain w-full h-full transform scale-100 transition-transform duration-200 cursor-grab"/>
+
+            <!-- Zoom Controls -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                <button 
+                    id="zoomIn" 
+                    class="bg-gray-800/70 hover:bg-gray-800 text-white px-4 py-1 rounded transition">
+                    +
+                </button>
+                <button 
+                    id="zoomOut" 
+                    class="bg-gray-800/70 hover:bg-gray-800 text-white px-4 py-1 rounded transition">
+                    −
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('assets/js/image_modal.js') }}"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="{{ asset('assets/js/master_like.js') }}"></script>
+    <script src="{{ asset('assets/js/master.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireScripts
+
 </body>
 </html>
