@@ -159,6 +159,15 @@
                         </li>
                     </ul>
                 </div>
+
+            @else
+                <div class="flex items-center gap-2">
+                    <img 
+                        src="{{ asset('assets/img/default-avatar.svg') }}"
+                        alt="Guest"
+                        class="w-12 h-12 sm:w-14 sm:h-14 lg:w-10 lg:h-10 rounded-full object-cover">
+                    <p class="font-medium ml-2">Guest</p>
+                </div>
             @endauth
         </div>
     </aside>
