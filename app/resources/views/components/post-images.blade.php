@@ -1,6 +1,6 @@
 <div id="post-carousel-{{ $post->id }}" class="relative w-full mt-4 rounded-lg overflow-hidden bg-black" data-carousel="static">
     <!-- Carousel wrapper -->
-    <div class="relative h-[400px] md:h-[600px] overflow-hidden rounded-lg">
+    <div class="relative h-[400px] md:h-[400px] overflow-hidden rounded-lg">
         @foreach($post->images as $index => $image)
             <div class="{{ $index === 0 ? '' : 'hidden' }} duration-700 ease-in-out" data-carousel-item>
                 <img 

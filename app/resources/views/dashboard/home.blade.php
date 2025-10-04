@@ -2,14 +2,6 @@
 
 @section('content')
 <div class="p-6 space-y-6">
-
-    <!-- Success message -->
-    @if(session('success'))
-        <div id="successmsg" class="bg-orange-500 text-white p-2 rounded">
-            {{ session('success') }}
-        </div>
-
-    @endif
     
     @guest
         <!-- Guest Welcome Section -->

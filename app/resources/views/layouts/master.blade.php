@@ -171,13 +171,34 @@
             @endauth
         </div>
     </aside>
-    <div class="flex justify-center flex-1">
 
-    <!-- Main Feed (middle) -->
-    <main class="w-full max-w-full lg:max-w-2xl border-x border-gray-700 h-screen overflow-y-auto text-base sm:text-lg lg:text-base">
-        @yield('content')
-    </main>
+    <div class="flex justify-center flex-1">
+        <!-- Main Feed (middle) -->
+        <main class="w-full max-w-full lg:max-w-2xl border-x border-gray-700 h-screen overflow-y-auto text-base sm:text-lg lg:text-base">
+
+            <!-- Success message -->
+            @if(session('success'))
+                <div id="successmsg" class="bg-orange-500 text-white p-2 rounded m-2 text-center">
+                    {{ session('success') }}
+                </div>
+
+                <script>
+                    // Wait 1 second
+                    setTimeout(() => {
+                        const msg = document.getElementById('successmsg');
+                        if (msg) {
+                            msg.style.transition = "opacity 0.5s ease";
+                            msg.style.opacity = "0";
+                            setTimeout(() => msg.remove(), 500);
+                        }
+                    }, 2000);
+                </script>
+            @endif
+
+            @yield('content')
+        </main>
     </div>
+
 
     <!-- Sidebar (Right) -->
     @auth

@@ -68,7 +68,7 @@
         e($post->body)
     ) !!}</p>
 
-    <!-- Post images carousel -->
+    <!-- Post imagess -->
     @if($post->images->count())
         @include('components.post-images', ['post' => $post])
     @endif
