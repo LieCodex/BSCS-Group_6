@@ -17,8 +17,7 @@ class UserController extends Controller
         $posts = Post::with(['user', 'images', 'comments'])
                     ->where('user_id', $user->id)
                     ->latest()
-                    ->get();
-
+                    ->paginate(100); 
         return view('dashboard.profile', compact('user', 'posts'));
     }
 
@@ -99,7 +98,7 @@ class UserController extends Controller
         $posts = Post::with(['user', 'images', 'comments'])
             ->where('user_id', $user->id)
             ->latest()
-            ->get();
+            ->paginate(100); 
 
         return view('dashboard.profile', compact('user', 'posts'));
     }

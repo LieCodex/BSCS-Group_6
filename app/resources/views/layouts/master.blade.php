@@ -171,13 +171,34 @@
             @endauth
         </div>
     </aside>
-    <div class="flex justify-center flex-1">
 
-    <!-- Main Feed (middle) -->
-    <main class="w-full max-w-full lg:max-w-2xl border-x border-gray-700 h-screen overflow-y-auto text-base sm:text-lg lg:text-base">
-        @yield('content')
-    </main>
+    <div class="flex justify-center flex-1">
+        <!-- Main Feed (middle) -->
+        <main class="w-full max-w-full lg:max-w-2xl border-x border-gray-700 h-screen overflow-y-auto text-base sm:text-lg lg:text-base">
+
+            <!-- Success message -->
+            @if(session('success'))
+                <div id="successmsg" class="bg-orange-500 text-white p-2 rounded m-2 text-center">
+                    {{ session('success') }}
+                </div>
+
+                <script>
+                    // Wait 1 second
+                    setTimeout(() => {
+                        const msg = document.getElementById('successmsg');
+                        if (msg) {
+                            msg.style.transition = "opacity 0.5s ease";
+                            msg.style.opacity = "0";
+                            setTimeout(() => msg.remove(), 500);
+                        }
+                    }, 2000);
+                </script>
+            @endif
+
+            @yield('content')
+        </main>
     </div>
+
 
     <!-- Sidebar (Right) -->
     @auth
@@ -251,7 +272,7 @@
                         <form action="{{ route('follow', $user->id) }}" method="POST">
                             @csrf
                             <button 
-                            class="text-orange-500 border border-orange-500 rounded-full 
+                            class="text-orange-400 border border-orange-400 rounded-full 
                                     px-3 py-1 text-sm 
                                     hover:bg-orange-500 hover:text-white 
                                     focus:outline-none focus:ring-2 focus:ring-orange-300
@@ -265,10 +286,35 @@
         </div>
     </aside>
     @endauth
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+        <div class="relative max-w-xl max-h-[90vh]">
+            <button id="closeModal" class="absolute top-2 right-2 text-white text-3xl">&times;</button>
+            <img id="modalImage" src="" alt="Full Image"
+                class="rounded-lg object-contain w-full h-full transform scale-100 transition-transform duration-200 cursor-grab"/>
+
+            <!-- Zoom Controls -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                <button 
+                    id="zoomIn" 
+                    class="bg-gray-800/70 hover:bg-gray-800 text-white px-4 py-1 rounded transition">
+                    +
+                </button>
+                <button 
+                    id="zoomOut" 
+                    class="bg-gray-800/70 hover:bg-gray-800 text-white px-4 py-1 rounded transition">
+                    −
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('assets/js/image_modal.js') }}"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="{{ asset('assets/js/master_like.js') }}"></script>
+    <script src="{{ asset('assets/js/master.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireScripts
+
 </body>
 </html>

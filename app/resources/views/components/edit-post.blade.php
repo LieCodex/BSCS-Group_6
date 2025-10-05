@@ -38,7 +38,7 @@
             <!-- Upload new images -->
             <div class="form-group">
                 <label for="imageInput" 
-                class= "text-orange-500 border border-orange-500 rounded-full 
+                class= "text-orange-400 border border-orange-400 rounded-full 
                         px-4 py-1 lg:px-4 lg:py-1 sm:px-12 sm:py-5 
                         text-sm sm:text-3xl lg:text-base
                         hover:bg-orange-500 hover:text-white 
@@ -63,7 +63,7 @@
             <!-- Buttons -->
             <div class="flex justify-end space-x-2">
                 <button type="submit"             
-                class= "text-orange-500 border border-orange-500 rounded-full 
+                class= "text-orange-400 border border-orange-400 rounded-full 
                         px-4 py-1 lg:px-4 lg:py-1 sm:px-12 sm:py-5 
                         text-sm sm:text-3xl lg:text-base
                         hover:bg-orange-500 hover:text-white 

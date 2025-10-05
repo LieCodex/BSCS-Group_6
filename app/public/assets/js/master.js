@@ -79,3 +79,27 @@ document.querySelectorAll('.like-form').forEach(form => {
 
     });
 });
+
+    function toggleMenu(postId) {
+        const menu = document.getElementById(`menu-${postId}`);
+
+        // Close other open menus first (so only one stays open)
+        document.querySelectorAll('[id^="menu-"]').forEach(m => {
+            if (m.id !== `menu-${postId}`) {
+                m.classList.add('hidden');
+            }
+        });
+
+        // Toggle the clicked menu
+        menu.classList.toggle('hidden');
+    }
+
+    // Optional: close menus when clicking outside
+    document.addEventListener('click', function(event) {
+        const isMenuButton = event.target.closest('button[onclick^="toggleMenu"]');
+        const isMenu = event.target.closest('[id^="menu-"]');
+
+        if (!isMenu && !isMenuButton) {
+            document.querySelectorAll('[id^="menu-"]').forEach(m => m.classList.add('hidden'));
+        }
+    });

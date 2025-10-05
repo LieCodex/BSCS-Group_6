@@ -1,4 +1,4 @@
-<div class="card mb-3 shadow-sm bg-dark text-light">
+<div class="card mb-3 shadow-sm bg-dark text-light max-w-full break-words">
     <div class="card-body p-3">
         <!-- Comment Header -->
         <div class="flex items-center gap-2 justify-between">
@@ -36,18 +36,18 @@
 
         <div class="ml-6">
         <!-- Comment Body -->
-        <div class="m-2">
+        <div class="m-2 break-words">
             {{ $comment->content }}
         </div>
 
-        <div class="flex items-center gap-2 mt-3">
+        <div class="flex items-center gap-2 mt-3 flex-wrap">
         @auth
             @if($comment->isLikedBy(auth()->user()))
                 <!-- Unlike -->
                 <form action="{{ route('comments.unlike', $comment->id) }}" method="POST" class="like-form" data-post-id="{{ $comment->id }}">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" id="like-btn-{{ $comment->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-500">
+                    <button type="submit" id="like-btn-{{ $comment->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
                         <svg xmlns="http://www.w3.org/2000/svg" 
                             id="like-icon-{{ $comment->id }}"
                             class="w-6 h-6 mr-1 text-orange-400" 
@@ -70,7 +70,7 @@
                 <!-- Like -->
                 <form action="{{ route('comments.like', $comment->id) }}" method="POST" class="like-form" data-post-id="{{ $comment->id }}">
                     @csrf
-                    <button type="submit" id="like-btn-{{ $comment->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-500">
+                    <button type="submit" id="like-btn-{{ $comment->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
                         <svg xmlns="http://www.w3.org/2000/svg" 
                         id="like-icon-{{ $comment->id }}"
                             class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
@@ -94,7 +94,7 @@
             <!-- Reply button -->
             <button type="button" 
                     onclick="toggleReplyForm({{ $comment->id }})"
-                    class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-500">
+                    class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
                 <svg xmlns="http://www.w3.org/2000/svg" 
                      class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
                      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -135,9 +135,9 @@
         <!-- Replies -->
         @if($comment->replies->count() > 0)
             @foreach($comment->replies as $reply)
-                <div class="card mt-2 ml-12 bg-secondary text-light border-0">
+                <div class="card mt-2 ml-12 bg-secondary text-light border-0 max-w-full break-words">
                     <div class="card-body p-2">
-                        <div class="flex items-center gap-2 justify-between">
+                        <div class="flex items-center gap-2 justify-between flex-wrap">
                             <div class="flex items-center gap-2">
                                 <img 
                                     src="{{ optional($reply->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
@@ -169,14 +169,14 @@
                             @endif
                         </div>
 
-                        <div class="ml-6">
+                        <div class="ml-6 break-words">
                         <p class="m-2">{{ $reply->content }}</p>
                         @if($reply->isLikedBy(auth()->user()))
                             <!-- Unlike -->
                             <form action="{{ route('comments.unlike', $reply->id) }}" method="POST" class="like-form" data-post-id="{{ $reply->id }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" id="like-btn-{{ $reply->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-500">
+                                <button type="submit" id="like-btn-{{ $reply->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" 
                                         id="like-icon-{{ $reply->id }}"
                                         class="w-6 h-6 mr-1 text-orange-400" 
@@ -199,7 +199,7 @@
                             <!-- Like -->
                             <form action="{{ route('comments.like', $reply->id) }}" method="POST" class="like-form" data-post-id="{{ $reply->id }}">
                                 @csrf
-                                <button type="submit" id="like-btn-{{ $reply->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-500">
+                                <button type="submit" id="like-btn-{{ $reply->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" 
                                     id="like-icon-{{ $reply->id }}"
                                         class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 

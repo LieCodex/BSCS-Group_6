@@ -151,7 +151,7 @@
                 placeholder="Type your message..." />
             <button 
                 type="submit"
-                class="text-orange-500 border border-orange-500 rounded-full 
+                class="text-orange-400 border border-orange-400 rounded-full 
                     text-sm px-5 py-2
                     hover:bg-orange-500 hover:text-white 
                     focus:outline-none focus:ring-2 focus:ring-orange-300

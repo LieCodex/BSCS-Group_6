@@ -9,7 +9,7 @@
             <div class="p-4 border border-gray-700 rounded-lg bg-gray-800 relative mb-4">
                 <!-- User info -->
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
+                    <div class="font-bold flex items-center gap-2">
                         <img 
                             src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                             alt="{{ optional($post->user)->name ?? 'Guest' }}"
@@ -37,130 +37,62 @@
                 <!-- Timestamp -->
                 <p class="text-xs text-gray-500 mt-2">Posted {{ $post->created_at->diffForHumans() }}</p>
 
-                <!-- Buttons wrapper -->
-                <div class="flex items-center gap-3 mt-3">
-                    <!-- Likes button -->
-                    @auth
-                        @if($post->isLikedBy(auth()->user()))
-                            <!-- Unlike -->
-                            <form action="{{ route('posts.unlike', $post->id) }}" method="POST" class="like-form" data-post-id="{{ $post->id }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" id="like-btn-{{ $post->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" 
-                                        id="like-icon-{{ $post->id }}"
-                                        class="w-6 h-6 mr-1 text-orange-400" 
-                                        fill="{{ $post->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
-                                        stroke="{{ $post->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" 
-                                            d="M4.318 6.318a4.5 4.5 0 016.364 0L12 
-                                            7.636l1.318-1.318a4.5 4.5 0 116.364 
-                                            6.364L12 20.364l-7.682-7.682a4.5 
-                                            4.5 0 010-6.364z"/>
-                                    </svg>
-                                       <span id="like-count-{{ $post->id }}" class="{{ $post->isLikedBy(auth()->user()) ? 'text-orange-400' : 'text-white' }}">
-                                        {{ $post->likes->count() }}
-                                        </span>
-                                </button>
-                            </form>
-                        @else
-                            <!-- Like -->
-                            <form action="{{ route('posts.like', $post->id) }}" method="POST" class="like-form" data-post-id="{{ $post->id }}">
-                                @csrf
-                                <button type="submit" id="like-btn-{{ $post->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" 
-                                    id="like-icon-{{ $post->id }}"
-                                        class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
-                                        fill="{{ $post->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
-                                        stroke="{{ $post->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" 
-                                            d="M4.318 6.318a4.5 4.5 0 016.364 0L12 
-                                            7.636l1.318-1.318a4.5 4.5 0 116.364 
-                                            6.364L12 20.364l-7.682-7.682a4.5 
-                                            4.5 0 010-6.364z"/>
-                                    </svg>
-                                        <span id="like-count-{{ $post->id }}" class="{{ $post->isLikedBy(auth()->user()) ? 'text-orange-400' : 'text-white' }}">
-                                        {{ $post->likes->count() }}
-                                        </span>
-                                </button>
-                            </form>
-                        @endif
-                    @endauth
-
-                    <!-- Comments button -->
-                    @auth
-                        <form action="{{ route('posts.show', $post->id) }}" method="GET">
-                            <button type="submit" class="group inline-flex items-centers text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" 
-                                    class="w-5 h-5 mr-1 transition text-white group-hover:text-orange-400" 
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" 
-                                        d="M7 8h10M7 12h6m-6 4h4m10-2.586V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9l4 4v-5.586a2 2 0 0 0 .586-1.414z"/>
-                                </svg>
-                                <span class="transition text-white group-hover:text-orange-400">
-                                    {{ $post->comments->count() }}
-                                </span>
-                            </button>
-                        </form>
-                    @endauth
-                </div>
+                <!-- Post Actions Component -->
+                @include('components.post-actions', ['post' => $post])
             </div>
         @empty
             <div class="text-gray-400">No posts found.</div>
         @endforelse
 
         <h3 class="font-semibold mt-6 mb-2">Users</h3>
-    @forelse($users as $user)
-        <div class="mb-4 p-4 bg-gray-800 rounded flex items-center gap-6">
-            <img 
-                src="{{ $user->avatar ?? asset('assets/img/default-avatar.svg') }}"
-                alt="{{ $user->name }}"
-                class="w-8 h-8 rounded-full object-cover">
-            <div>
-            <div class="font-medium">
-                <a href="{{ route('user.profile', $user->id) }}" class="text-orange-400 hover:underline">
-                {{ $user->name }}
-                </a>
-            </div>
-                <div class="text-sm text-gray-400">{{ $user->email }}</div>
-            </div>
+        @forelse($users as $user)
+            <div class="mb-4 p-4 bg-gray-800 rounded flex items-center gap-6">
+                <img 
+                    src="{{ $user->avatar ?? asset('assets/img/default-avatar.svg') }}"
+                    alt="{{ $user->name }}"
+                    class="w-8 h-8 rounded-full object-cover">
+                <div>
+                    <div class="font-medium">
+                        <a href="{{ route('user.profile', $user->id) }}" class="text-orange-400 hover:underline">
+                            {{ $user->name }}
+                        </a>
+                    </div>
+                    <div class="text-sm text-gray-400">{{ $user->email }}</div>
+                </div>
 
-            @auth
-                @if(auth()->id() !== $user->id)
-                   
+                @auth
+                    @if(auth()->id() !== $user->id)
                         @if(auth()->user()->following->contains($user->id))
                             <form action="{{ route('unfollow', $user->id) }}" method="POST" class="ml-auto">
                                 @csrf
                                 @method('DELETE')
                                 <button 
-                                class="text-gray-300 border border-gray-300 rounded-full 
-                                        px-3 py-1 text-sm
-                                        hover:bg-gray-600 hover:text-white
-                                        focus:outline-none focus:ring-2 focus:ring-gray-300
-                                        transition-colors duration-200">
-                                Unfollow
+                                    class="text-gray-300 border border-gray-300 rounded-full 
+                                            px-3 py-1 text-sm
+                                            hover:bg-gray-600 hover:text-white
+                                            focus:outline-none focus:ring-2 focus:ring-gray-300
+                                            transition-colors duration-200">
+                                    Unfollow
                                 </button>
                             </form>
                         @else
                             <form action="{{ route('follow', $user->id) }}" method="POST" class="ml-auto">
                                 @csrf
                                 <button 
-                                class="text-orange-500 border border-orange-500 rounded-full 
-                                        px-3 py-1 text-sm
-                                        hover:bg-orange-500 hover:text-white
-                                        focus:outline-none focus:ring-2 focus:ring-orange-300
-                                        transition-colors duration-200">
-                                Follow
+                                    class="text-orange-400 border border-orange-400 rounded-full 
+                                            px-3 py-1 text-sm
+                                            hover:bg-orange-500 hover:text-white
+                                            focus:outline-none focus:ring-2 focus:ring-orange-300
+                                            transition-colors duration-200">
+                                    Follow
                                 </button>
                             </form>
                         @endif
-                @endif
-            @endauth
-        </div>
-    @empty
-        <div class="text-gray-400">No users found.</div>
-    @endforelse
+                    @endif
+                @endauth
+            </div>
+        @empty
+            <div class="text-gray-400">No users found.</div>
+        @endforelse
     </div>
 @endsection
