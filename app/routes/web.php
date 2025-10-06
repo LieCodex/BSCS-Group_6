@@ -90,3 +90,12 @@ Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name(
 
 Route::post('/follow/{user}', [FollowController::class, 'follow'])->name('follow');
 Route::delete('/unfollow/{user}', [FollowController::class, 'unfollow'])->name('unfollow');
+
+
+Route::get('/notifications/unseen-count', [NotificationController::class, 'unseenCount'])
+    ->name('notifications.unseenCount');
+
+    Route::post('/notifications/mark-all-seen', [NotificationController::class, 'markAllAsSeen'])
+    ->name('notifications.markAllSeen');
+
+

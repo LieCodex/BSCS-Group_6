@@ -86,16 +86,24 @@
                         Home
                     </a>
 
-                    <a href="{{ route('dashboard.notifications') }}" 
-                        class="flex items-center gap-3 text-lg text-white transition group hover:text-orange-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" 
-                                class="h-6 w-6 transition text-white group-hover:text-orange-400" 
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" 
-                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 0 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L3 17h5m7 4a3 3 0 0 1-6 0"/>
-                            </svg>
-                            Notifications
-                        </a>
+                <a href="{{ route('dashboard.notifications') }}" 
+                class="relative flex items-center gap-3 text-lg text-white transition group hover:text-orange-400">
+                    <div class="relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                            class="h-6 w-6 transition text-white group-hover:text-orange-400" 
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" 
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 0 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L3 17h5m7 4a3 3 0 0 1-6 0"/>
+                        </svg>
+
+                        <!-- 🔸 Dynamic Unseen Notification Badge -->
+                        <span id="notification-count"
+                            class="hidden absolute top-0 right-0 bg-orange-500 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
+                            0
+                        </span>
+                    </div>
+                    Notifications
+                </a>
 
                     <!-- Messages-->
                     <a href="{{ route('dashboard.messages') }}" 
@@ -108,6 +116,7 @@
                         </svg>
                         Messages
                     </a>
+
 
                     <!-- Profile -->
                     <a href="{{ route('dashboard.profile') }}" 
@@ -312,6 +321,12 @@
     <script src="{{ asset('assets/js/image_modal.js') }}"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+    window.routes = {
+
+         unseenNotif: "{{ route('notifications.unseenCount') }}"
+    };
+    </script>
     <script src="{{ asset('assets/js/master.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireScripts

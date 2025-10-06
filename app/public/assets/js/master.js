@@ -103,3 +103,53 @@ document.querySelectorAll('.like-form').forEach(form => {
             document.querySelectorAll('[id^="menu-"]').forEach(m => m.classList.add('hidden'));
         }
     });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const badge = document.getElementById("notification-count");
+
+    async function fetchNotificationCount() {
+        if (!window.routes || !window.routes.unseenNotif) {
+            console.error("Notification route not found");
+            return;
+        }
+
+        try {
+            const response = await fetch(window.routes.unseenNotif, {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.count > 0) {
+                badge.textContent = data.count;
+                badge.classList.remove("hidden");
+            } else {
+                badge.classList.add("hidden");
+            }
+        } catch (error) {
+            console.error("Error fetching notification count:", error);
+        }
+    }
+
+    function updateBadges() {
+    // 🔸 Notifications
+    axios.get(window.routes.unseenNotif).then(res => {
+        const count = res.data.count;
+        const badge = document.getElementById('notification-count');
+        if (count > 0) {
+            badge.textContent = count;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    });
+}
+
+    
+    updateBadges();
+    fetchNotificationCount();
+    setInterval(updateBadges, 10000);
+});

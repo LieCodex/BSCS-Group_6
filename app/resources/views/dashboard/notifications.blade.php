@@ -2,7 +2,20 @@
 
 @section('content')
 <div class="max-w-3xl mx-auto p-4 mt-5">
-    <h1 class="text-2xl font-bold mb-6 text-white">Notifications</h1>
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-white">Notifications</h1>
+
+        @if($notifications->where('is_seen', false)->count() > 0)
+            <form action="{{ route('notifications.markAllSeen') }}" method="POST">
+                @csrf
+                <button type="submit"
+                    class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold 
+                           px-4 py-2 rounded-lg transition">
+                    Mark All as Seen
+                </button>
+            </form>
+        @endif
+    </div>
 
     @forelse($notifications as $notification)
         <form action="{{ route('notifications.seen', $notification->id) }}" method="POST">
@@ -53,4 +66,3 @@
     @endforelse
 </div>
 @endsection
-

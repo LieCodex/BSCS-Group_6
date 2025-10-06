@@ -40,4 +40,12 @@ class NotificationController extends Controller
 
         return response()->json(['count' => $count]);
     }
+    public function markAllAsSeen()
+    {
+        Notification::where('user_id', auth()->id())
+            ->where('is_seen', false)
+            ->update(['is_seen' => true]);
+
+        return back()->with('success', 'All notifications marked as seen.');
+    }
 }
