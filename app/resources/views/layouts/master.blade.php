@@ -324,7 +324,7 @@
     <script>
     window.routes = {
 
-         unseenNotif: "{{ route('notifications.unseenCount') }}"
+         unseenNotif: "{{ route('notifications.unseenCount', [], true)  }}"
     };
     </script>
     <script src="{{ asset('assets/js/master.js') }}"></script>
