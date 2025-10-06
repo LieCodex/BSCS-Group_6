@@ -5,60 +5,16 @@
 
     <!-- Header / Banner -->
     <div x-data="{ open: false }" class="relative h-40 bg-gray-700 rounded-lg">
-        <!-- Edit Profile Button -->
-        @if(auth()->check() && auth()->id() === $user->id)
-            <div class="absolute top-2 right-2">
-                <button 
-                    @click="open = true" 
-                    class="px-4 py-2 bg-gray-800 text-white rounded-full text-sm hover:bg-gray-700">
-                    Edit Profile
-                </button>
-            </div>
 
-            <!-- Modal -->
-            <div 
-                x-show="open" 
-                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-                x-cloak>
-                
-                <div class="bg-gray-800 text-white rounded-lg shadow-lg w-full max-w-md p-6">
-                    <h2 class="text-xl font-medium mb-4">Edit Bio</h2>
-
-                    <!-- Bio Form -->
-                    <form action="{{ route('profile.update') }}" method="POST" class="space-y-4">
-                        @csrf
-                        @method('PUT')
-
-                        <!-- Bio -->
-                        <div>
-                            <label for="bio" class="block text-sm text-gray-300">Bio</label>
-                            <textarea name="bio" id="bio" rows="3" 
-                                class="w-full rounded-lg p-2 bg-gray-700 text-white">{{ old('bio', $user->bio) }}</textarea>
-                        </div>
-
-                        <!-- Buttons -->
-                        <div class="flex justify-end space-x-2">
-                            <button type="button" 
-                                    @click="open = false"
-                                    class="px-4 py-2 bg-gray-600 rounded-lg hover:bg-gray-500">
-                                Cancel
-                            </button>
-                            <button type="submit" 
-                                    class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500">
-                                Save
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        @endif
+    <x-edit-profile :user="$user" />
     </div>
 
     <div class="relative flex items-end justify-between">
         <!-- Avatar -->
-        <img src="{{ $user->avatar ?? asset('assets/img/default-avatar.svg') }}" 
+        <img src="{{ $user->avatar ? $user->avatar.'?v='.time() : asset('assets/img/default-avatar.svg') }}" 
             alt="{{ $user->name }}" 
             class="w-32 h-32 rounded-full border-4 border-gray-900 absolute -top-16 left-6 object-cover">
+
 
         @if(auth()->check() && auth()->id() !== $user->id)
             <div class="flex items-center gap-3 absolute -top-10 right-6 mt-15">
