@@ -9,7 +9,7 @@
         @click="open = true"
     >
         <img
-            src="{{ auth()->user()->profile_picture ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
+            src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
             alt="User Avatar"
             class="w-10 h-10 rounded-full object-cover"
         >
@@ -38,7 +38,7 @@
             <!-- User + Form -->
             <div class="flex gap-4 px-6 py-4 flex-1 overflow-auto">
                 <img
-                    src="{{ auth()->user()->profile_picture ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
+                    src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
                     alt="User Avatar"
                     class="w-12 h-12 rounded-full object-cover mt-1"
                 >
