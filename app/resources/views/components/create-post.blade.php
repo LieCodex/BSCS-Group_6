@@ -32,7 +32,6 @@
             <!-- Top Bar -->
             <div class="flex items-center justify-between px-6 pt-5 pb-2 border-b border-gray-800">
                 <button @click="open = false" class="text-gray-400 hover:text-white text-2xl font-semibold">✕</button>
-                <button type="button" id="openDraftsBtn" class="text-orange-400 hover:text-orange-500 text-sm font-medium transition">Drafts</button>
             </div>
 
             <!-- User + Form -->
@@ -72,7 +71,12 @@
                             <input type="file" id="imageInput" name="images[]" multiple accept="image/*" class="hidden">
                         </div>
 
-                        <button type="submit" class="bg-orange-500 text-white font-semibold rounded-full px-5 py-2 hover:bg-orange-600 focus:ring-2 focus:ring-orange-300 transition">Squeal</button>
+                        <button type="submit"                 
+                        class="text-orange-400 border border-orange-400 rounded-full 
+                        text-sm px-5 py-2
+                        hover:bg-orange-500 hover:text-white 
+                        focus:outline-none focus:ring-2 focus:ring-orange-300
+                        transition-colors duration-200">Squeal</button>
                     </div>
                 </form>
             </div>

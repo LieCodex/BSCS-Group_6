@@ -187,7 +187,7 @@
 
             <!-- Success message -->
             @if(session('success'))
-                <div id="successmsg" class="bg-orange-500 text-white p-2 rounded m-2 text-center">
+                <div id="successmsg" class="bg-gray-900 border border-orange-400 text-orange-400 p-2 rounded m-2 text-center mt-4">
                     {{ session('success') }}
                 </div>
 
