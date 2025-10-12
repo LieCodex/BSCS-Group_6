@@ -1,63 +1,80 @@
-<div class="card post-card mb-3">
-    <div class="card-body">
-        <!-- User info -->
-        <div class="d-flex align-items-center mb-2">
-            @if($post->user && $post->user->avatar)
-                <img src="{{ $post->user->avatar }}" alt="{{ $post->user->name }}" class="rounded-circle me-2" style="width:32px; height:32px; object-fit:cover;">
-            @else
-                <span class="me-2"><i class="fas fa-user-circle fa-2x text-secondary"></i></span>
-            @endif
-            <strong>{{ $post->user ? $post->user->name : 'Unknown User' }}</strong>
+<div class="p-6 sm:p-6 lg:p-4 rounded-lg bg-gray-800 relative mb-4">
+    <!-- User info -->
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <img 
+                src="{{ optional($post->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
+                alt="{{ optional(auth()->user())->name ?? 'Guest' }}"
+                class="w-14 h-14 sm:w-20 sm:h-20 lg:w-10 lg:h-10 rounded-full object-cover">
+
+            <div>
+                <!-- Name + timestamp -->
+                <div class="flex items-center gap-2">
+                    <h2 class="font-bold text-orange-400 lg:text-base sm:text-4xl">
+                        <a href="{{ route('user.profile', optional($post->user)->id) }}">
+                            {{ optional($post->user)->name ?? 'Unknown User' }}
+                        </a>
+                    </h2>
+
+                    <p class="text-xs sm:text-2xl lg:text-xs text-gray-500">•</p>
+
+                    <p class="text-xs sm:text-2xl lg:text-xs  text-gray-500">
+                        {{ $post->created_at->diffForHumans() }}
+                    </p>
+                </div>
+
+                <!-- Email -->
+                <h2 class="font-extralight lg:text-sm sm:text-2xl text-gray-500">
+                    <a href="{{ route('user.profile', optional($post->user)->id) }}">
+                        {{ optional($post->user)->email ?? 'Unknown User' }}
+                    </a>
+                </h2>
+            </div>
         </div>
-
-        <h5 class="card-title">{{ $post->title }}</h5>
-        <p class="card-text">{{ $post->body }}</p>
-
-        <!-- Display post images -->
-        @if($post->images->count() > 0)
-            <div class="d-flex flex-wrap mb-2">
-                @foreach($post->images as $img)
-                    <button 
-                        type="button"
-                        class="img-thumbnail-btn"
-                        data-bs-toggle="modal" 
-                        data-bs-target="#imageModal"
-                        data-img="{{ $img->image_path }}"
-                        style="border:none; padding:0; margin:5px; background:none;">
-                        <img src="{{ $img->image_path }}" 
-                            alt="Post Image" 
-                            style="width:100px; height:100px; object-fit:cover;">
-                    </button>
-                @endforeach
-            </div>
-        @endif
         
-        @if(auth()->check() && $post->user_id === auth()->id())
-            <a href="/edit-post/{{ $post->id }}" class="btn btn-warning btn-sm">Edit</a>
-            <form action="/delete-post/{{ $post->id }}" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button class="btn btn-danger btn-sm">Delete</button>
-            </form>
-        @endif
-
-        <hr>
-
-        <!-- Comment Form -->
-        <form action="{{ route('comments.create', $post->id) }}" method="POST" class="mt-2">
-            @csrf
-            <textarea name="content" class="form-control mb-2" placeholder="Write a comment..." rows="2" required></textarea>
-            <button type="submit" class="btn btn-primary btn-sm">Comment</button>
-        </form>
-
-        <!-- Display Comments -->
-        @if($post->comments->count() > 0)
-            <div class="mt-3">
-                @foreach($post->comments->whereNull('parent_comment_id') as $comment)
-                    <x-comment-card :comment="$comment" />
-                @endforeach
-            </div>
-        @endif
-
+        <!-- Edit/Delete Menu -->
+        <div class="relative">
+            @auth
+                @if(auth()->id() === $post->user_id)
+                    <button onclick="toggleMenu({{ $post->id }})" class="text-gray-400 hover:text-white sm:text-4xl lg:text-xl">⋮</button>
+                    <div id="menu-{{ $post->id }}" 
+                        class="hidden absolute right-0 mt-2 sm:w-60 lg:w-32 bg-gray-900 border border-gray-700 
+                                rounded-lg shadow-lg z-50">
+                        <a href="{{ route('posts.edit.form', $post->id) }}" 
+                        class="block px-4 py-2 lg:text-sm sm:text-3xl text-gray-200 hover:bg-gray-700">Edit</a>
+                        <form action="{{ route('posts.delete', $post->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" 
+                                    class="w-full text-left px-4 py-2 lg:text-sm sm:text-3xl text-red-400 hover:bg-gray-700">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                @endif
+            @endauth
+        </div>
     </div>
+
+    <!-- Post body -->
+    <p class="text-gray-300 mt-4 break-words lg:text-base sm:text-4xl">    
+    {!! preg_replace_callback(
+        '/https?:\/\/[^\s]+/',
+        function ($matches) {
+            $url = $matches[0];
+            $display = preg_replace('#^https?://(www\.)?#', '', $url);
+
+            return '<a href="' . $url . '" class="text-blue-400 hover:underline" target="_blank">' . $display . '</a>';
+        },
+        e($post->body)
+    ) !!}</p>
+
+    <!-- Post imagess -->
+    @if($post->images->count())
+        @include('components.post-images', ['post' => $post])
+    @endif
+
+    <!-- Post Actions -->
+    @include('components.post-actions', ['post' => $post])
 </div>
+

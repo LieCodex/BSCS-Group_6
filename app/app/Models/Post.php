@@ -28,4 +28,14 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class)->with('user', 'replies');
     }
+
+    public function likes()
+    {
+        return $this->hasMany(PostLike::class);
+    }
+
+    public function isLikedBy($user)
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
+    }
 }
