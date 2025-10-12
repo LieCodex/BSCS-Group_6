@@ -1,4 +1,4 @@
 
 import './bootstrap';
 import './echo';
-import './createpost';
+import '/public/assets/js/createpost';
