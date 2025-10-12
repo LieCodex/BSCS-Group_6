@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function createAddButton() {
         const addBtn = document.createElement('label');
         addBtn.setAttribute('for', 'imageInput');
-        addBtn.className = "w-20 h-20 flex items-center justify-center bg-gray-700 hover:bg-gray-600 rounded border border-gray-400 cursor-pointer add-btn";
-        addBtn.innerHTML = '<span class="text-white text-3xl">+</span>';
+        addBtn.className = "lg:w-20 lg:h-20 sm:w-40 sm:h-40 flex items-center justify-center bg-gray-700 hover:bg-gray-600 rounded border border-gray-400 cursor-pointer add-btn";
+        addBtn.innerHTML = '<span class="text-white lg:text-3xl sm:text-5xl">+</span>';
         addBtn.style.order = '0';
         addBtn.title = "Add images";
         return addBtn;
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const reader = new FileReader();
 
             const container = document.createElement('div');
-            container.className = "relative w-20 h-20";
+            container.className = "relative lg:w-20 lg:h-20 sm:w-40 sm:h-40";
             container.style.order = '1';
 
             const placeholder = document.createElement('div');
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const btn = document.createElement('button');
             btn.type = "button";
-            btn.className = "absolute -top-2 -right-2 bg-gray-900 hover:bg-gray-800 rounded-full w-6 h-6 flex items-center justify-center text-white text-sm font-bold shadow-lg";
+            btn.className = "absolute -top-2 -right-2 bg-gray-900 hover:bg-gray-800 rounded-full lg:w-6 lg:h-6 sm:w-12 sm:h-12 flex items-center justify-center text-white lg:text-sm sm:text-2xl font-bold shadow-lg";
             btn.innerHTML = "&times;";
             btn.title = "Remove image";
             btn.onclick = () => removeImageById(item.id);

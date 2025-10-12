@@ -86,7 +86,7 @@
 </div>
 
 <!-- JS for preview -->
-<script src="{{ asset('assets/js/edit_image.js') }}"></script>
+<script src="{{ asset('assets/js/edit_image.js') }}?v={{ filemtime(public_path('assets/js/edit_image.js')) }}"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const imageInput = document.getElementById("imageInput");

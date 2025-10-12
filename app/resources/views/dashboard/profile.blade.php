@@ -127,5 +127,5 @@
         @endauth
     @endif
 </div>
-<script src="{{ asset('assets/js/home.js') }}"></script>
+<script src="{{ asset('assets/js/home.js') }}?v={{ filemtime(public_path('assets/js/home.js')) }}"></script>
 @endsection

@@ -161,4 +161,4 @@
         </form>
     </div>
 </div>
-<script src = "{{ asset('assets/js/chat.js') }}"></script>
+<script src = "{{ asset('assets/js/chat.js') }}?v={{ filemtime(public_path('assets/js/chat.js')) }}"></script>

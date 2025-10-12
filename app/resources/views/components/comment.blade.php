@@ -226,4 +226,4 @@
         @endif
     </div>
 </div>
-<script src="{{ asset('assets/js/comment.js') }}"></script>
+<script src="{{ asset('assets/js/comment.js') }}?v={{ filemtime(public_path('assets/js/comment.js')) }}"></script>

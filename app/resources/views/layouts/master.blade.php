@@ -15,6 +15,9 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://squeal.site/preview.png" />
     </head>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 <!-- Bottom Nav (Mobile only) -->
 <nav class="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 
             flex justify-around py-2 lg:hidden z-50">
@@ -318,7 +321,7 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('assets/js/image_modal.js') }}"></script>
+    <script src="{{ asset('assets/js/image_modal.js') }}?v={{ filemtime(public_path('assets/js/image_modal.js')) }}"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
@@ -327,7 +330,7 @@
          unseenNotif: "{{ route('notifications.unseenCount', [], true)  }}"
     };
     </script>
-    <script src="{{ asset('assets/js/master.js') }}"></script>
+    <script src="{{ asset('assets/js/master.js') }}?v={{ filemtime(public_path('assets/js/master.js')) }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireScripts
 

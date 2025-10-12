@@ -10,21 +10,21 @@
             <div>
                 <!-- Name + timestamp -->
                 <div class="flex items-center gap-2">
-                    <h2 class="font-bold text-orange-400">
+                    <h2 class="font-bold text-orange-400 lg:text-base sm:text-4xl">
                         <a href="{{ route('user.profile', optional($post->user)->id) }}">
                             {{ optional($post->user)->name ?? 'Unknown User' }}
                         </a>
                     </h2>
 
-                    <p class="text-xs sm:text-3xl lg:text-xs text-gray-500">•</p>
+                    <p class="text-xs sm:text-2xl lg:text-xs text-gray-500">•</p>
 
-                    <p class="text-xs sm:text-3xl lg:text-xs text-gray-500">
+                    <p class="text-xs sm:text-2xl lg:text-xs  text-gray-500">
                         {{ $post->created_at->diffForHumans() }}
                     </p>
                 </div>
 
                 <!-- Email -->
-                <h2 class="font-extralight text-sm text-gray-500">
+                <h2 class="font-extralight lg:text-sm sm:text-2xl text-gray-500">
                     <a href="{{ route('user.profile', optional($post->user)->id) }}">
                         {{ optional($post->user)->email ?? 'Unknown User' }}
                     </a>
@@ -36,17 +36,17 @@
         <div class="relative">
             @auth
                 @if(auth()->id() === $post->user_id)
-                    <button onclick="toggleMenu({{ $post->id }})" class="text-gray-400 hover:text-white">⋮</button>
+                    <button onclick="toggleMenu({{ $post->id }})" class="text-gray-400 hover:text-white sm:text-4xl lg:text-xl">⋮</button>
                     <div id="menu-{{ $post->id }}" 
-                        class="hidden absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 
+                        class="hidden absolute right-0 mt-2 sm:w-60 lg:w-32 bg-gray-900 border border-gray-700 
                                 rounded-lg shadow-lg z-50">
                         <a href="{{ route('posts.edit.form', $post->id) }}" 
-                        class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Edit</a>
+                        class="block px-4 py-2 lg:text-sm sm:text-3xl text-gray-200 hover:bg-gray-700">Edit</a>
                         <form action="{{ route('posts.delete', $post->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" 
-                                    class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
+                                    class="w-full text-left px-4 py-2 lg:text-sm sm:text-3xl text-red-400 hover:bg-gray-700">
                                 Delete
                             </button>
                         </form>
@@ -57,12 +57,13 @@
     </div>
 
     <!-- Post body -->
-    <p class="text-gray-300 mt-4 break-words">    
+    <p class="text-gray-300 mt-4 break-words lg:text-base sm:text-4xl">    
     {!! preg_replace_callback(
         '/https?:\/\/[^\s]+/',
         function ($matches) {
             $url = $matches[0];
-            $display = preg_replace('#^https?://www.#', '', $url);
+            $display = preg_replace('#^https?://(www\.)?#', '', $url);
+
             return '<a href="' . $url . '" class="text-blue-400 hover:underline" target="_blank">' . $display . '</a>';
         },
         e($post->body)
