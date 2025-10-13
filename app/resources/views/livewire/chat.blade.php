@@ -58,33 +58,33 @@
 <div class="p-4 border-b border-gray-700 bg-gray-800 flex justify-between items-center">
     <!-- Avatar + Name + Email -->
     <div class="flex items-center gap-3">
-        <div class="relative w-10 h-10">
+        <div class="relative lg:w-10 lg:h-10 sm:w-25 sm:h-25">
             <img 
                 src="{{ optional($selectedUser)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                 alt="{{ optional($selectedUser)->name ?? 'Unknown User' }}"
-                class="w-10 h-10 rounded-full object-cover"
+                class="lg:w-10 lg:h-10 sm:w-25 sm:h-25 rounded-full object-cover"
             >
 
             {{-- Status dot --}}
             @if(optional($selectedUser)->isOnline())
-                <span class="absolute bottom-0 right-0 block w-3 h-3 bg-green-500 
+                <span class="absolute bottom-0 right-0 block lg:w-3 lg:h-3 sm:w-10 sm:h-10 bg-green-500 
                              border-2 border-gray-800 rounded-full"></span>
             @else
-                <span class="absolute bottom-0 right-0 block w-3 h-3 bg-gray-400 
-                             border-2 border-gray-800 rounded-full"></span>
+                <span class="absolute bottom-0 right-0 block lg:w-3 lg:h-3 sm:w-10 sm:h-10 bg-gray-400 
+                             border-2 bord  er-gray-800 rounded-full"></span>
             @endif
         </div>
 
         <div class="flex flex-col">
-            <div class="text-lg font-semibold text-white">{{ optional($selectedUser)->name }}</div>
-            <div class="text-xs text-gray-400">{{ optional($selectedUser)->email }}</div>
+            <div class="lg:text-lg sm:text-5xl font-semibold text-white">{{ optional($selectedUser)->name }}</div>
+            <div class="lg:text-xs sm:text-4xl text-gray-400">{{ optional($selectedUser)->email }}</div>
         </div>
     </div>
 
     <!-- Mobile: Open sidebar button -->
     <button 
         onclick="toggleSidebar()" 
-        class="lg:hidden bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-full text-xs"
+        class="lg:hidden bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full text-2xl"
     >
         Chats
     </button>
@@ -110,16 +110,16 @@
                 <img 
                     src="{{ $sender->avatar ?: asset('assets/img/default-avatar.svg') }}" 
                     alt="{{ $sender->name }}" 
-                    class="w-8 h-8 rounded-full object-cover"
+         class="lg:w-8 lg:h-8 sm:w-20 sm:h-20 rounded-full object-cover"
                 >
             @elseif (!$isMe)
                 {{-- Spacer to align bubbles without avatar --}}
-                <div class="w-8"></div>
+                <div class="sm:w-20 lg:w-8"></div>
             @endif
 
             {{-- Message bubble --}}
             <div 
-                class="max-w-xs px-4 py-2 rounded-2xl shadow cursor-pointer 
+                class="lg:max-w-xs lg:px-4 lg:py-2 sm:max-w-xs sm:px-6 sm:py-4 lg:text-sm sm:text-4xl sm:mt-3 lg:mt-1 rounded-2xl shadow cursor-pointer 
                     break-words 
                     {{ $isMe ? 'bg-orange-500 text-white order-1' : 'bg-gray-700 text-gray-100' }}"
                 data-message-id="{{ $message->id }}"
@@ -129,7 +129,7 @@
             </div>
             {{-- hidden timestamp (revealed when clicked) --}}
             <div id="timestamp-{{ $message->id }}" 
-                class="hidden text-xs text-gray-400 mt-1 ml-2">
+                class="hidden lg:text-xs sm:text-2xl text-gray-400 mt-1 ml-2">
                 {{ $message->created_at->format('M d, Y h:i A') }}
             </div>
         </div>
@@ -140,7 +140,7 @@
     New messages ↓
 </button>
 
-
+<div class="pb-35 lg:pb-0">
         <!-- Input -->
         <form wire:submit.prevent="submit" class="p-3 border-t border-gray-700 bg-gray-800 flex items-center gap-2">
             <input 
@@ -159,6 +159,7 @@
                 Send
             </button>
         </form>
+        </div>
     </div>
 </div>
 <script src = "{{ asset('assets/js/chat.js') }}?v={{ filemtime(public_path('assets/js/chat.js')) }}"></script>

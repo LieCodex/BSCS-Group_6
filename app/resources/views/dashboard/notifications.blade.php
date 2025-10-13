@@ -1,16 +1,16 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="max-w-3xl mx-auto p-4 mt-5">
+<div class="mx-auto p-4 sm:0 mt-5 pb-35 lg:pb-0">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-white">Notifications</h1>
+        <h1 class="lg:text-2xl sm:text-4xl font-bold text-white">Notifications</h1>
 
         @if($notifications->where('is_seen', false)->count() > 0)
             <form action="{{ route('notifications.markAllSeen') }}" method="POST">
                 @csrf
                 <button type="submit"
-                    class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold 
-                           px-4 py-2 rounded-lg transition">
+                    class="bg-orange-500 hover:bg-orange-600 text-white lg:text-sm sm:text-3xl font-semibold 
+                           lg:px-4 lg:py-2 sm:px-5 sm:py-5 rounded-lg transition">
                     Mark All as Seen
                 </button>
             </form>
@@ -21,14 +21,14 @@
         <form action="{{ route('notifications.seen', $notification->id) }}" method="POST">
             @csrf
             <button type="submit" 
-                    class="w-full text-left block p-4 mb-3 rounded-lg border transition
+                    class="w-full text-left block lg:p-4 sm:p-10 mb-3 rounded-lg border transition
                            {{ $notification->is_seen 
                                 ? 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700' 
                                 : 'bg-gray-700 border-orange-400 text-white hover:bg-gray-600' }}">
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center lg:text-xl sm:text-3xl">
                     <div>
                         @if($notification->type === 'like_post')
-                            <span class="font-medium text-orange-400">
+                            <span class="font-medium text-orange-400"> 
                                 {{ $notification->actor?->name ?? 'Someone' }}
                             </span> liked your post.
                         @elseif($notification->type === 'like_comment')
@@ -55,7 +55,7 @@
                             </span>
                         @endif
                     </div>
-                    <span class="text-xs text-gray-500">
+                    <span class="lg:text-xs sm:text-2xl text-gray-500">
                         {{ $notification->created_at->diffForHumans() }}
                     </span>
                 </div>

@@ -5,7 +5,7 @@
     x-data="{ openImage: false, imageSrc: '' }"
 >
     <!-- Carousel wrapper -->
-    <div class="relative h-[530px] md:h-[400px] overflow-hidden rounded-lg">
+    <div class="relative lg:h-[530px] sm:h-[800px] overflow-hidden rounded-lg">
         @foreach($post->images as $index => $image)
             <div class="{{ $index === 0 ? '' : 'hidden' }} duration-700 ease-in-out" data-carousel-item>
                 <img 

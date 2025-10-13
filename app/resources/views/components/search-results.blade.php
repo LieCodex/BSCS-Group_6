@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="max-w-2xl mx-auto p-4 mt-5">
+    <div class="max-w-2xl mx-auto p-4 mt-5 pb-35 lg:pb-0">
         <h2 class="text-xl font-bold mb-4">Search results for "{{ $q }}"</h2>
 
         <h3 class="font-semibold mt-6 mb-2">Posts</h3>

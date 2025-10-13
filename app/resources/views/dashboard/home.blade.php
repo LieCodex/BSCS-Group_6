@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="p-6 space-y-6">
+<div class="p-6 space-y-6 pb-35 lg:pb-0">
     
     @guest
         <!-- Guest Welcome Section -->
