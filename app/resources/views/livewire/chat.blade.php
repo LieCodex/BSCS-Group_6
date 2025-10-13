@@ -2,15 +2,15 @@
 
     <!-- Sidebar (User List) -->
     <div id="userSidebar" 
-        class="fixed inset-y-0 left-0 w-64 bg-gray-900 border-r border-gray-700 transform -translate-x-full lg:translate-x-0 lg:relative lg:w-1/4 transition-transform duration-300 ease-in-out z-50 flex flex-col">
+        class="fixed inset-y-0 left-0 w-150 bg-gray-900 border-r border-gray-700 transform -translate-x-full lg:translate-x-0 lg:relative lg:w-1/4 transition-transform duration-300 ease-in-out z-50 flex flex-col">
         
         <div class="relative flex justify-center items-center p-4 border-b border-gray-700 flex-shrink-0">
-            <span class="font-bold text-orange-400 text-xl pt-2 pb-2">Chats</span>
+            <span class="font-bold text-orange-400 text-4xl pt-2 pb-2">Chats</span>
 
             <!-- Close button (mobile only) -->
             <button 
                 onclick="toggleSidebar()" 
-                class="absolute right-4 lg:hidden text-gray-400 hover:text-white"
+                class="absolute right-4 lg:hidden text-gray-400 hover:text-white text-3xl"
             >
                 ✕
             </button>
@@ -24,26 +24,26 @@
             wire:click="selectUser({{ $user->id }})" 
             class="p-3 cursor-pointer hover:bg-gray-800 transition flex items-center gap-3
                 {{ isset($selectedUser) && optional($selectedUser)->id === $user->id ? 'bg-gray-800 font-semibold' : '' }}">
-            <div class="relative w-8 h-8 flex-shrink-0">
+            <div class="relative sm:w-25 sm:h-25 lg:w-10 lg:h-10 flex-shrink-0">
                         <img 
                             src="{{ $user->avatar ?: asset('assets/img/default-avatar.svg') }}"
                             alt="{{ $user->name ?? 'Unknown User' }}"
-                            class="w-8 h-8 rounded-full object-cover">
+                            class="sm:w-25 sm:h-25 lg:w-10 lg:h-10 rounded-full object-cover">
 
                 {{-- Online status blob --}}
                     @if($user->isOnline())
-                        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border border-gray-900 rounded-full"></span>
+                        <span class="absolute bottom-0 right-0 sm:w-2.5 sm:h-2.5 lg:w-9.5 lg:h-9.5 bg-green-500 border border-gray-900 rounded-full"></span>
                     @endif
         </div>
             <div class="flex flex-col overflow-hidden">
                 <div class="flex items-center gap-2">
-                    <span class="text-white truncate">{{ $user->name }}</span>
+                    <span class="text-white truncate sm:text-4xl lg:text-base">{{ $user->name }}</span>
                     
                     @if(isset($unread[$user->id]))
                         <span class="w-2 h-2 bg-red-500 rounded-full"></span>
                     @endif
                 </div>
-                <div class="text-xs text-gray-400 truncate">{{ $user->email }}</div>
+                <div class="sm:text-3xl lg:text-sm text-gray-400 truncate ">{{ $user->email }}</div>
             </div>
         </div>
 
@@ -77,7 +77,7 @@
 
         <div class="flex flex-col">
             <div class="lg:text-lg sm:text-5xl font-semibold text-white">{{ optional($selectedUser)->name }}</div>
-            <div class="lg:text-xs sm:text-4xl text-gray-400">{{ optional($selectedUser)->email }}</div>
+            <div class="lg:text-xs sm:text-3xl text-gray-400">{{ optional($selectedUser)->email }}</div>
         </div>
     </div>
 
@@ -147,12 +147,12 @@
                 id="chatInput"
                 wire:model.live="newMessage"
                 type="text"
-                class="flex-1 bg-gray-900 border border-gray-700 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 text-white placeholder-gray-400"
+                class="flex-1 bg-gray-900 border border-gray-700 rounded-full lg:px-4 lg:py-2 sm:px-8 sm:py-5 lg:text-sm sm:text-4xl focus:outline-none focus:ring-2 focus:ring-orange-400 text-white placeholder-gray-400"
                 placeholder="Type your message..." />
             <button 
                 type="submit"
                 class="text-orange-400 border border-orange-400 rounded-full 
-                    text-sm px-5 py-2
+                    lg:text-sm sm:text-3xl lg:px-5 lg:py-2 sm:px-10 sm:py-5
                     hover:bg-orange-500 hover:text-white 
                     focus:outline-none focus:ring-2 focus:ring-orange-300
                     transition-colors duration-200">
