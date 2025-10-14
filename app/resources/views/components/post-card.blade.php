@@ -16,9 +16,9 @@
                         </a>
                     </h2>
 
-                    <p class="text-xs sm:text-2xl lg:text-xs text-gray-500">•</p>
+                    <p class="text-xs sm:text-3xl lg:text-xs text-gray-500">•</p>
 
-                    <p class="text-xs sm:text-2xl lg:text-xs  text-gray-500">
+                    <p class="text-xs sm:text-3xl lg:text-xs  text-gray-500">
                         {{ $post->created_at->diffForHumans() }}
                     </p>
                 </div>
