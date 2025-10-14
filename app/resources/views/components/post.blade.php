@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="p-4 sm:p-6 space-y-6 sm:space-y-8">
+<div class="p-4 sm:p-6 space-y-6 sm:space-y-8 sm:pb-35 lg:pb-0">
 
     {{-- Reuse post-card component --}}
     @include('components.post-card', ['post' => $post])

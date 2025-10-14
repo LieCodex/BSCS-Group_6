@@ -1,4 +1,4 @@
-<div class="card mb-3 shadow-sm bg-dark text-light max-w-full break-words">
+<div class="card mb-3 shadow-sm bg-dark text-light max-w-full break-words ">
     <div class="card-body p-3">
         <!-- Comment Header -->
         <div class="flex items-center gap-2 justify-between">
