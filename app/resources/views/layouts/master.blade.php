@@ -85,7 +85,7 @@
 <body class="bg-gray-900 text-white flex flex-col lg:flex-row h-screen">
 
     <!-- Sidebar (Left) -->
-    <aside class="hidden lg:flex w-60 h-screen p-6 flex-col justify-between sticky top-0 ml-15">
+    <aside class="hidden lg:flex w-60 h-screen p-6 flex-col justify-between sticky top-0 mr-20 ml-5">
 
         <div>
             <a href="{{ route('dashboard.home') }}">
@@ -220,7 +220,7 @@
 
             <!-- Success message -->
             @if(session('success'))
-                <div id="successmsg" class="bg-gray-900 border border-orange-400 text-orange-400 p-2 rounded m-2 text-center mt-4">
+                <div id="successmsg" class="bg-gray-900 border border-orange-400 text-orange-400 lg:p-2 sm:p-4 rounded m-2 text-center mt-4 lg:text-base sm:text-3xl">
                     {{ session('success') }}
                 </div>
 

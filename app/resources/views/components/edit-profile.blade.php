@@ -6,7 +6,11 @@
         <div class="absolute top-2 right-2">
             <button 
                 @click="open = true" 
-                class="px-4 py-2 bg-gray-800 text-white rounded-full text-sm hover:bg-gray-700 transition">
+                class= "text-gray-300 border border-gray-300 rounded-full 
+                        lg:px-3 lg:py-1 sm:px-6 sm:py-2 lg:text-sm sm:text-3xl
+                        hover:bg-gray-600 hover:text-white
+                        focus:outline-none focus:ring-2 focus:ring-gray-300
+                        transition-colors duration-200">
                 Edit Profile
             </button>
         </div>
@@ -16,7 +20,7 @@
             x-show="open" 
             x-transition.opacity
             @click.self="open = false"
-            x-cloak
+            x-cloak 
             class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 overflow-y-auto"
         >
             <!-- Modal Card -->
@@ -42,29 +46,52 @@
                         @csrf
 
                         <!-- Avatar -->
-                        <div x-data="{ preview: '{{ $user->avatar ?? asset('images/default-avatar.png') }}' }">
-                            <label for="avatar" class="block text-sm text-gray-300">Avatar</label>
-                            <div class="flex items-center space-x-4 mt-2">
+                        <div x-data="{ 
+                            preview: '{{ $user->avatar ?? asset('images/default-avatar.png') }}', 
+                            triggerFileInput() { this.$refs.fileInput.click(); }
+                        }">
+                            <label class="block text-sm text-gray-300 mb-2">Avatar</label>
+
+                            <div class="flex items-center space-x-4">
+                                <!-- Preview -->
                                 <img 
                                     :src="preview" 
                                     alt="Current Avatar" 
                                     class="w-16 h-16 rounded-full object-cover border border-gray-700">
+
+                                <!-- Hidden File Input -->
                                 <input 
                                     type="file" 
                                     name="avatar" 
                                     id="avatar" 
                                     accept="image/*"
-                                    class="text-sm text-gray-400"
+                                    class="hidden"
+                                    x-ref="fileInput"
                                     x-on:change="
                                         const file = $event.target.files[0];
                                         if (file) preview = URL.createObjectURL(file);
                                     "
                                 >
+
+                                <!-- Upload Button -->
+                                <button 
+                                    type="button"
+                                    class="text-gray-300 border border-gray-300 rounded-full 
+                                    px-4 py-2 text-sm
+                                    hover:bg-gray-600 hover:text-white
+                                    focus:outline-none focus:ring-2 focus:ring-gray-300
+                                    transition-colors duration-200"
+                                    @click="triggerFileInput()"
+                                >
+                                    Change
+                                </button>
                             </div>
+
                             @error('avatar')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
+
 
                         <!-- Name -->
                         <div>
@@ -93,12 +120,20 @@
                             <button 
                                 type="button" 
                                 @click="open = false"
-                                class="px-4 py-2 bg-gray-700 rounded-full hover:bg-gray-600 transition">
+                                class="text-gray-300 border border-gray-300 rounded-full 
+                                    px-4 py-2 text-sm
+                                    hover:bg-gray-600 hover:text-white
+                                    focus:outline-none focus:ring-2 focus:ring-gray-300
+                                    transition-colors duration-200">
                                 Cancel
                             </button>
                             <button 
                                 type="submit" 
-                                class="px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-400 transition">
+                                class="text-orange-400 border border-orange-400 rounded-full 
+                                    px-4 py-2 text-sm 
+                                    hover:bg-orange-500 hover:text-white 
+                                    focus:outline-none focus:ring-2 focus:ring-orange-300
+                                    transition-colors duration-200">
                                 Save
                             </button>
                         </div>

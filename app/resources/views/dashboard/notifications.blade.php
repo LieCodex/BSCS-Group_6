@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="mx-auto p-4 sm:0 mt-5 pb-35 lg:pb-0">
+<div class="mx-auto p-4 sm:0 mt-2 pb-35 lg:pb-0">
     <div class="flex justify-between items-center mb-6">
         <h1 class="lg:text-2xl sm:text-4xl font-bold text-white">Notifications</h1>
 
@@ -62,7 +62,7 @@
             </button>
         </form>
     @empty
-        <p class="text-gray-500 text-center">No notifications yet.</p>
+        <p class="mt-10 text-gray-500 text-center text-lg">No notifications yet.</p>
     @endforelse
 </div>
 @endsection

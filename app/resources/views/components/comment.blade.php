@@ -6,12 +6,12 @@
                 <img 
                     src="{{ optional($comment->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                     alt="{{ optional($comment->user)->name ?? 'User' }}"
-                    class="w-6 h-6 rounded-full object-cover">
+                    class="lg:w-6 lg:h-6 sm:w-12 sm:h-12 rounded-full object-cover">
                     <a href="{{ route('user.profile', optional($comment->user)->id) }}" 
-                    class="font-bold text-orange-400 hover:underline">
+                    class="font-bold text-orange-400 hover:underline lg:text-base sm:text-3xl">
                     {{ optional($comment->user)->name ?? 'User' }}
                     </a>
-                <span class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
+                <span class="text-xs text-gray-500 lg:text-base sm:text-2xl">{{ $comment->created_at->diffForHumans() }}</span>
             </div>
 
             <!-- 3 dots menu -->
@@ -34,7 +34,8 @@
             @endif
         </div>
 
-        <div class="ml-6">
+        <div class="ml-6 lg:text-base sm:text-3xl">
+
         <!-- Comment Body -->
         <div class="m-2 break-words">
             {{ $comment->content }}
@@ -50,7 +51,7 @@
                     <button type="submit" id="like-btn-{{ $comment->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
                         <svg xmlns="http://www.w3.org/2000/svg" 
                             id="like-icon-{{ $comment->id }}"
-                            class="w-6 h-6 mr-1 text-orange-400" 
+                            class="w-6 h-6 mr-1 sm:w-15 sm:h-15 lg:w-6 lg:h-6 text-orange-400" 
                             fill="{{ $comment->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
                             stroke="{{ $comment->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
                             stroke-width="2"
@@ -73,7 +74,7 @@
                     <button type="submit" id="like-btn-{{ $comment->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
                         <svg xmlns="http://www.w3.org/2000/svg" 
                         id="like-icon-{{ $comment->id }}"
-                            class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
+                            class="w-6 h-6 mr-1 sm:w-11 sm:h-11 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
                             fill="{{ $comment->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
                             stroke="{{ $comment->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
                             stroke-width="2"
@@ -96,7 +97,7 @@
                     onclick="toggleReplyForm({{ $comment->id }})"
                     class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
                 <svg xmlns="http://www.w3.org/2000/svg" 
-                     class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
+                     class="w-6 h-6 mr-1 sm:w-11 sm:h-11 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
                      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" 
                           d="M7 8h10M7 12h6m-6 4h4m10-2.586V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9l4 4v-5.586a2 2 0 0 0 .586-1.414z"/>
@@ -115,7 +116,7 @@
                     <input type="hidden" name="parent_comment_id" value="{{ $comment->id }}">
                     <div class="relative">
                         <textarea name="content" rows="2" required
-                                  class="w-full h-16 max-h-40 p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:ring-0 pr-32 resize-none overflow-auto"
+                                  class="w-full h-16 max-h-40 p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:ring-0 pr-32 resize-none overflow-auto lg:text-base sm:text-3xl"
                                   placeholder="Write a reply..."
                                   onfocus="this.nextElementSibling.classList.remove('hidden');"
                                   onblur="if(!this.value) this.nextElementSibling.classList.add('hidden');"
@@ -142,12 +143,12 @@
                                 <img 
                                     src="{{ optional($reply->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                                     alt="{{ optional($reply->user)->name ?? 'User' }}"
-                                    class="w-6 h-6 rounded-full object-cover">
+                                    class="lg:w-6 lg:h-6 sm:w-12 sm:h-12 rounded-full object-cover">
                                     <a href="{{ route('user.profile', optional($comment->user)->id) }}" 
-                                    class="font-bold text-orange-400 hover:underline">
+                                    class="font-bold text-orange-400 hover:underline lg:text-base sm:text-3xl">
                                     {{ optional($comment->user)->name ?? 'User' }}
                                     </a>
-                                <span class="text-xs text-gray-500">{{ $reply->created_at->diffForHumans() }}</span>
+                                <span class="text-xs text-gray-500 sm:text-2xl lg:text-base">{{ $reply->created_at->diffForHumans() }}</span>
                             </div>
                             <!-- 3 dots menu button for reply -->
                             @if(auth()->id() === $reply->user_id)
@@ -169,8 +170,10 @@
                             @endif
                         </div>
 
-                        <div class="ml-6 break-words">
+                        <!-- Reply Body -->
+                        <div class="ml-6 break-words lg:text-base sm:text-3xl">
                         <p class="m-2">{{ $reply->content }}</p>
+
                         @if($reply->isLikedBy(auth()->user()))
                             <!-- Unlike -->
                             <form action="{{ route('comments.unlike', $reply->id) }}" method="POST" class="like-form" data-post-id="{{ $reply->id }}">
@@ -179,7 +182,7 @@
                                 <button type="submit" id="like-btn-{{ $reply->id }}" class="group inline-flex items-center text-orange-400 px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" 
                                         id="like-icon-{{ $reply->id }}"
-                                        class="w-6 h-6 mr-1 text-orange-400" 
+                                        class="w-6 h-6 mr-1 sm:w-11 sm:h-11 lg:w-6 lg:h-6 text-orange-400" 
                                         fill="{{ $reply->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
                                         stroke="{{ $reply->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
                                         stroke-width="2"
@@ -202,7 +205,7 @@
                                 <button type="submit" id="like-btn-{{ $reply->id }}" class="group inline-flex items-center text-white px-3 py-1 rounded-full bg-gray-800 hover:border-orange-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" 
                                     id="like-icon-{{ $reply->id }}"
-                                        class="w-6 h-6 mr-1 transition text-white group-hover:text-orange-400" 
+                                        class="w-6 h-6 mr-1 sm:w-11 sm:h-11 lg:w-6 lg:h-6 transition text-white group-hover:text-orange-400" 
                                         fill="{{ $reply->isLikedBy(auth()->user()) ? 'currentColor' : 'none' }}"
                                         stroke="{{ $reply->isLikedBy(auth()->user()) ? 'orange' : 'white' }}"
                                         stroke-width="2"

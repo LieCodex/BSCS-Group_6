@@ -4,7 +4,7 @@
 <div class="p-6 space-y-6 pb-35 lg:pb-0">
 
     <!-- Header / Banner -->
-    <div x-data="{ open: false }" class="relative h-40 bg-gray-700 rounded-lg">
+    <div x-data="{ open: false }" class="relative lg:h-40 sm:h-80 bg-gray-700 absolute rounded-lg">
 
     <x-edit-profile :user="$user" />
     </div>
@@ -13,7 +13,7 @@
         <!-- Avatar -->
         <img src="{{ $user->avatar ? $user->avatar.'?v='.time() : asset('assets/img/default-avatar.svg') }}" 
             alt="{{ $user->name }}" 
-            class="w-32 h-32 rounded-full border-4 border-gray-900 absolute -top-16 left-6 object-cover">
+            class="lg:w-32 lg:h-32 sm:w-58 sm:h-58 rounded-full border-4 border-gray-900 absolute -top-16 left-6 object-cover">
 
 
         @if(auth()->check() && auth()->id() !== $user->id)
@@ -39,7 +39,7 @@
                         @csrf
                         <button 
                         class="text-orange-400 border border-orange-400 rounded-full 
-                                px-5 py-2 text-sm
+                                lg:px-5 lg:py-2 sm:px-10 sm:py-3 lg:text-base sm:text-3xl
                                 hover:bg-orange-500 hover:text-white
                                 focus:outline-none focus:ring-2 focus:ring-orange-300
                                 transition-colors duration-200">
@@ -53,7 +53,7 @@
                     <input type="hidden" name="user_id" value="{{ $user->id }}">
                     <button 
                         class="text-orange-400 border border-orange-400 rounded-full 
-                            px-5 py-2 text-sm
+                            lg:px-5 lg:py-2 sm:px-10 sm:py-3 lg:text-base sm:text-3xl
                             hover:bg-orange-500 hover:text-white
                             focus:outline-none focus:ring-2 focus:ring-orange-300
                             transition-colors duration-200">
@@ -64,12 +64,12 @@
         @endif
     </div>
 
-
+<div class="sm:mt-50 lg:mt-0">
     <!-- User Info -->
     <div class="mt-18 ml-6">
-        <h1 class="text-2xl font-semibold text-white">{{ $user->name }}</h1>
-        <p class="text-gray-500">{{ $user->email }}</p>
-        <p class="mt-3 text-gray-300">
+        <h1 class="lg:text-2xl sm:text-5xl font-semibold text-white">{{ $user->name }}</h1>
+        <p class="text-gray-500 lg:text-base sm:text-2xl">{{ $user->email }}</p>
+        <p class="mt-3 text-gray-300 lg:text-base sm:text-3xl">
             {{ $user->bio ?? "This user hasn't added a bio yet." }}
         </p>
     
@@ -77,10 +77,10 @@
     <!-- Profile Details -->
     <div class="text-gray-400 text-sm space-y-2">
         <div class="flex items-center gap-3 mt-3">
-        <p class="text-white font-medium"> {{ $user->followers()->count() }}<span class="text-gray-300"> Followers</span></p>
-        <p class="text-white font-medium"> {{ $user->following()->count() }}<span class="text-gray-300"> Following</span></p>
+        <p class="text-white font-medium lg:text-base sm:text-2xl"> {{ $user->followers()->count() }}<span class="text-gray-300 lg:text-base sm:text-2xl"> Followers</span></p>
+        <p class="text-white font-medium lg:text-base sm:text-2xl"> {{ $user->following()->count() }}<span class="text-gray-300 lg:text-base sm:text-2xl"> Following</span></p>
         </div>
-        <p><span>Joined</span> {{ $user->created_at->format('F Y') }}</p>    
+        <p class="lg:text-base sm:text-2xl"><span>Joined</span> {{ $user->created_at->format('F Y') }}</p>    
     </div>
     </div>
 
@@ -108,6 +108,8 @@
                 </button>
             </div>
         </div>
+    </div>
+
     </div>
 
     <!-- Posts Feed -->
