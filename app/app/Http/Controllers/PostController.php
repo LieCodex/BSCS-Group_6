@@ -15,7 +15,7 @@ class PostController extends Controller
 public function createPost(Request $request)
 {
     $incomingFields = $request->validate([
-        'body'  => 'required|max:500',
+        'body'  => 'nullable|max:500',
         'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240'
     ]);
 
@@ -114,7 +114,7 @@ public function createPost(Request $request)
         }
 
         $incomingFields = $request->validate([
-            'body'  => 'required|max:500',
+            'body'  => 'nullable|max:500',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240'
         ]);
 
