@@ -44,6 +44,21 @@
         <span class="text-4xl">Alerts</span>
     </a>
 
+    <!-- Search-->
+    <a href="{{ route('search') }}" 
+    class="flex flex-col items-center text-gray-400 hover:text-orange-400">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="h-18 w-18 mn- 1" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor" 
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
+        </svg>
+        <span class="text-4xl"> Search</span>
+    </a>
+
     <!-- Messages -->
     <a href="{{ route('dashboard.messages') }}" class="flex flex-col items-center text-gray-400 hover:text-orange-400">
         <svg xmlns="http://www.w3.org/2000/svg" 
@@ -107,6 +122,21 @@
                     </div>
                     Notifications
                 </a>
+
+                <!-- Search-->
+                    <a href="{{ route('search') }}" 
+                    class="flex items-center gap-3 text-lg text-white transition group hover:text-orange-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                            class="h-6 w-6" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor" 
+                            stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" 
+                                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
+                        </svg>
+                        Search
+                    </a>
 
                     <!-- Messages-->
                     <a href="{{ route('dashboard.messages') }}" 
