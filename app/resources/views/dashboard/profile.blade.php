@@ -26,7 +26,7 @@
                         @method('DELETE')
                         <button 
                         class="text-gray-300 border border-gray-300 rounded-full 
-                                px-5 py-2 text-sm
+                                lg:px-5 lg:py-2 sm:px-10 sm:py-3 lg:text-base sm:text-3xl
                                 hover:bg-gray-600 hover:text-white
                                 focus:outline-none focus:ring-2 focus:ring-gray-300
                                 transition-colors duration-200">

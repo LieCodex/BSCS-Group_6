@@ -2,30 +2,31 @@
 
 @section('content')
     <div class="mx-auto p-4 mt-5 pb-35 lg:pb-0">
-        <form method="GET" action="{{ route('search') }}" class="mb-4 relative">
-            <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                <!-- Search -->
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    class="lg:h-5 sm:w-10 lg:w-5 sm:h-10" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor" 
-                    stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" 
-                        d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
-                </svg>
-            </span>
+    <form method="GET" action="{{ route('search') }}" class="mb-4 relative">
+        <span class="absolute inset-y-0 left-4 flex items-center text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 lg:w-6 lg:h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
+            </svg>
+        </span>
 
-            <input 
-                type="text" 
-                name="q" 
-                placeholder="Search squeal" 
-                class="w-full sm:pl-20 lg:p-2 sm:p-6 rounded-full bg-gray-800 border-none text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400 lg:text-base sm:text-3xl"
-                required
-            >
+        <input 
+            type="text" 
+            name="q" 
+            placeholder="Search squeal" 
+            class="w-full pl-12 pr-4 py-3 rounded-full bg-gray-800 border-none text-white placeholder-gray-400 
+                focus:ring-2 focus:ring-orange-400 text-base sm:text-2xl lg:text-base"
+            required
+        >
 
-            <button type="submit" class="hidden"></button>
-        </form>
+        <button type="submit" class="hidden"></button>
+    </form>
+
         <h2 class="text-xl lg:text-base sm:text-3xl font-bold mb-4">Search results for "{{ $q }}"</h2>
 
         <h3 class="font-semibold mt-6 mb-2 lg:text-base sm:text-3xl">Posts</h3>
