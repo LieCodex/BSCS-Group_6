@@ -20,7 +20,7 @@
                 type="text" 
                 name="q" 
                 placeholder="Search squeal" 
-                class="w-full pl-14 pr-4 lg:p-2 sm:p-6 rounded-full bg-gray-800 border-none text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400 lg:text-base sm:text-3xl"
+                class="w-full sm:pl-20 lg:p-2 sm:p-6 rounded-full bg-gray-800 border-none text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400 lg:text-base sm:text-3xl"
                 required
             >
 
