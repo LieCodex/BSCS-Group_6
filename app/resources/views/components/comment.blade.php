@@ -18,16 +18,16 @@
             @if(auth()->id() === $comment->user_id)
                 <div class="relative">
                     <button onclick="toggleCommentMenu({{ $comment->id }})" 
-                            class="text-gray-400 hover:text-white px-2 py-1 rounded-full focus:outline-none">⋮</button>
+                            class="text-gray-400 hover:text-white px-2 py-1 rounded-full focus:outline-none  sm:text-4xl lg:text-xl">⋮</button>
                     <div id="comment-menu-{{ $comment->id }}" 
                          class="hidden absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-20">
                         <a href="{{ route('comments.edit', $comment->id) }}" 
-                           class="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Edit</a>
+                           class="block w-full text-left px-4 py-2 lg:text-sm sm:text-3xl text-gray-200 hover:bg-gray-700">Edit</a>
                         <form action="{{ route('comments.delete', $comment->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" 
-                                    class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">Delete</button>
+                                    class="w-full text-left px-4 py-2 lg:text-sm sm:text-3xl text-red-400 hover:bg-gray-700">Delete</button>
                         </form>
                     </div>
                 </div>
@@ -123,9 +123,9 @@
                                   oninput="autoGrow(this)"
                                   style="box-sizing: border-box; padding-bottom: 2.5rem;"></textarea>
                         <div class="absolute right-2 bottom-2 flex gap-2 hidden z-10">
-                            <button type="submit" class="bg-orange-500 text-white px-4 py-1 rounded-full">Reply</button>
+                            <button type="submit" class="bg-orange-500 text-white px-4 py-1 rounded-full lg:text-sm sm:text-3xl">Reply</button>
                             <button type="button" 
-                                    class="bg-gray-500 text-white px-4 py-1 rounded-full" 
+                                    class="bg-gray-500 text-white px-4 py-1 rounded-full lg:text-sm sm:text-3xl" 
                                     onclick="this.form.reset(); this.parentElement.classList.add('hidden'); toggleReplyForm({{ $comment->id }}, false);">Cancel</button>
                         </div>
                     </div>
@@ -154,16 +154,16 @@
                             @if(auth()->id() === $reply->user_id)
                                 <div class="relative">
                                     <button onclick="toggleCommentMenu('reply-{{ $reply->id }}')" 
-                                            class="text-gray-400 hover:text-white px-2 py-1 rounded-full focus:outline-none">⋮</button>
+                                            class="text-gray-400 hover:text-white px-2 py-1 rounded-full focus:outline-none sm:text-4xl lg:text-xl">⋮</button>
                                     <div id="comment-menu-reply-{{ $reply->id }}" 
                                          class="hidden absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-20">
                                         <a href="{{ route('comments.edit', $reply->id) }}" 
-                                           class="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Edit</a>
+                                           class="block w-full text-left px-4 py-2 lg:text-sm sm:text-3xl text-gray-200 hover:bg-gray-700">Edit</a>
                                         <form action="{{ route('comments.delete', $reply->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" 
-                                                    class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">Delete</button>
+                                                    class="w-full text-left px-4 py-2 lg:text-sm sm:text-3xl text-red-400 hover:bg-gray-700">Delete</button>
                                         </form>
                                     </div>
                                 </div>

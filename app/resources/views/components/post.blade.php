@@ -37,8 +37,8 @@
                             style="box-sizing: border-box; padding-bottom: 2.8rem;" 
                         ></textarea>
                         <div class="absolute right-2 bottom-2 flex gap-3 sm:gap-2 hidden z-10">
-                            <button type="submit" class="bg-orange-500 text-white px-5 py-2 sm:px-4 sm:py-1 rounded-full text-base sm:text-sm">Comment</button>
-                            <button type="button" class="bg-gray-500 text-white px-5 py-2 sm:px-4 sm:py-1 rounded-full text-base sm:text-sm" onclick="this.form.reset(); this.parentElement.classList.add('hidden');">Cancel</button>
+                            <button type="submit" class="bg-orange-500 text-white px-5 py-2 sm:px-4 sm:py-1 rounded-full text-base lg:text-sm sm:text-3xl">Comment</button>
+                            <button type="button" class="bg-gray-500 text-white px-5 py-2 sm:px-4 sm:py-1 rounded-full text-base lg:text-sm sm:text-3xl" onclick="this.form.reset(); this.parentElement.classList.add('hidden');">Cancel</button>
                         </div>
                     </div>
                 </form>
