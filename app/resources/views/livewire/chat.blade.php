@@ -5,7 +5,7 @@
         class="fixed inset-y-0 left-0 w-150 bg-gray-900 border-r border-gray-700 transform -translate-x-full lg:translate-x-0 lg:relative lg:w-1/4 transition-transform duration-300 ease-in-out z-50 flex flex-col">
         
         <div class="relative flex justify-center items-center p-4 border-b border-gray-700 flex-shrink-0">
-            <span class="font-bold text-orange-400 text-4xl pt-2 pb-2">Chats</span>
+            <span class="font-bold text-orange-400 sm:text-4xl lg:text-xl pt-2 pb-2">Chats</span>
 
             <!-- Close button (mobile only) -->
             <button 
