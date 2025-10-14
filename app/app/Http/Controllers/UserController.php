@@ -21,8 +21,10 @@ class UserController extends Controller
         $posts = Post::with(['user', 'images', 'comments'])
                     ->where('user_id', $user->id)
                     ->latest()
-                    ->paginate(100); 
-        return view('dashboard.profile', compact('user', 'posts'));
+                    ->paginate(100);
+        $followers = $user->followers;
+        $following = $user->following;
+        return view('dashboard.profile', compact('user', 'posts', 'followers', 'following'));
     }
 
     public function register(Request $request){
@@ -177,8 +179,10 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $posts = Post::where('user_id', $id)->latest()->paginate(10);
+        $followers = $user->followers;
+        $following = $user->following;
 
-        return view('dashboard.profile', compact('user', 'posts'));
+        return view('dashboard.profile', compact('user', 'posts', 'followers', 'following'));
     }
 
 
