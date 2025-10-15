@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="p-6 space-y-6 pb-35 lg:pb-0">
+<div x-data="{ followersModal: false, followingModal: false }" class="p-6 space-y-6 pb-35 lg:pb-0">
 
     <!-- Header / Banner -->
     <div x-data="{ open: false }" class="relative lg:h-40 sm:h-80 bg-gray-700 absolute rounded-lg">
@@ -77,10 +77,10 @@
     <!-- Profile Details -->
     <div class="text-gray-400 text-sm space-y-2">
         <div class="flex items-center gap-3 mt-3">
-        <p class="text-white font-medium lg:text-base sm:text-2xl"> {{ $user->followers()->count() }}<span class="text-gray-300 lg:text-base sm:text-2xl"> Followers</span></p>
-        <p class="text-white font-medium lg:text-base sm:text-2xl"> {{ $user->following()->count() }}<span class="text-gray-300 lg:text-base sm:text-2xl"> Following</span></p>
+        <button @click="followersModal = true" class="text-white font-medium lg:text-base sm:text-2xl hover:text-orange-400 transition-colors"> {{ $user->followers()->count() }}<span class="text-gray-300 lg:text-base sm:text-2xl"> Followers</span></button>
+        <button @click="followingModal = true" class="text-white font-medium lg:text-base sm:text-2xl hover:text-orange-400 transition-colors"> {{ $user->following()->count() }}<span class="text-gray-300 lg:text-base sm:text-2xl"> Following</span></button>
         </div>
-        <p class="lg:text-base sm:text-2xl"><span>Joined</span> {{ $user->created_at->format('F Y') }}</p>    
+        <p class="lg:text-base sm:text-2xl"><span>Joined</span> {{ $user->created_at->format('F Y') }}</p>
     </div>
     </div>
 
@@ -96,16 +96,102 @@
 
             <!-- Zoom Controls -->
             <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                <button 
-                    id="zoomIn" 
+                <button
+                    id="zoomIn"
                     class="bg-gray-800/70 hover:bg-gray-800 text-white px-4 py-1 rounded transition">
                     +
                 </button>
-                <button 
-                    id="zoomOut" 
+                <button
+                    id="zoomOut"
                     class="bg-gray-800/70 hover:bg-gray-800 text-white px-4 py-1 rounded transition">
                     −
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Followers Modal -->
+    <div
+        x-show="followersModal"
+        x-transition.opacity
+        @click.self="followersModal = false"
+        x-cloak
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 overflow-y-auto"
+    >
+        <div
+            x-show="followersModal"
+            x-transition
+            class="bg-gray-900 border border-gray-800 rounded-2xl w-full lg:max-w-xl lg:mx-3 lg:my-8 sm:max-w-3xl sm:mx-4 sm:my-8 relative shadow-2xl flex flex-col modal-card max-h-[80vh]"
+        >
+            <div class="flex items-center justify-between px-6 pt-5 pb-2 border-b border-gray-800">
+                <h2 class="text-white lg:text-xl sm:text-4xl font-semibold">Followers</h2>
+                <button @click="followersModal = false" class="text-gray-400 hover:text-white lg:text-2xl sm:text-4xl font-semibold">✕</button>
+            </div>
+            <div class="flex-1 overflow-y-auto px-6 py-4">
+                @if($followers->count() > 0)
+                    @foreach($followers as $follower)
+                        <div class="flex items-center gap-4 py-3 border-b border-gray-800 last:border-b-0">
+                            <img
+                                src="{{ $follower->avatar ? $follower->avatar.'?v='.time() : asset('assets/img/default-avatar.svg') }}"
+                                alt="{{ $follower->name }}"
+                                class="lg:w-12 lg:h-12 sm:w-20 sm:h-20 rounded-full object-cover"
+                            >
+                            <div class="flex-1">
+                                <a href="{{ route('user.profile', $follower->id) }}" class="text-white font-medium lg:text-base sm:text-2xl hover:text-orange-400 transition-colors">
+                                    {{ $follower->name }}
+                                </a>
+                                <p class="text-gray-400 lg:text-sm sm:text-xl">{{ $follower->email }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="text-center py-8 text-gray-400 lg:text-base sm:text-2xl">
+                        No followers yet.
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- Following Modal -->
+    <div
+        x-show="followingModal"
+        x-transition.opacity
+        @click.self="followingModal = false"
+        x-cloak
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 overflow-y-auto"
+    >
+        <div
+            x-show="followingModal"
+            x-transition
+            class="bg-gray-900 border border-gray-800 rounded-2xl w-full lg:max-w-xl lg:mx-3 lg:my-8 sm:max-w-3xl sm:mx-4 sm:my-8 relative shadow-2xl flex flex-col modal-card max-h-[80vh]"
+        >
+            <div class="flex items-center justify-between px-6 pt-5 pb-2 border-b border-gray-800">
+                <h2 class="text-white lg:text-xl sm:text-4xl font-semibold">Following</h2>
+                <button @click="followingModal = false" class="text-gray-400 hover:text-white lg:text-2xl sm:text-4xl font-semibold">✕</button>
+            </div>
+            <div class="flex-1 overflow-y-auto px-6 py-4">
+                @if($following->count() > 0)
+                    @foreach($following as $followed)
+                        <div class="flex items-center gap-4 py-3 border-b border-gray-800 last:border-b-0">
+                            <img
+                                src="{{ $followed->avatar ? $followed->avatar.'?v='.time() : asset('assets/img/default-avatar.svg') }}"
+                                alt="{{ $followed->name }}"
+                                class="lg:w-12 lg:h-12 sm:w-20 sm:h-20 rounded-full object-cover"
+                            >
+                            <div class="flex-1">
+                                <a href="{{ route('user.profile', $followed->id) }}" class="text-white font-medium lg:text-base sm:text-2xl hover:text-orange-400 transition-colors">
+                                    {{ $followed->name }}
+                                </a>
+                                <p class="text-gray-400 lg:text-sm sm:text-xl">{{ $followed->email }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="text-center py-8 text-gray-400 lg:text-base sm:text-2xl">
+                        Not following anyone yet.
+                    </div>
+                @endif
             </div>
         </div>
     </div>
