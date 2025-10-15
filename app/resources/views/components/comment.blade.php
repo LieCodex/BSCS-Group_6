@@ -144,9 +144,9 @@
                                     src="{{ optional($reply->user)->avatar ?: asset('assets/img/default-avatar.svg') }}"
                                     alt="{{ optional($reply->user)->name ?? 'User' }}"
                                     class="lg:w-6 lg:h-6 sm:w-12 sm:h-12 rounded-full object-cover">
-                                    <a href="{{ route('user.profile', optional($comment->user)->id) }}" 
+                                    <a href="{{ route('user.profile', optional($reply->user)->id) }}" 
                                     class="font-bold text-orange-400 hover:underline lg:text-base sm:text-3xl">
-                                    {{ optional($comment->user)->name ?? 'User' }}
+                                    {{ optional($reply->user)->name ?? 'User' }}
                                     </a>
                                 <span class="text-xs text-gray-500 sm:text-2xl lg:text-base">{{ $reply->created_at->diffForHumans() }}</span>
                             </div>
