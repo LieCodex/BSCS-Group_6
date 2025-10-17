@@ -15,19 +15,19 @@
             </button>
         </div>
 
-        <!-- Modal Overlay -->
-        <div 
-            x-show="open" 
+    <!-- Modal Overlay -->
+        <div
+            x-show="open"
             x-transition.opacity
             @click.self="open = false"
-            x-cloak 
+            x-cloak
             class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 overflow-y-auto"
         >
             <!-- Modal Card -->
-            <div 
+            <div
                 x-show="open"
                 x-transition
-                class="bg-gray-900 border border-gray-800 rounded-2xl w-full  mx-8 my-16 relative shadow-2xl flex flex-col modal-card"
+                class="bg-gray-900 border border-gray-800 rounded-2xl w-full lg:max-w-xl lg:mx-3 lg:my-8 sm:max-w-3xl sm:mx-4 sm:my-8 relative shadow-2xl flex flex-col modal-card"
             >
                 <!-- Top Bar -->
                 <div class="flex items-center justify-between px-6 pt-5 pb-2 border-b border-gray-800">
@@ -121,7 +121,7 @@
                                 type="button" 
                                 @click="open = false"
                                 class="text-gray-300 border border-gray-300 rounded-full 
-                                    px-4 py-2 text-sm
+                                    px-4 py-2 lg:text-sm sm:text-3xl
                                     hover:bg-gray-600 hover:text-white
                                     focus:outline-none focus:ring-2 focus:ring-gray-300
                                     transition-colors duration-200">
@@ -130,7 +130,7 @@
                             <button 
                                 type="submit" 
                                 class="text-orange-400 border border-orange-400 rounded-full 
-                                    px-4 py-2 text-sm 
+                                    px-4 py-2 lg:text-sm sm:text-3xl 
                                     hover:bg-orange-500 hover:text-white 
                                     focus:outline-none focus:ring-2 focus:ring-orange-300
                                     transition-colors duration-200">
