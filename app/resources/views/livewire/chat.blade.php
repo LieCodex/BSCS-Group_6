@@ -125,7 +125,15 @@
                 data-message-id="{{ $message->id }}"
                 title="{{ $message->created_at->format('M d, Y h:i A') }}"
             >
-                {{ $message->message }}
+                @if ($message->message)
+                    <div>{{ $message->message }}</div>
+                @endif
+
+@if ($message->image_path)
+    <div class="relative rounded-lg overflow-hidden bg-white mt-1">
+        <img src="{{ $message->image_path }}" alt="Image message" class="w-full h-auto object-cover block">
+    </div>
+@endif
             </div>
             {{-- hidden timestamp (revealed when clicked) --}}
             <div id="timestamp-{{ $message->id }}" 
@@ -141,25 +149,50 @@
 </button>
 
 <div class="pb-35 lg:pb-0">
-        <!-- Input -->
-        <form wire:submit.prevent="submit" class="p-3 border-t border-gray-700 bg-gray-800 flex items-center gap-2">
-            <input 
-                id="chatInput"
-                wire:model.live="newMessage"
-                type="text"
-                class="flex-1 bg-gray-900 border border-gray-700 rounded-full lg:px-4 lg:py-2 sm:px-8 sm:py-5 lg:text-sm sm:text-4xl focus:outline-none focus:ring-2 focus:ring-orange-400 text-white placeholder-gray-400"
-                placeholder="Type your message..." />
-            <button 
-                type="submit"
-                class="text-orange-400 border border-orange-400 rounded-full 
-                    lg:text-sm sm:text-3xl lg:px-5 lg:py-2 sm:px-10 sm:py-5
-                    hover:bg-orange-500 hover:text-white 
-                    focus:outline-none focus:ring-2 focus:ring-orange-300
-                    transition-colors duration-200">
-                Send
+    <!-- Preview -->
+    @if ($image)
+        <div class="p-3 border-t border-gray-700 bg-gray-800 flex flex-col items-center relative">
+            <img src="{{ $image->temporaryUrl() }}" 
+                 class="max-h-40 rounded-lg mb-2 object-contain">
+            <button type="button" 
+                    wire:click="$set('image', null)" 
+                    class="absolute top-2 right-2 bg-gray-900 text-white px-2 py-1 rounded-full text-xs">
+                ✕ Cancel
             </button>
-        </form>
         </div>
+    @endif
+
+    <!-- Input -->
+    <form wire:submit.prevent="submit" 
+          class="p-3 border-t border-gray-700 bg-gray-800 flex items-center gap-2">
+        <label for="chatImage" 
+               class="cursor-pointer text-gray-400 hover:text-orange-400 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
+                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
+                 class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" 
+                      d="M3 16.5v-9a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v9a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 16.5z" />
+                <path stroke-linecap="round" stroke-linejoin="round" 
+                      d="M3 12l3.75-3.75L10.5 12l3.75-3.75L21 12" />
+            </svg>
+        </label>
+
+        <input type="file" id="chatImage" wire:model="image" accept="image/*" class="hidden">
+
+        <input 
+            id="chatInput"
+            wire:model.defer="newMessage"
+            type="text"
+            class="flex-1 bg-gray-900 border border-gray-700 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 text-white placeholder-gray-400"
+            placeholder="Type your message..."
+        />
+
+        <button type="submit"
+            class="text-orange-400 border border-orange-400 rounded-full text-sm px-5 py-2 hover:bg-orange-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-orange-300 transition-colors duration-200">
+            Send
+        </button>
+    </form>
+</div>
     </div>
 </div>
 <script src = "{{ asset('assets/js/chat.js') }}?v={{ filemtime(public_path('assets/js/chat.js')) }}"></script>

@@ -8,16 +8,21 @@ use App\Models\ChatMessage;
 use Illuminate\Support\Facades\Auth;
 use App\Events\MessageSent;
 use Illuminate\Support\Facades\Log;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Str;
 
 
 class Chat extends Component
 {
+    use WithFileUploads;
     public $users;
     public $selectedUser;
     public $newMessage;
     public $messages;
     public $authId;
     public $loginID;
+    public $image;
     public $unread = []; // user_id => true
     protected $listeners = [
     'heartbeat' => 'heartbeat',
@@ -94,29 +99,49 @@ class Chat extends Component
         $this->dispatch('chatChanged');
     }
 
-    public function submit(){
-        if(!$this->newMessage) return;
+public function submit()
+{
+    if (!$this->newMessage && !$this->image) return;
 
-        // Save the message to the database
-        $message = ChatMessage::create([
-            'sender_id' => auth()->id(),
-            'receiver_id' => $this->selectedUser->id,
-            'message' => $this->newMessage,
-        ]);
+    $imageUrl = null;
 
-        $this->messages->push($message);
+    // Only upload when sending
+    if ($this->image) {
+        $file = $this->image;
 
-        // Clear the input field
-        $this->newMessage = '';
-        
+        if ($file->isValid()) {
+            $extension = strtolower($file->getClientOriginalExtension());
+            $filename = Str::random(12) . '_' . time() . '.' . $extension;
 
+            // Upload to the same folder as post images
+            $path = Storage::disk('spaces')->putFileAs(
+                'post_images', // same as posts
+                $file,
+                $filename,
+                ['visibility' => 'public']
+            );
 
-        broadcast(new MessageSent($message));
-        $this->dispatch('messageSent');
-                $this->loadUsers();
-
+            $imageUrl = Storage::disk('spaces')->url($path);
+        }
     }
 
+    // Save the message to DB
+    $message = ChatMessage::create([
+        'sender_id' => auth()->id(),
+        'receiver_id' => $this->selectedUser->id,
+        'message' => $this->newMessage,
+        'image_path' => $imageUrl,
+    ]);
+
+    // Reset form
+    $this->messages->push($message);
+    $this->newMessage = '';
+    $this->image = null;
+
+    broadcast(new MessageSent($message));
+    $this->dispatch('messageSent');
+    $this->loadUsers();
+}
     public function getListeners()
     {
         return [
