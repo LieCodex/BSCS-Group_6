@@ -32,7 +32,7 @@
 
                 {{-- Online status blob --}}
                     @if($user->isOnline())
-                        <span class="absolute bottom-0 right-0 sm:w-2.5 sm:h-2.5 lg:w-9.5 lg:h-9.5 bg-green-500 border border-gray-900 rounded-full"></span>
+                        <span class="absolute bottom-0 right-0 sm:w-2.5 sm:h-2.5 lg:w-3.5 lg:h-3.5 bg-green-500 border border-gray-900 rounded-full"></span>
                     @endif
         </div>
             <div class="flex flex-col overflow-hidden">
