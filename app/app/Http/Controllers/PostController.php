@@ -94,9 +94,24 @@ public function createPost(Request $request)
             }
         }
     }
+    if ($post->body && str_contains(strtolower($post->body), strtolower(env('AI_BOT_USERNAME')))) {
+    
+        // Build prompt for Gemini
+        $prompt = "You are a friendly, helpful social media bot named Squeal. A user mentioned you in a new post. 
+        Their post is: \"{$post->body}\". Write a brief, friendly, and helpful reply as a comment.";
 
+        // Ask Gemini
+        $gemini = app(\App\Services\GeminiService::class);
+        $aiReply = $gemini->askGemini($prompt);
+
+        $post->comments()->create([
+            'user_id' => config('services.gemini.bot_user_id'), 
+            'content' => $aiReply, 
+        ]);
+    }
     return redirect()->route('dashboard.home')
         ->with('success', 'Post created successfully!');
+    
 }
 
     // Show edit form

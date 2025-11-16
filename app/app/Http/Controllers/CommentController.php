@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Services\GeminiService;
 
 class CommentController extends Controller
 {
@@ -55,7 +57,26 @@ class CommentController extends Controller
                 ]);
             }
         }
+        Log::info('Checking for AI trigger: ' . $comment->content);
+        if (stripos($comment->content, '@squeal') !== false) {
+            
+            // First, create a good prompt.
+            $prompt = "You are a friendly, helpful social media bot named Squeal. A user mentioned you in a comment. 
+            Keep your reply brief and conversational. The user's comment is: \"{$comment->content}\".";
+            
+            $gemini = app(\App\Services\GeminiService::class);
 
+            // Then, call the service
+            $aiResponse = $gemini->askGemini($prompt);
+
+            // Now, create the reply
+            $post->comments()->create([
+                'user_id' => config('services.gemini.bot_user_id'), // Make sure this is your bot's real user ID
+                'content' => $aiResponse,
+                'parent_comment_id' => $comment->id
+            ]);
+        }
+        
         return redirect()->back()->with('success', 'Comment added successfully.');
     }
 

@@ -19,7 +19,11 @@ return [
     'redirect' => env('GOOGLE_REDIRECT'),
     ],
 
-
+    'gemini' => [
+    'api_key' => env('GEMINI_API_KEY'),
+    'model'   => env('GEMINI_MODEL', 'gemini-pro'), // default model
+    'bot_user_id' => (int) env('AI_BOT_USER_ID', 99999),
+    ],
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
