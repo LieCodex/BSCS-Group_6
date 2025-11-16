@@ -1,41 +1,43 @@
 # RizGroup
 
-API documentation
+# Squeal API Documentation for FlutterFlow
 
-Squeal API Documentation for FlutterFlow
+**Base URL:** `https://yourdomain.com/api`  
+**Authentication:** Bearer Token (generated on login/register via Sanctum)
 
-Base URL: https://yourdomain.com/api
-Authentication: Bearer Token (generated on login/register via Sanctum)
+---
 
-1. Test Endpoint
-GET /ping
+## 1. Test Endpoint
+**GET** `/ping`
 
-Description: Simple test to check API connectivity.
+**Description:** Simple test to check API connectivity.  
+**Authentication:** None
 
-Authentication: None
-
-Response:
-
+**Response:**
+```json
 {
   "message": "pong"
 }
+```
 
-2. Authentication
-Register
+---
 
-POST /register
+## 2. Authentication
 
-Body Parameters:
+### Register
+**POST** `/register`
 
+**Body Parameters:**
+```json
 {
   "name": "string, min 3 chars, unique",
   "email": "string, unique, must end with @gmail.com/@yahoo.com/@usm.edu.ph",
   "password": "string, 8-30 chars"
 }
+```
 
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "user": {
@@ -45,21 +47,21 @@ Response:
   },
   "token": "api-token-string"
 }
+```
 
-Login
+### Login
+**POST** `/login`
 
-POST /login
-
-Body Parameters:
-
+**Body Parameters:**
+```json
 {
   "email": "string",
   "password": "string"
 }
+```
 
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "user": {
@@ -69,15 +71,18 @@ Response:
   },
   "token": "api-token-string"
 }
+```
 
-3. User Profile
-Get Current User Profile
+---
 
-GET /user/profile
-Authentication: Required
+## 3. User Profile
 
-Response:
+### Get Current User Profile
+**GET** `/user/profile`  
+**Authentication:** Required
 
+**Response:**
+```json
 {
   "success": true,
   "user": {
@@ -98,23 +103,23 @@ Response:
   "followers_count": 5,
   "following_count": 3
 }
+```
 
-Update Profile
+### Update Profile
+**PUT** `/user/profile`  
+**Authentication:** Required
 
-PUT /user/profile
-Authentication: Required
-
-Body Parameters (optional avatar upload):
-
+**Body Parameters (optional avatar upload):**
+```json
 {
   "name": "string",
   "bio": "string",
   "avatar": "file (jpg/jpeg/png/gif)"
 }
+```
 
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "user": {
@@ -124,14 +129,14 @@ Response:
     "avatar": "url"
   }
 }
+```
 
-Get Another User Profile
+### Get Another User Profile
+**GET** `/user/{id}`  
+**Authentication:** Required
 
-GET /user/{id}
-Authentication: Required
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "user": {
@@ -143,15 +148,18 @@ Response:
   "followers_count": 10,
   "following_count": 2
 }
+```
 
-4. Posts
-Get All Posts
+---
 
-GET /posts
-Authentication: Optional (for feed personalization)
+## 4. Posts
 
-Response:
+### Get All Posts
+**GET** `/posts`  
+**Authentication:** Optional
 
+**Response:**
+```json
 {
   "success": true,
   "data": [
@@ -166,22 +174,22 @@ Response:
     }
   ]
 }
+```
 
-Create Post
+### Create Post
+**POST** `/posts`  
+**Authentication:** Required
 
-POST /posts
-Authentication: Required
-
-Body Parameters:
-
+**Body Parameters:**
+```json
 {
   "body": "string",
   "image_urls": ["url1", "url2"]  // optional
 }
+```
 
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "post": {
@@ -191,15 +199,18 @@ Response:
     "user": {"id":1,"name":"John Doe"}
   }
 }
+```
 
-5. Post Likes
-Like Post
+---
 
-POST /posts/{post}/like
-Authentication: Required
+## 5. Post Likes
 
-Response:
+### Like Post
+**POST** `/posts/{post}/like`  
+**Authentication:** Required
 
+**Response:**
+```json
 {
   "success": true,
   "liked": true,
@@ -207,14 +218,14 @@ Response:
   "like_url": "url",
   "unlike_url": "url"
 }
+```
 
-Unlike Post
+### Unlike Post
+**POST** `/posts/{post}/unlike`  
+**Authentication:** Required
 
-POST /posts/{post}/unlike
-Authentication: Required
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "liked": false,
@@ -222,23 +233,26 @@ Response:
   "like_url": "url",
   "unlike_url": "url"
 }
+```
 
-6. Comments
-Create Comment
+---
 
-POST /posts/{post}/comments
-Authentication: Required
+## 6. Comments
 
-Body Parameters:
+### Create Comment
+**POST** `/posts/{post}/comments`  
+**Authentication:** Required
 
+**Body Parameters:**
+```json
 {
   "content": "string",
   "parent_comment_id": 1 // optional for replies
 }
+```
 
-
-Response:
-
+**Response:**
+```json
 {
   "message": "Comment created successfully.",
   "comment": {
@@ -252,164 +266,175 @@ Response:
     "parent_comment_id": 10
   }
 }
+```
 
-Delete Comment
+### Delete Comment
+**DELETE** `/comments/{comment}`  
+**Authentication:** Required
 
-DELETE /comments/{comment}
-Authentication: Required
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "message": "Comment deleted successfully."
 }
+```
 
-7. Comment Likes
-Like Comment
+---
 
-POST /comments/{comment}/like
-Authentication: Required
+## 7. Comment Likes
 
-Response:
+### Like Comment
+**POST** `/comments/{comment}/like`  
+**Authentication:** Required
 
+**Response:**
+```json
 {
   "success": true,
   "liked": true,
   "likes": 5
 }
+```
 
-Unlike Comment
+### Unlike Comment
+**POST** `/comments/{comment}/unlike`  
+**Authentication:** Required
 
-POST /comments/{comment}/unlike
-Authentication: Required
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "liked": false,
   "likes": 4
 }
+```
 
-8. Follow System
-Follow User
+---
 
-POST /users/{user}/follow
-Authentication: Required
+## 8. Follow System
 
-Response:
+### Follow User
+**POST** `/users/{user}/follow`  
+**Authentication:** Required
 
+**Response:**
+```json
 {
   "success": true,
   "message": "You are now following Jane Doe",
   "following": true,
   "user_id": 2
 }
+```
 
-Unfollow User
+### Unfollow User
+**POST** `/users/{user}/unfollow`  
+**Authentication:** Required
 
-POST /users/{user}/unfollow
-Authentication: Required
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "message": "You unfollowed Jane Doe",
   "following": false,
   "user_id": 2
 }
+```
 
-Check Following Status
+### Check Following Status
+**GET** `/users/{user}/is-following`  
+**Authentication:** Required
 
-GET /users/{user}/is-following
-Authentication: Required
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "following": true,
   "user_id": 2
 }
+```
 
-9. Notifications
-Get Notifications
+---
 
-GET /notifications
-Authentication: Required
+## 9. Notifications
 
-Response:
+### Get Notifications
+**GET** `/notifications`  
+**Authentication:** Required
 
+**Response:**
+```json
 {
   "success": true,
   "data": [
     {"id": 1, "type": "like_post", "preview_text": "liked your post.", "is_seen": false}
   ]
 }
+```
 
-Mark Notification as Seen
+### Mark Notification as Seen
+**POST** `/notifications/{notification}/seen`  
+**Authentication:** Required
 
-POST /notifications/{notification}/seen
-Authentication: Required
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "notification": {"id":1,"is_seen":true}
 }
+```
 
-Count Unseen Notifications
+### Count Unseen Notifications
+**GET** `/notifications/unseen-count`  
+**Authentication:** Required
 
-GET /notifications/unseen-count
-Authentication: Required
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "unseen_count": 3
 }
+```
 
-Mark All as Seen
+### Mark All as Seen
+**POST** `/notifications/mark-all-seen`  
+**Authentication:** Required
 
-POST /notifications/mark-all-seen
-Authentication: Required
-
-Response:
-
+**Response:**
+```json
 {
   "success": true,
   "message": "All notifications marked as seen."
 }
+```
 
-10. Search
-Search Users & Posts
+---
 
-GET /search?q=keyword
-Authentication: Required
+## 10. Search
 
-Response:
+### Search Users & Posts
+**GET** `/search?q=keyword`  
+**Authentication:** Required
 
+**Response:**
+```json
 {
   "success": true,
   "query": "keyword",
   "posts": [...],
   "users": [...]
 }
+```
 
+---
 
-✅ Notes for FlutterFlow:
+✅ **Notes for FlutterFlow:**
 
-All endpoints requiring authentication need a Bearer Token in headers.
-
-Image uploads in FlutterFlow require multipart/form-data.
-
-All POST requests return JSON with success boolean.
-
-Optional fields can be omitted, but required fields will throw validation errors.
+- All endpoints requiring authentication need a Bearer Token in headers.  
+- Image uploads in FlutterFlow require `multipart/form-data`.  
+- All POST requests return JSON with `success` boolean.  
+- Optional fields can be omitted, but required fields will throw va
 
 
 
