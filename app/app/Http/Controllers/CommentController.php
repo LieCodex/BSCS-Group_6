@@ -116,5 +116,89 @@ class CommentController extends Controller
         ]);
 
         return redirect()->route('posts.show', $comment->post_id);
-}
+    }   
+
+        /*
+    |--------------------------------------------------------------------------
+    | API METHODS (ADDED)
+    |--------------------------------------------------------------------------
+    */
+
+    public function apiCreateComment(Request $request, Post $post)
+    {
+        $validated = $request->validate([
+            'content' => 'required|string|max:1000',
+            'parent_comment_id' => ['nullable', 'exists:comments,id']
+        ]);
+
+        if (!empty($validated['parent_comment_id'])) {
+            $parent = Comment::find($validated['parent_comment_id']);
+            if (!$parent || $parent->post_id !== $post->id) {
+                return response()->json(['error' => 'Invalid parent comment for this post.'], 422);
+            }
+        }
+
+        $comment = $post->comments()->create([
+            'user_id' => auth()->id(),
+            'content' => $validated['content'],
+            'parent_comment_id' => $validated['parent_comment_id'] ?? null
+        ]);
+
+        // Handle mentions to @squeal (AI)
+        if (stripos($comment->content, '@squeal') !== false) {
+            $prompt = "Respond as Squeal bot: \"{$comment->content}\"";
+
+            $gemini = app(GeminiService::class);
+            $aiResponse = $gemini->askGemini($prompt);
+
+            $botReply = $post->comments()->create([
+                'user_id' => config('services.gemini.bot_user_id'),
+                'content' => $aiResponse,
+                'parent_comment_id' => $comment->id
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Comment created successfully.',
+            'comment' => $comment,
+            'bot_reply' => $botReply ?? null
+        ], 201);
+    }
+
+    public function apiDeleteComment(Comment $comment)
+    {
+        if (auth()->id() !== $comment->user_id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $comment->delete();
+        return response()->json(['message' => 'Comment deleted successfully.']);
+    }
+
+    public function apiEdit(Comment $comment)
+    {
+        if (auth()->id() !== $comment->user_id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        return response()->json($comment);
+    }
+
+    public function apiUpdate(Request $request, Comment $comment)
+    {
+        if (auth()->id() !== $comment->user_id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $validated = $request->validate([
+            'content' => 'required|string|max:1000'
+        ]);
+
+        $comment->update(['content' => $validated['content']]);
+
+        return response()->json([
+            'message' => 'Comment updated.',
+            'comment' => $comment
+        ]);
+    }
 }

@@ -22,4 +22,30 @@ class SearchController extends Controller
 
         return view('components.search-results', compact('posts', 'users', 'q'));
     }
+
+    public function apiSearch(Request $request)
+    {
+        $q = $request->input('q');
+
+        // Search posts
+        $posts = Post::where('body', 'like', "%{$q}%")
+            ->with(['user', 'images', 'likes', 'comments'])
+            ->get()
+            ->map(function ($post) {
+                $post->is_liked = auth()->user() ? $post->isLikedBy(auth()->user()) : false;
+                return $post;
+            });
+
+        // Search users
+        $users = User::where('name', 'like', "%{$q}%")
+            ->orWhere('email', 'like', "%{$q}%")
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'query' => $q,
+            'posts' => $posts,
+            'users' => $users,
+        ]);
+    }
 }

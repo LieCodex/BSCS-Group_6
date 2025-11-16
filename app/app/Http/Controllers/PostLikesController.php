@@ -55,4 +55,70 @@ class PostLikesController extends Controller
             'unlike_url' => route('posts.unlike', $post->id),
         ]);
     }
+
+    public function apiLike(Post $post)
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        if (!$post->likes()->where('user_id', $user->id)->exists()) {
+            $post->likes()->create(['user_id' => $user->id]);
+        }
+
+        // Notify post owner
+        if ($post->user_id !== $user->id) {
+            $post->user->notifications()->create([
+                'actor_id' => $user->id,
+                'post_id' => $post->id,
+                'type' => 'like_post',
+                'preview_text' => 'liked your post.',
+            ]);
+
+            // Milestone (5,10,15,...)
+            $totalLikes = $post->likes()->count();
+            if ($totalLikes % 5 === 0) {
+                $exists = $post->user->notifications()
+                    ->where('post_id', $post->id)
+                    ->where('type', 'milestone')
+                    ->where('preview_text', "Your post has reached {$totalLikes} likes!")
+                    ->exists();
+
+                if (!$exists) {
+                    $post->user->notifications()->create([
+                        'post_id' => $post->id,
+                        'type' => 'milestone',
+                        'preview_text' => "Your post has reached {$totalLikes} likes!",
+                    ]);
+                }
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'liked' => true,
+            'likes' => $post->likes()->count(),
+            'like_url' => route('posts.like', $post->id),
+            'unlike_url' => route('posts.unlike', $post->id),
+        ]);
+    }
+
+    public function apiUnlike(Post $post)
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $post->likes()->where('user_id', $user->id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'liked' => false,
+            'likes' => $post->likes()->count(),
+            'like_url' => route('posts.like', $post->id),
+            'unlike_url' => route('posts.unlike', $post->id),
+        ]);
+    }
 }

@@ -9,6 +9,7 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Aws\Rekognition\RekognitionClient;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller 
@@ -186,4 +187,116 @@ class UserController extends Controller
     }
 
 
+
+        public function apiProfile(Request $request)
+    {
+        $user = $request->user();
+        $posts = Post::with(['images', 'comments'])
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'user' => $user,
+            'posts' => $posts,
+            'followers_count' => $user->followers()->count(),
+            'following_count' => $user->following()->count(),
+        ]);
+    }
+
+    
+    public function apiUpdateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'name'   => 'required|string|max:255',
+            'bio'    => 'nullable|string|max:1000',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
+        ]);
+
+        $user->name = $validated['name'];
+        $user->bio  = $validated['bio'];
+
+        // Avatar upload handling (same as web version)
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            if ($file && $file->isValid()) {
+                $extension = strtolower($file->getClientOriginalExtension());
+                $filename = Str::random(12) . '_' . time() . '.' . $extension;
+                $path = Storage::disk('spaces')->putFileAs('avatars', $file, $filename, ['visibility' => 'public']);
+
+                if ($path) {
+                    $user->avatar = Storage::disk('spaces')->url($path);
+                }
+            }
+        }
+
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'user' => $user
+        ]);
+    }
+
+    // API: Show another user's profile
+    public function apiShow($id)
+    {
+        $user = User::findOrFail($id);
+        $posts = Post::with(['images', 'comments'])->where('user_id', $id)->latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'user' => $user,
+            'posts' => $posts,
+            'followers_count' => $user->followers()->count(),
+            'following_count' => $user->following()->count(),
+        ]);
+    }
+
+
+    public function apiRegister(Request $request)
+    {
+        $incomingFields = $request->validate([
+            'name' => ['required', 'min:3', Rule::unique('users', 'name')],
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
+            'password' => ['required', 'min:8', 'max:30']
+        ]);
+
+        $incomingFields['password'] = Hash::make($incomingFields['password']);
+        $user = User::create($incomingFields);
+
+        // Optionally generate API token for FlutterFlow
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'user' => $user,
+            'token' => $token
+        ], 201);
+    }
+
+    // API: Login
+    public function apiLogin(Request $request)
+    {
+        $incomingFields = $request->validate([
+            'email'=> 'required|email',
+            'password'=> 'required'
+        ]);
+
+        if (!Auth::attempt($incomingFields)) {
+            return response()->json(['success' => false, 'message' => 'Invalid credentials'], 401);
+        }
+
+        $user = $request->user();
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'user' => $user,
+            'token' => $token
+        ]);
+    }
 }
