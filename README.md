@@ -2,7 +2,7 @@
 
 # Squeal API Documentation for FlutterFlow
 
-**Base URL:** `https://yourdomain.com/api`  
+**Base URL:** `https://squeal.site/api`  
 **Authentication:** Bearer Token (generated on login/register via Sanctum)
 
 ---
