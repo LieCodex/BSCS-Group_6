@@ -249,13 +249,63 @@ public function showAllPosts()
     }
 
 
-    public function apiGetPosts()
+    public function apiGetPosts(Request $request)
     {
-        $posts = Post::with('user')->latest()->get();
+        $user = auth()->user();
 
+        $followedIds = $user
+            ? $user->following()->pluck('followed_id')->toArray()
+            : [];
+
+        // Step 1: Base scoring inside DB
+        $posts = Post::with(['user', 'images', 'comments.user', 'likes'])
+            ->selectRaw("
+                posts.*,
+                (
+                    1
+                    + (2 * (select count(*) from post_likes where post_likes.post_id = posts.id))
+                    + (select count(*) from comments where comments.post_id = posts.id)
+                    + (0.5 * (
+                        select count(*) 
+                        from comment_likes 
+                        join comments on comments.id = comment_likes.comment_id 
+                        where comments.post_id = posts.id
+                    ))
+                    + 50 / (1 + TIMESTAMPDIFF(HOUR, posts.created_at, NOW()))
+                ) as base_score
+            ")
+            ->get();
+
+        // Step 2: Refine scoring in PHP
+        $posts->transform(function ($post) use ($user, $followedIds) {
+
+            $score = $post->base_score;
+
+            $post->is_liked = $user ? $post->isLikedBy($user) : false;
+            // Downweight if user already liked
+            if ($user && $post->isLikedBy($user)) {
+                $score *= 0.4;
+            }
+
+            // Boost if post author is followed
+            if (in_array($post->user_id, $followedIds)) {
+                $score *= 1.5;
+            }
+
+            // Add some randomness
+            $score += (mt_rand(0, 10) / 10 * 0.2 * $score);
+
+            $post->score = $score;
+            return $post;
+        });
+
+        // Step 3: Resort after refinement
+        $sorted = $posts->sortByDesc('score')->values();
+
+        // Step 4: Return JSON identical to UI
         return response()->json([
             'success' => true,
-            'data' => $posts
+            'data' => $sorted
         ]);
     }
 

@@ -61,4 +61,67 @@ public function unlike(Comment $comment)
         'unlike_url' => route('comments.unlike', $comment->id),
     ]);
 }
+
+    /*
+    |--------------------------------------------------------------------------
+    | API METHODS (NEW)
+    |--------------------------------------------------------------------------
+    */
+
+    public function apiLike(Comment $comment)
+    {
+        $user = auth()->user();
+
+        if (!$comment->likes()->where('user_id', $user->id)->exists()) {
+            $comment->likes()->create(['user_id' => $user->id]);
+        }
+
+        // Notify comment owner
+        if ($comment->user_id !== $user->id) {
+            $comment->user->notifications()->create([
+                'actor_id' => $user->id,
+                'comment_id' => $comment->id,
+                'type' => 'like_comment',
+                'preview_text' => 'liked your comment.',
+            ]);
+        }
+
+        // Milestones
+        $totalLikes = $comment->likes()->count();
+
+        if ($totalLikes % 5 === 0) {
+            $exists = $comment->user->notifications()
+                ->where('comment_id', $comment->id)
+                ->where('type', 'milestone')
+                ->where('preview_text', "Your comment has reached {$totalLikes} likes!")
+                ->exists();
+
+            if (!$exists) {
+                $comment->user->notifications()->create([
+                    'comment_id' => $comment->id,
+                    'type' => 'milestone',
+                    'preview_text' => "Your comment has reached {$totalLikes} likes!",
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Comment liked.',
+            'liked' => true,
+            'likes' => $comment->likes()->count(),
+        ]);
+    }
+
+    public function apiUnlike(Comment $comment)
+    {
+        $user = auth()->user();
+
+        $comment->likes()->where('user_id', $user->id)->delete();
+
+        return response()->json([
+            'message' => 'Comment unliked.',
+            'liked' => false,
+            'likes' => $comment->likes()->count(),
+        ]);
+    }
 };

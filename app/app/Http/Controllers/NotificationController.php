@@ -48,4 +48,60 @@ class NotificationController extends Controller
 
         return back()->with('success', 'All notifications marked as seen.');
     }
+
+
+
+    public function apiIndex()
+    {
+        $notifications = Notification::where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $notifications
+        ]);
+    }
+
+    // Mark a single notification as seen
+    public function apiMarkAsSeen(Notification $notification)
+    {
+        if ($notification->user_id !== auth()->id()) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        $notification->update(['is_seen' => true]);
+
+        return response()->json([
+            'success' => true,
+            'notification' => $notification
+        ]);
+    }
+
+    // Count unseen notifications
+    public function apiUnseenCount()
+    {
+        $count = Notification::where('user_id', auth()->id())
+            ->where('is_seen', false)
+            ->count();
+
+        return response()->json([
+            'success' => true,
+            'unseen_count' => $count
+        ]);
+    }
+
+    // Mark all notifications as seen
+    public function apiMarkAllAsSeen()
+    {
+        Notification::where('user_id', auth()->id())
+            ->where('is_seen', false)
+            ->update(['is_seen' => true]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'All notifications marked as seen.'
+        ]);
+    }
+
 }
