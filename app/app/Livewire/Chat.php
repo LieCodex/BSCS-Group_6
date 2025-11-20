@@ -125,16 +125,40 @@ public function submit()
         }
     }
 
+    // Ensure conversation exists
+    $conversation = \App\Models\Conversation::firstOrCreate([
+        'user_id' => $this->selectedUser->id
+    ]);
+
     // Save the message to DB
     $message = ChatMessage::create([
-        'sender_id' => auth()->id(),
-        'receiver_id' => $this->selectedUser->id,
-        'message' => $this->newMessage,
-        'image_path' => $imageUrl,
+        'sender_id'       => auth()->id(),
+        'receiver_id'     => $this->selectedUser->id,
+        'message'         => $this->newMessage,
+        'image_path'      => $imageUrl,
+        'conversation_id' => $conversation->id,
+        'is_ai'           => false,
     ]);
 
     // Reset form
     $this->messages->push($message);
+
+    // 🎯 Send user message to n8n AI webhook
+    try {
+        \Illuminate\Support\Facades\Http::post(
+            'http://127.0.0.1:5678/webhook/ai-input',
+            [
+                'message_id'      => $message->id,
+                'message'         => $message->message,
+                'sender_id'       => auth()->id(),
+                'receiver_id'     => $this->selectedUser->id,
+                'conversation_id' => $message->conversation_id ?? null,
+            ]
+        );
+    } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error('AI webhook error: ' . $e->getMessage());
+    }
+
     $this->newMessage = '';
     $this->image = null;
 

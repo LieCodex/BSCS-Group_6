@@ -28,6 +28,7 @@ class User extends Authenticatable
         'google_id',
         'avatar',
         'last_seen_at', // 👈 add this if missing
+        'is_ai',
     ];
 
     /**
@@ -51,6 +52,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_seen_at' => 'datetime',
+            'is_ai' => 'boolean',
         ];
     }
     

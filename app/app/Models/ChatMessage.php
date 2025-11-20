@@ -12,15 +12,29 @@ class ChatMessage extends Model
         'receiver_id',
         'message',
         'image_path',
+        'conversation_id',
+        'is_ai',
     ];
 
     public function chat()
     {
         return $this->belongsTo(Chat::class);
     }
-    public function reeiver()
+    
+    public function conversation()
+    {
+        return $this->belongsTo(Conversation::class);
+    }
+    
+    public function receiver()
     {
         return $this->belongsTo(User::class, 'receiver_id');
+    }
+    
+    // Keep old function for backward compatibility
+    public function reeiver()
+    {
+        return $this->receiver();
     }
 
     public function sender()
