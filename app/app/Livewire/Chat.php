@@ -143,10 +143,10 @@ public function submit()
     // Reset form
     $this->messages->push($message);
 
-    // 🎯 Send user message to n8n AI webhook
+    
     try {
         \Illuminate\Support\Facades\Http::post(
-            'http://127.0.0.1:5678/webhook/ai-input',
+            'http://localhost:5678/webhook/ai-input',
             [
                 'message_id'      => $message->id,
                 'message'         => $message->message,

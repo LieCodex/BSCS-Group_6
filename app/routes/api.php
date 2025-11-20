@@ -11,6 +11,8 @@
     use App\Http\Controllers\PostLikesController;
     use App\Http\Controllers\SearchController;
     use App\Http\Controllers\UserController;
+    use App\Http\Controllers\AiController;
+    use App\Http\Controllers\ConversationController;
     /*
     |--------------------------------------------------------------------------
     | API Routes
@@ -79,3 +81,7 @@
         Route::put('/user/profile', [UserController::class, 'apiUpdateProfile']);
         Route::get('/user/{id}', [UserController::class, 'apiShow']);
     });
+
+// AI Chatbot routes
+Route::get('/conversations/{id}/messages', [ConversationController::class, 'recentMessages']);
+Route::post('/ai-reply', [AiController::class, 'store']);
