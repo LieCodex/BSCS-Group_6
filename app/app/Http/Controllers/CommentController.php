@@ -64,7 +64,7 @@ class CommentController extends Controller
             $prompt = "You are a friendly, helpful social media bot named Squeal. A user mentioned you in a comment. 
             Keep your reply brief and conversational. The user's comment is: \"{$comment->content}\".";
             
-            $gemini = app(\App\Services\GeminiService::class);
+            $gemini = app(GeminiService::class);
 
             // Then, call the service
             $aiResponse = $gemini->askGemini($prompt);

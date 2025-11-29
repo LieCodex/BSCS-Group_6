@@ -94,7 +94,7 @@ public function createPost(Request $request)
             }
         }
     }
-    if ($post->body && str_contains(strtolower($post->body), strtolower(env('AI_BOT_USERNAME')))) {
+    if ($post->body && preg_match('/@' . preg_quote(env('AI_BOT_USERNAME')) . '\b/i', $post->body)) {
     
         // Build prompt for Gemini
         $prompt = "You are a friendly, helpful social media bot named Squeal. A user mentioned you in a new post. 
