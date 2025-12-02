@@ -311,26 +311,139 @@ public function showAllPosts()
 
     public function apiCreatePost(Request $request)
     {
-            $data = $request->validate([
-                'body' => 'required|string|max:500',
-                'image_urls' => 'array',            // optional array of image URLs
-                'image_urls.*' => 'url'             // validate each entry is a URL
-            ]);
+        $data = $request->validate([
+            'body' => 'nullable|string|max:500',
+            'images' => 'array',
+            'images.*' => 'string',  // Base64 encoded images or image URLs
+            'image_urls' => 'array',
+            'image_urls.*' => 'url'
+        ]);
 
-            $post = auth()->user()->posts()->create([
-                'body' => $data['body'],
-            ]);
+        $body = $data['body'] ?? '';
+        $body = strip_tags($body);
 
-            // Save any image URLs provided
-            if (!empty($data['image_urls'])) {
-                foreach ($data['image_urls'] as $url) {
-                    $post->images()->create(['image_path' => $url]);
+        $post = auth()->user()->posts()->create([
+            'body' => $body,
+        ]);
+
+        // Setup Rekognition client
+        $rekognition = new RekognitionClient([
+            'version' => 'latest',
+            'region'  => config('filesystems.disks.s3.region'),
+            'credentials' => [
+                'key'    => config('filesystems.disks.s3.key'),
+                'secret' => config('filesystems.disks.s3.secret'),
+            ],
+        ]);
+
+        // Handle base64 encoded images from Flutter
+        if (!empty($data['images'])) {
+            foreach ($data['images'] as $imageData) {
+                try {
+                    // Decode base64
+                    $imageContent = base64_decode($imageData);
+                    if (!$imageContent) {
+                        continue;
+                    }
+
+                    // Detect image type
+                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                    $mimeType = finfo_buffer($finfo, $imageContent);
+                    finfo_close($finfo);
+
+                    $extension = match($mimeType) {
+                        'image/jpeg' => 'jpg',
+                        'image/png' => 'png',
+                        'image/gif' => 'gif',
+                        'image/webp' => 'webp',
+                        default => 'jpg'
+                    };
+
+                    // Upload to DigitalOcean Spaces
+                    $filename = Str::random(12) . '_' . time() . '.' . $extension;
+                    $path = Storage::disk('spaces')->put(
+                        'post_images/' . $filename,
+                        $imageContent,
+                        ['visibility' => 'public']
+                    );
+
+                    if ($path) {
+                        // Get the public URL for the uploaded file
+                        $baseUrl = config('filesystems.disks.spaces.endpoint');
+                        $bucket = config('filesystems.disks.spaces.bucket');
+                        $url = $baseUrl . '/' . $bucket . '/' . $path;
+
+                        // Run Rekognition Moderation for non-GIFs
+                        if ($extension !== 'gif') {
+                            $result = $rekognition->detectModerationLabels([
+                                'Image' => [
+                                    'Bytes' => $imageContent,
+                                ],
+                                'MinConfidence' => 80,
+                            ]);
+
+                            $labels = $result['ModerationLabels'];
+                            $flagged = false;
+
+                            foreach ($labels as $label) {
+                                if (in_array($label['Name'], [
+                                    'Explicit Nudity',
+                                    'Sexual Activity',
+                                    'Violence',
+                                    'Drugs'
+                                ])) {
+                                    $flagged = true;
+                                    break;
+                                }
+                            }
+
+                            if ($flagged) {
+                                // Delete image and post if unsafe
+                                Storage::disk('spaces')->delete($path);
+                                $post->delete();
+
+                                return response()->json([
+                                    'success' => false,
+                                    'message' => 'Image rejected due to unsafe content.'
+                                ], 400);
+                            }
+                        }
+
+                        // Save image record
+                        $post->images()->create(['image_path' => $url]);
+                    }
+                } catch (\Exception $e) {
+                    // Log error and continue
+                    \Log::error('Image processing error: ' . $e->getMessage());
                 }
             }
+        }
 
-            return response()->json([
-                'success' => true,
-                'post' => $post->load('images', 'user')
-            ], 201);
+        // Handle image URLs provided (for compatibility)
+        if (!empty($data['image_urls'])) {
+            foreach ($data['image_urls'] as $url) {
+                $post->images()->create(['image_path' => $url]);
+            }
+        }
+
+        // Check if Squeal bot should reply
+        if ($body && preg_match('/@' . preg_quote(env('AI_BOT_USERNAME')) . '\b/i', $body)) {
+            $prompt = "You are a friendly, helpful social media bot named Squeal. A user mentioned you in a new post. 
+            Their post is: \"{$body}\". Write a brief, friendly, and helpful reply as a comment.";
+
+            $gemini = app(\App\Services\GeminiService::class);
+            $aiReply = $gemini->askGemini($prompt);
+
+            $post->comments()->create([
+                'user_id' => config('services.gemini.bot_user_id'), 
+                'content' => $aiReply, 
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Post created successfully!',
+            'post' => $post->load(['images', 'user', 'comments'])
+        ], 201);
     }
 }
