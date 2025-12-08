@@ -362,17 +362,17 @@ public function showAllPosts()
                 };
 
                 // Upload to Spaces
-                $filename = Str::random(12) . '_' . time() . '.' . $extension;
-                $path = Storage::disk('spaces')->put(
-                    'post_images/' . $filename,
+                    // Upload to DigitalOcean Spaces
+                    $filename = Str::random(12) . '_' . time() . '.' . $extension;
+                    $key = 'post_images/' . $filename; // <-- Define the key here
+                    $success = Storage::disk('spaces')->put(
+                    $key, // <-- Pass the key
                     $imageContent,
                     ['visibility' => 'public']
-                );
+                    );
 
-                if ($path) {
-                    $baseUrl = config('filesystems.disks.spaces.endpoint');
-                    $bucket = config('filesystems.disks.spaces.bucket');
-                    $url = $baseUrl . '/' . $bucket . '/' . $path;
+                if ($success) {
+                    $url = Storage::disk('spaces')->url($key);
 
                     // Moderation (skip GIF)
                     if ($extension !== 'gif') {
@@ -386,7 +386,7 @@ public function showAllPosts()
                                 'Explicit Nudity', 'Sexual Activity',
                                 'Violence', 'Drugs'
                             ])) {
-                                Storage::disk('spaces')->delete($path);
+                                Storage::disk('spaces')->delete($key);
 
                                 return response()->json([
                                     'success' => false,
