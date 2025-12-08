@@ -506,15 +506,16 @@ public function apiDeletePost(Post $post)
 
                     // Upload to DigitalOcean Spaces
                     $filename = Str::random(12) . '_' . time() . '.' . $extension;
-                    $path = Storage::disk('spaces')->put(
-                        'post_images/' . $filename,
-                        $imageContent,
-                        ['visibility' => 'public']
+                    $key = 'post_images/' . $filename; // <-- Define the key here
+                    $success = Storage::disk('spaces')->put(
+                    $key, // <-- Pass the key
+                    $imageContent,
+                    ['visibility' => 'public']
                     );
 
-                    if ($path) {
+                    if ($success) {
                         // Get the public URL for the uploaded file
-                        $url = Storage::disk('spaces')->url($path);
+                        $url = Storage::disk('spaces')->url($key);
 
 
                         // Run Rekognition Moderation for non-GIFs
@@ -543,7 +544,7 @@ public function apiDeletePost(Post $post)
 
                             if ($flagged) {
                                 // Delete image and post if unsafe
-                                Storage::disk('spaces')->delete($path);
+                                Storage::disk('spaces')->delete($key);
                                 $post->delete();
 
                                 return response()->json([
