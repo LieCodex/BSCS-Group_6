@@ -259,7 +259,6 @@
 
 **Notes:**
 - All images associated with the post are removed from **DigitalOcean Spaces**.
-```
 
 ---
 
