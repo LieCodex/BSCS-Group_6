@@ -514,9 +514,8 @@ public function apiDeletePost(Post $post)
 
                     if ($path) {
                         // Get the public URL for the uploaded file
-                        $baseUrl = config('filesystems.disks.spaces.endpoint');
-                        $bucket = config('filesystems.disks.spaces.bucket');
-                        $url = $baseUrl . '/' . $bucket . '/' . $path;
+                        $url = Storage::disk('spaces')->url($path);
+
 
                         // Run Rekognition Moderation for non-GIFs
                         if ($extension !== 'gif') {

@@ -13,6 +13,7 @@
     use App\Http\Controllers\UserController;
     use App\Http\Controllers\AiController;
     use App\Http\Controllers\ConversationController;
+    use App\Http\Controllers\WebhookController;
     /*
     |--------------------------------------------------------------------------
     | API Routes
@@ -23,7 +24,7 @@
     | to the "api" middleware group. Enjoy building your API!
     |
     */
-
+    Route::post('/webhook/reverb-message', [WebhookController::class, 'handleReverbMessage']);
     // Example test route
     Route::get('/ping', function () {
         return response()->json(['message' => 'pong']);
