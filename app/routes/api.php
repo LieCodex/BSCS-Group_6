@@ -31,6 +31,8 @@
     Route::get('/posts', [PostController::class, 'apiGetPosts']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/posts', [PostController::class, 'apiCreatePost']);
+        Route::put('/posts/{post}', [PostController::class, 'apiUpdatePost']);
+        Route::delete('/posts/{post}', [PostController::class, 'apiDeletePost']);
     });
     // Route::post('/register', [AuthController::class, 'register']);
     // Route::post('/login', [AuthController::class, 'login']);

@@ -176,15 +176,16 @@
 }
 ```
 
-### Create Post
+### Create Post (API for Flutter / Base64 Upload)
 **POST** `/posts`  
 **Authentication:** Required
 
 **Body Parameters:**
 ```json
 {
-  "body": "string",
-  "image_urls": ["url1", "url2"]  // optional
+  "body": "string (max 500 chars, optional)",
+  "images": ["base64string1", "base64string2"],
+  "image_urls": ["https://example.com/image1.jpg"]
 }
 ```
 
@@ -192,13 +193,72 @@
 ```json
 {
   "success": true,
+  "message": "Post created successfully!",
   "post": {
     "id": 1,
     "body": "Hello world",
+    "user": {"id": 1, "name": "John Doe"},
     "images": [{"id":1,"image_path":"url"}],
-    "user": {"id":1,"name":"John Doe"}
+    "comments": [...]
   }
 }
+```
+
+**Notes:**
+- Non-GIF images are automatically checked using **AWS Rekognition** for moderation. Unsafe images will reject the post.  
+- If `@SquealBotUsername` is mentioned in `body`, the bot will automatically reply.
+
+---
+
+### Update Post
+**PUT** `/posts/{post}`  
+**Authentication:** Required (must be the owner)
+
+**Body Parameters:**
+```json
+{
+  "body": "string (max 500 chars, optional)",
+  "images": ["base64string1", "base64string2"],
+  "image_urls": ["https://example.com/image1.jpg"]
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Post updated successfully",
+  "post": {
+    "id": 1,
+    "body": "Updated content",
+    "user": {"id": 1, "name": "John Doe"},
+    "images": [{"id":1,"image_path":"url"}],
+    "comments": [...]
+  }
+}
+```
+
+**Notes:**
+- New base64 images are uploaded to **DigitalOcean Spaces**.  
+- Non-GIF images are moderated using **AWS Rekognition**. Unsafe images will be rejected.  
+- Existing images are preserved unless explicitly removed via a separate delete endpoint (not in current code).
+
+---
+
+### Delete Post
+**DELETE** `/posts/{post}`  
+**Authentication:** Required (must be the owner)
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Post deleted successfully"
+}
+```
+
+**Notes:**
+- All images associated with the post are removed from **DigitalOcean Spaces**.
 ```
 
 ---

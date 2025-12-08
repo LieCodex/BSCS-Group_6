@@ -309,6 +309,151 @@ public function showAllPosts()
         ]);
     }
 
+    public function apiUpdatePost(Request $request, Post $post)
+{
+    if (auth()->id() !== $post->user_id) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Unauthorized'
+        ], 403);
+    }
+
+    $data = $request->validate([
+        'body' => 'nullable|string|max:500',
+        'images' => 'array',
+        'images.*' => 'string',  // base64
+        'image_urls' => 'array',
+        'image_urls.*' => 'url'
+    ]);
+
+    // Update body
+    $post->update([
+        'body' => strip_tags($data['body'] ?? $post->body)
+    ]);
+
+    // Rekognition client
+    $rekognition = new RekognitionClient([
+        'version' => 'latest',
+        'region'  => config('filesystems.disks.s3.region'),
+        'credentials' => [
+            'key' => config('filesystems.disks.s3.key'),
+            'secret' => config('filesystems.disks.s3.secret'),
+        ],
+    ]);
+
+    // 📌 Handle base64 images (Flutter uploads)
+    if (!empty($data['images'])) {
+        foreach ($data['images'] as $base64) {
+            try {
+                $imageContent = base64_decode($base64);
+                if (!$imageContent) continue;
+
+                // Detect MIME
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mimeType = finfo_buffer($finfo, $imageContent);
+                finfo_close($finfo);
+
+                $extension = match($mimeType) {
+                    'image/jpeg' => 'jpg',
+                    'image/png' => 'png',
+                    'image/gif' => 'gif',
+                    'image/webp' => 'webp',
+                    default => 'jpg',
+                };
+
+                // Upload to Spaces
+                $filename = Str::random(12) . '_' . time() . '.' . $extension;
+                $path = Storage::disk('spaces')->put(
+                    'post_images/' . $filename,
+                    $imageContent,
+                    ['visibility' => 'public']
+                );
+
+                if ($path) {
+                    $baseUrl = config('filesystems.disks.spaces.endpoint');
+                    $bucket = config('filesystems.disks.spaces.bucket');
+                    $url = $baseUrl . '/' . $bucket . '/' . $path;
+
+                    // Moderation (skip GIF)
+                    if ($extension !== 'gif') {
+                        $result = $rekognition->detectModerationLabels([
+                            'Image' => ['Bytes' => $imageContent],
+                            'MinConfidence' => 80,
+                        ]);
+
+                        foreach ($result['ModerationLabels'] as $label) {
+                            if (in_array($label['Name'], [
+                                'Explicit Nudity', 'Sexual Activity',
+                                'Violence', 'Drugs'
+                            ])) {
+                                Storage::disk('spaces')->delete($path);
+
+                                return response()->json([
+                                    'success' => false,
+                                    'message' => 'Image rejected due to unsafe content.'
+                                ], 400);
+                            }
+                        }
+                    }
+
+                    // Save image
+                    $post->images()->create(['image_path' => $url]);
+                }
+
+            } catch (\Exception $e) {
+                \Log::error('Update image error: ' . $e->getMessage());
+            }
+        }
+    }
+
+    // 📌 Handle direct URLs
+    if (!empty($data['image_urls'])) {
+        foreach ($data['image_urls'] as $url) {
+            $post->images()->create(['image_path' => $url]);
+        }
+    }
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Post updated successfully',
+        'post' => $post->load(['images', 'user', 'comments'])
+    ]);
+}
+
+public function apiDeletePost(Post $post)
+{
+    if (auth()->id() !== $post->user_id) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Unauthorized'
+        ], 403);
+    }
+
+    // Delete images from Spaces
+    foreach ($post->images as $image) {
+        $parsedUrl = parse_url($image->image_path, PHP_URL_PATH);
+        $parsedUrl = ltrim($parsedUrl, '/');
+
+        // Removes bucket name prefix
+        $key = str_replace('squeal-spaces-file-storage/', '', $parsedUrl);
+
+        if (!empty($key)) {
+            Storage::disk('spaces')->delete($key);
+        }
+
+        $image->delete();
+    }
+
+    $post->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Post deleted successfully'
+    ]);
+}
+
+
+
     public function apiCreatePost(Request $request)
     {
         $data = $request->validate([
