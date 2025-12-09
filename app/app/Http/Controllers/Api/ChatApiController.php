@@ -38,11 +38,6 @@ class ChatApiController extends Controller
         $formattedUsers = $users->map(function($user) use ($authId) {
             $lastMessage = $user->lastMessageWithAuth();
             
-            // Calculate unread count
-            $unreadCount = ChatMessage::where('sender_id', $user->id)
-                ->where('receiver_id', $authId)
-                ->whereNull('read_at') // Assuming you add a read_at column later, or use your specific logic
-                ->count();
 
             return [
                 'id' => $user->id,
@@ -53,7 +48,6 @@ class ChatApiController extends Controller
                 'last_message' => $lastMessage ? $lastMessage->message : null,
                 'last_message_time' => $lastMessage ? $lastMessage->created_at->diffForHumans() : null,
                 'last_message_timestamp' => $lastMessage ? $lastMessage->created_at : null,
-                'unread_count' => $unreadCount, // Useful for Flutter UI badges
             ];
         });
 
