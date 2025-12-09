@@ -486,6 +486,190 @@
 }
 ```
 
+
+---
+# 11. Chat System API (Hybrid: HTTP + Reverb)
+
+The chat system uses a combination of **REST API** for sending and
+retrieving messages, and **Laravel Reverb (WebSockets)** for real-time
+delivery.
+
+------------------------------------------------------------------------
+
+## 📌 Get Chat Sidebar Users
+
+**GET** `/chat/users`\
+**Auth:** Required
+
+### Description
+
+Returns a list of users the authenticated user has chatted with. Sorted
+by latest message.
+
+### Response
+
+``` json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 5,
+      "name": "Jane Doe",
+      "email": "jane@example.com",
+      "avatar": "https://...",
+      "is_online": true,
+      "last_message": "Hey, how are you?",
+      "last_message_time": "5 minutes ago",
+      "last_message_timestamp": "2023-10-27T10:00:00.000000Z",
+      "unread_count": 2
+    }
+  ]
+}
+```
+
+------------------------------------------------------------------------
+
+## 📌 Get Message History
+
+**GET** `/chat/{user_id}/messages`\
+**Auth:** Required
+
+### Description
+
+Fetches all messages exchanged with the specified user.\
+Laravel returns an `is_me` flag for HTTP history only.
+
+### Response
+
+``` json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 101,
+      "sender_id": 1,
+      "receiver_id": 5,
+      "message": "Hello!",
+      "image_path": null,
+      "created_at": "2023-10-27T09:55:00.000000Z",
+      "is_me": true
+    },
+    {
+      "id": 102,
+      "sender_id": 5,
+      "receiver_id": 1,
+      "message": "Hi there!",
+      "image_path": "https://...",
+      "created_at": "2023-10-27T09:56:00.000000Z",
+      "is_me": false
+    }
+  ]
+}
+```
+
+------------------------------------------------------------------------
+
+## 📌 Send Message
+
+**POST** `/chat/send`\
+**Auth:** Required\
+**Type:** Multipart/Form-Data
+
+### Body Parameters
+
+``` json
+{
+  "receiver_id": 5,
+  "message": "Hello!",
+  "image": [File Object]
+}
+```
+
+### Response
+
+``` json
+{
+  "success": true,
+  "message": "Message sent",
+  "data": {
+    "id": 103,
+    "sender_id": 1,
+    "receiver_id": 5,
+    "message": "Hello!",
+    "image_path": null
+  }
+}
+```
+
+------------------------------------------------------------------------
+
+# 12. Flutter Implementation Guide
+
+## Hybrid Chat System (HTTP + Reverb)
+
+Flutter uses: - **HTTP** for sending messages - **Reverb WebSockets**
+for receiving live messages
+
+------------------------------------------------------------------------
+
+## 📦 Dependencies
+
+Add this to `pubspec.yaml`:
+
+``` yaml
+pusher_channels_flutter: ^2.2.0
+```
+
+------------------------------------------------------------------------
+
+## ⚙️ Reverb Configuration (Flutter)
+
+Reverb is Pusher-compatible.
+
+  Setting   Value
+  --------- -----------------------------
+  Host      Your server IP or domain
+  Port      8080 (or 443 with SSL)
+  Scheme    http / https
+  Cluster   mt1 (mandatory placeholder)
+
+------------------------------------------------------------------------
+
+## ⚠️ The "is_me" Logic Problem
+
+Reverb events **do not include** `is_me`.\
+You must compute it client-side.
+
+------------------------------------------------------------------------
+
+## 🧠 Flutter Event Listener Logic
+
+``` dart
+// Subscribe to your private channel
+await pusher.subscribe(channelName: "private-chat.$myUserId");
+
+// Handle events
+void onEvent(PusherEvent event) {
+  if (event.eventName.contains('MessageSent')) {
+
+    final data = jsonDecode(event.data);
+
+    // Fix: Determine if message belongs to logged-in user
+    bool isMe = data['sender_id'] == currentUser.id;
+
+    ChatMessage newMessage = ChatMessage(
+      id: data['id'],
+      message: data['message'],
+      senderId: data['sender_id'],
+      isMe: isMe,
+    );
+
+    setState(() {
+      messages.add(newMessage);
+    });
+  }
+}
+```
 ---
 
 ✅ **Notes for FlutterFlow:**

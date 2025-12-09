@@ -14,6 +14,7 @@
     use App\Http\Controllers\AiController;
     use App\Http\Controllers\ConversationController;
     use App\Http\Controllers\WebhookController;
+    use App\Http\Controllers\Api\ChatApiController;
     /*
     |--------------------------------------------------------------------------
     | API Routes
@@ -84,6 +85,15 @@
         Route::put('/user/profile', [UserController::class, 'apiUpdateProfile']);
         Route::get('/user/{id}', [UserController::class, 'apiShow']);
     });
+
+    Route::middleware('auth:sanctum')->group(function () {
+    // ... your existing routes ...
+
+    // CHAT ROUTES
+    Route::get('/chat/users', [ChatApiController::class, 'getChatUsers']); // Get list of people to chat with
+    Route::get('/chat/{user_id}/messages', [ChatApiController::class, 'getMessages']); // Get history with specific user
+    Route::post('/chat/send', [ChatApiController::class, 'sendMessage']); // Send message
+});
 
 // AI Chatbot routes
 Route::get('/conversations/{id}/messages', [ConversationController::class, 'recentMessages']);
