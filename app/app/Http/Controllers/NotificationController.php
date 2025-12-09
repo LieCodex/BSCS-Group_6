@@ -51,17 +51,45 @@ class NotificationController extends Controller
 
 
 
-    public function apiIndex()
-    {
-        $notifications = Notification::where('user_id', auth()->id())
-            ->orderBy('created_at', 'desc')
-            ->get();
+        public function apiIndex()
+        {
+            $notifications = Notification::where('user_id', auth()->id())
+                ->with([
+                    'actor:id,name,avatar',   // actor details
+                    'post:id,body',           // post preview
+                ])
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($n) {
+                    return [
+                        'notification_id' => $n->id,
+                        'post_id' => $n->post_id,
+                        'actor_id' => $n->actor_id,
+                        'type' => $n->type,
+                        'is_seen' => $n->is_seen,
+                        'preview_text' => $n->preview_text,
+                        'created_at' => $n->created_at->toDateTimeString(),
 
-        return response()->json([
-            'success' => true,
-            'data' => $notifications
-        ]);
-    }
+                        // actor info
+                        'actor' => $n->actor ? [
+                            'id' => $n->actor->id,
+                            'name' => $n->actor->name,
+                            'avatar' => $n->actor->avatar,
+                        ] : null,
+
+                        // post preview
+                        'post' => $n->post ? [
+                            'id' => $n->post->id,
+                            'body_preview' => Str::limit($n->post->body, 80),
+                        ] : null,
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'data' => $notifications
+            ]);
+        }
 
     // Mark a single notification as seen
     public function apiMarkAsSeen(Notification $notification)
