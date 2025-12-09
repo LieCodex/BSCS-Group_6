@@ -248,6 +248,33 @@ public function showAllPosts()
     return view('components.post', compact('post'));
     }
 
+    public function apiShow(Post $post)
+{
+    $user = auth()->user();
+
+    $post->load([
+        'user',
+        'images',
+        'comments.user',
+        'likes'
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'data' => [
+            'id' => $post->id,
+            'body' => $post->body,
+            'created_at' => $post->created_at,
+            'user' => $post->user,
+            'images' => $post->images,
+            'comments' => $post->comments,
+            'likes_count' => $post->likes->count(),
+            'is_liked' => $user ? $post->isLikedBy($user) : false,
+        ]
+    ]);
+}
+
+
 
     public function apiGetPosts(Request $request)
     {

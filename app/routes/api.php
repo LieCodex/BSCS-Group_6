@@ -35,7 +35,10 @@
         Route::post('/posts', [PostController::class, 'apiCreatePost']);
         Route::put('/posts/{post}', [PostController::class, 'apiUpdatePost']);
         Route::delete('/posts/{post}', [PostController::class, 'apiDeletePost']);
+        
     });
+    Route::middleware('auth:sanctum')->get('/posts/{post}', [PostController::class, 'apiShow']);
+
     // Route::post('/register', [AuthController::class, 'register']);
     // Route::post('/login', [AuthController::class, 'login']);
 
