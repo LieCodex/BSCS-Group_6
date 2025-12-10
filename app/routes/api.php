@@ -15,6 +15,7 @@
     use App\Http\Controllers\ConversationController;
     use App\Http\Controllers\WebhookController;
     use App\Http\Controllers\Api\ChatApiController;
+    use App\Http\Controllers\GoogleController;
     /*
     |--------------------------------------------------------------------------
     | API Routes
@@ -97,6 +98,9 @@
     Route::get('/chat/{user_id}/messages', [ChatApiController::class, 'getMessages']); // Get history with specific user
     Route::post('/chat/send', [ChatApiController::class, 'sendMessage']); // Send message
 });
+
+
+Route::post('/google-login', [GoogleController::class, 'apigoogleLogin']);
 
 // AI Chatbot routes
 Route::get('/conversations/{id}/messages', [ConversationController::class, 'recentMessages']);
